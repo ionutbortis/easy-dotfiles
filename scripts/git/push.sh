@@ -1,0 +1,51 @@
+#!/bin/bash
+
+sources() {
+  local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
+
+  source "$script_folder/../common/vars.sh"
+  source "$script_folder/../common/utils.sh"
+
+}; sources
+
+push_method="manual"
+log_file_name="$push_method-push"
+commit_message="<dotfiles> push"
+
+if [ "$1" == "auto" ] && [ -n "$2" ]; then
+  push_method="auto"
+  push_schedule="$2"
+  commit_message="<dotfiles> $push_schedule push"
+
+  log_file_name="$push_schedule-push"
+fi
+
+setup_log_file "$log_file_name"
+
+export_data() {
+  echo "Exporting settings and files to <dotfiles>..."
+
+  eval "$PROJECT_ROOT/scripts/export.sh $push_method"
+}
+
+push_submodule() {
+  local folder="$1"
+
+  cd "$PROJECT_ROOT/$folder" && git pull --quiet
+
+  echo "Pushing changes in [ $folder ] submodule..."
+  git add . && git commit . -m "$commit_message" && git push
+}
+
+push_main() {
+  cd "$PROJECT_ROOT" && git pull --quiet
+
+  echo "Pushing changes in main folder..."
+  git add . && git commit . -m "<dotfiles> config and data repos revision update" && git push
+}
+
+export_data
+
+push_submodule config
+push_submodule data
+push_main
