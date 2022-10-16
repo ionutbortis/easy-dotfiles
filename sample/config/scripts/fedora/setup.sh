@@ -1,7 +1,12 @@
 #!/bin/bash
 
-PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-source "$PROJECT_ROOT/scripts/common/utils.sh"
+sources() {
+  local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
+
+  source "$script_folder/../../../scripts/common/vars.sh"
+  source "$script_folder/../../../scripts/common/utils.sh"
+
+}; sources
 
 update_dnf_config() {
   echo "Updating dnf configuration..."
