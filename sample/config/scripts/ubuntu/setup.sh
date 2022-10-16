@@ -1,11 +1,7 @@
 #!/bin/bash
 
-sources() {
-  local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
-  
-  # source "$script_folder/../common/utils.sh"
-
-}; sources
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+source "$PROJECT_ROOT/scripts/common/utils.sh"
 
 echo "[TODO] ubuntu setup needs some love..."
 exit 1

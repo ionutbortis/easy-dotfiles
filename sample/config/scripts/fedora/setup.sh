@@ -1,11 +1,7 @@
 #!/bin/bash
 
-sources() {
-  local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
-  
-  source "$script_folder/../common/utils.sh"
-
-}; sources
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+source "$PROJECT_ROOT/scripts/common/utils.sh"
 
 update_dnf_config() {
   echo "Updating dnf configuration..."
@@ -47,13 +43,10 @@ add_flatpak_support() {
 }
 
 add_software_repos() {
-  echo "Adding extra software repos (vscode, atom, skype, etc.)..."
+  echo "Adding extra software repos (vscode, skype, etc.)..."
 
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
   sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-
-  sudo rpm --import https://packagecloud.io/AtomEditor/atom/gpgkey
-  sudo sh -c 'echo -e "[Atom]\nname=Atom Editor\nbaseurl=https://packagecloud.io/AtomEditor/atom/el/7/\$basearch\nenabled=1\ngpgcheck=0\nrepo_gpgcheck=1\ngpgkey=https://packagecloud.io/AtomEditor/atom/gpgkey" > /etc/yum.repos.d/atom.repo'
 
   sudo dnf config-manager -y --add-repo https://repo.skype.com/rpm/stable/skype-stable.repo
 
