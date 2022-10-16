@@ -1,0 +1,22 @@
+[
+  {
+    "schema_path": "/org/gnome/settings-daemon/plugins/media-keys/",
+    "file": "media-keys.conf"
+  },
+  {
+    "schema_path": "/org/gnome/desktop/wm/keybindings/",
+    "file": "wm.keybindings.conf"
+  },
+  {
+    "schema_path": "/org/gnome/shell/keybindings/",
+    "file": "shell.keybindings.conf"
+  },
+  {
+    "schema_path": "/org/gnome/mutter/keybindings/",
+    "file": "mutter.keybindings.conf"
+  },
+  {
+    "schema_path": "/org/gnome/mutter/wayland/keybindings/",
+    "file": "wayland.keybindings.conf"
+  }
+]

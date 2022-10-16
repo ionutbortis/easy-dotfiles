@@ -1,0 +1,2 @@
+# Open terminal at half right screen (works only on my laptop)
+gnome-terminal --geometry=86x47+960+0

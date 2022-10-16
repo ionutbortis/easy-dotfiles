@@ -1,0 +1,2 @@
+-Xmx1237m
+-javaagent:/home/ionut/java-IDEs/jidea/.filter/ja-netfilter/ja-netfilter.jar

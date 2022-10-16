@@ -1,0 +1,129 @@
+[
+  {
+    "name": "Google Chrome",
+    "url": "https://www.google.com/chrome/",
+    "install": {
+      "fedora": "sudo dnf install google-chrome-stable -y",
+      "ubuntu": "sudo apt-get install google-chrome-stable -y"
+    }
+  },
+  {
+    "name": "Visual Studio Code",
+    "url": "https://code.visualstudio.com/",
+    "install": {
+      "fedora": "sudo dnf install code -y",
+      "ubuntu": "sudo apt-get install code -y"
+    }
+  },
+  {
+    "name": "IntelliJ IDEA Ultimate",
+    "url": "https://www.jetbrains.com/idea/",
+    "install": {
+      "fedora": "../data/scripts/jidea-install.sh",
+      "ubuntu": "../data/scripts/jidea-install.sh"
+    },
+    "settings": {
+      "config_files": ["~/.config/JetBrains/IntelliJIdea2021.3/idea64.vmoptions"]
+    }
+  },
+  {
+    "name": "Double Commander",
+    "url": "https://doublecmd.sourceforge.io/",
+    "install": {
+      "fedora": "sudo dnf install doublecmd-qt -y",
+      "ubuntu": "sudo apt-get install doublecmd-qt -y"
+    },
+    "settings": {
+      "config_files": [
+        "~/.config/doublecmd/doublecmd.xml",
+        "~/.config/doublecmd/extassoc.xml",
+        "~/.config/doublecmd/highlighters.xml",
+        "~/.config/doublecmd/multiarc.ini",
+        "~/.config/doublecmd/session.ini",
+        "~/.config/doublecmd/shortcuts.scf",
+        "~/.config/doublecmd/zip.ini"
+      ]
+    }
+  },
+  {
+    "name": "Midnight Commander",
+    "url": "https://midnight-commander.org/",
+    "install": {
+      "fedora": "sudo dnf install mc -y",
+      "ubuntu": "sudo apt-get install mc -y"
+    }
+  },
+  {
+    "name": "dconf Editor",
+    "url": "https://wiki.gnome.org/Apps/DconfEditor",
+    "install": {
+      "fedora": "sudo dnf install dconf-editor -y",
+      "ubuntu": "sudo apt-get install dconf-editor -y"
+    }
+  },
+  {
+    "name": "Anacron scheduler",
+    "url": "https://sourceforge.net/projects/anacron/",
+    "install": {
+      "fedora": "sudo dnf install anacron -y",
+      "ubuntu": "sudo apt-get install anacron -y"
+    },
+    "settings": {
+      "config_files": ["/etc/anacrontab"]
+    }
+  },
+  {
+    "name": "dnfdragora",
+    "url": "https://github.com/manatools/dnfdragora",
+    "install": {
+      "fedora": "sudo dnf install dnfdragora -y"
+    }
+  },
+  {
+    "name": "Synaptic Package Manager",
+    "url": "https://www.nongnu.org/synaptic/",
+    "install": {
+      "ubuntu": "sudo apt-get install synaptic -y"
+    }
+  },
+  {
+    "name": "Gnome Tweaks",
+    "url": "https://wiki.gnome.org/Apps/Tweaks",
+    "install": {
+      "fedora": "sudo dnf install gnome-tweaks -y",
+      "ubuntu": "sudo apt-get install gnome-tweaks -y"
+    }
+  },
+  {
+    "name": "Gnome Weather",
+    "url": "https://wiki.gnome.org/Apps/Weather",
+    "install": {
+      "ubuntu": "sudo apt-get install gnome-weather -y"
+    },
+    "settings": {
+      "dconf": {
+        "schema_path": "/org/gnome/Weather/",
+        "file": "gnome-weather.conf"
+      }
+    }
+  },
+  {
+    "name": "Extension Manager",
+    "url": "https://flathub.org/apps/details/com.mattjakeman.ExtensionManager",
+    "install": {
+      "fedora": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive",
+      "ubuntu": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive"
+    }
+  },
+  {
+    "name": "Skype",
+    "url": "https://www.skype.com/",
+    "install": {
+      "fedora": "sudo dnf install skypeforlinux -y",
+      "ubuntu": "sudo apt-get install skypeforlinux -y"
+    },
+    "settings": {
+      "config_files": ["~/.config/skypeforlinux/settings.json"]
+    }
+  }
+]

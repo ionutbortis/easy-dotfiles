@@ -1,0 +1,44 @@
+[
+  {
+    "schema_path": "/org/gnome/desktop/interface/",
+    "keys": ["text-scaling-factor", "clock-show-weekday"],
+    "file": "desktop.interface.conf"
+  },
+  {
+    "schema_path": "/org/gnome/desktop/datetime/",
+    "file": "desktop.datetime.conf"
+  },
+  {
+    "schema_path": "/org/gnome/desktop/background/",
+    "file": "desktop.background.conf"
+  },
+  {
+    "schema_path": "/org/gnome/desktop/wm/preferences/",
+    "file": "desktop.wm.preferences.conf"
+  },
+  {
+    "schema_path": "/org/gnome/desktop/a11y/",
+    "file": "desktop.accessibility.conf"
+  },
+  {
+    "schema_path": "/org/gnome/shell/",
+    "keys": ["favorite-apps"],
+    "file": "gnome.shell.conf"
+  },
+  {
+    "schema_path": "/org/gnome/settings-daemon/plugins/color/",
+    "file": "night-light.conf"
+  },
+  {
+    "schema_path": "/org/gnome/mutter/",
+    "file": "gnome.mutter.conf"
+  },
+  {
+    "schema_path": "/org/gnome/nautilus/",
+    "file": "nautilus.conf"
+  },
+  {
+    "schema_path": "/org/gnome/TextEditor/",
+    "file": "text-editor.conf"
+  }
+]
