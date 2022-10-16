@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-source "$PROJECT_ROOT/data/scripts/defaults.sh"
+source "$PROJECT_ROOT/config/scripts/defaults.sh"
 
 configure_hostname() {
   echo "Enter the desired computer name"

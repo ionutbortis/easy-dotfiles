@@ -14,9 +14,6 @@ APPS_CONFIG_JSON="$PARENT_CONFIG_FOLDER/$APPS_FOLDER/config.json"
 EXTENSIONS_CONFIG_JSON="$PARENT_CONFIG_FOLDER/$EXTENSIONS_FOLDER/config.json"
 
 get_setup_distro() {
-  # TODO remove later!!
-  # echo fedora; return
-
   while true; do
     read -p "Please input distro name for setup [fedora/ubuntu]: " distro
     case "$distro" in
