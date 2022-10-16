@@ -11,16 +11,21 @@ copy_sample() {
 
 push_sample() {
   local name="$1"
-  
-  cd "$PROJECT_ROOT/$name" && git add . && git commit -m "<dotfiles> Added sample $name" && git push
+
+  echo "Pushing $name sample..."
+
+  cd "$PROJECT_ROOT/$name"
+  git add . && git commit -m "<dotfiles> Added sample $name" && git push
+}
+
+push_main() {
+  echo "Pushing changes in main folder..."
+
+  cd "$PROJECT_ROOT"
+  git add . && git commit . -m "<dotfiles> config and data repos revision update" && git push
 }
 
 copy_sample config && push_sample config
 copy_sample data && push_sample data
 
-# this script will help users setup config and data samples:
-
-#- provide simple configuration sample with some apps, tweaks, extensions, etc,
-#  also try to cover all the config json use cases and supported configurations
-
-#- provide data samples for the above configurations. include also custom app install scripts
+push_main
