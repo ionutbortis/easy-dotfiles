@@ -56,8 +56,6 @@ configure_additional_repo() {
 
   add_submodule
 
-  eval "$PROJECT_ROOT/sample/setup.sh"
-
   cd "$PROJECT_ROOT"
   git add . && git commit -m "<dotfiles> Added private data submodule" && git push
 }
