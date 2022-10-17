@@ -97,17 +97,19 @@ cleanup() {
   cd "$PROJECT_ROOT" && rm -rf "$WORK_DIR"
 }
 
+show_finished_message() {
+  echo
+  echo "<dotfiles> apps and extensions installation finished!"
+  echo
+  echo "You can check the install log inside the [ $LOGS_DIR ] folder."
+  echo "There you can search for any 'error' or 'warn' messages."
+  echo
+  echo "Log out and log in again to manually enable your installed gnome extensions."
+}
+
 setup
 install_apps
 install_extensions
-
-# todo enable_extensions
-# todo create separate install script for extensions: extensions/install.sh
-# todo create separate install script for apps: apps/install.sh
-# jidea settings (and plugins?) export
-# vscode plugins and settings export => https://code.visualstudio.com/docs/editor/command-line
-# script for weekly dotfiles export and git update added in anacrontab
-# other stuff?
-
-# display logout message, import run? afterwards and manual enabling of the auto installed extensions
 cleanup
+
+show_finished_message
