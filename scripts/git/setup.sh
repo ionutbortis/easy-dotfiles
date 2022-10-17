@@ -145,7 +145,7 @@ read_anacron_schedule() {
 }
 
 configure_anacrontab() {
-  local message="Do you want to schedule git automatic pushes of <dotfiles> config and data?"
+  local message="Do you want to schedule git automatic pushes of <dotfiles> private data?"
   echo; confirm_action "$message" || return 1
 
   check_anacron_package
