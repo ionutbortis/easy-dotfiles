@@ -4,3 +4,6 @@
 [submodule "data"]
 	path = data
 	url = git@github.com:ionutbortis/dotfiles-data.git
+[submodule "private"]
+	path = private
+	url = git@github.com:ionutbortis/dotfiles-private.git
