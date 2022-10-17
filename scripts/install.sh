@@ -15,7 +15,7 @@ EXTENSIONS_CONFIG_JSON="$PARENT_CONFIG_FOLDER/$EXTENSIONS_FOLDER/config.json"
 
 get_setup_distro() {
   while true; do
-    read -p "Please input distro name for setup [fedora/ubuntu]: " distro
+    read -p "Please input distro name for setup [ fedora / ubuntu ]: " distro
     case "$distro" in
       "fedora" ) echo "$distro"; return;;
       "ubuntu" ) echo "$distro"; return;;
@@ -30,7 +30,15 @@ setup() {
   eval "$PROJECT_ROOT/scripts/common/setup.sh"
 
   DISTRO=$(get_setup_distro)
-  eval "$PRIVATE_FOLDER/scripts/$DISTRO/setup.sh"
+
+  local distro_setup_script="$PRIVATE_FOLDER/scripts/$DISTRO/setup.sh"
+
+  if [[ ! -x "$distro_setup_script" ]]; then
+    echo -e "\n[WARN] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]\n"
+    return
+  fi
+
+  eval "$distro_setup_script"
 }
 
 list_apps() {
