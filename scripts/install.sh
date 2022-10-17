@@ -30,7 +30,7 @@ setup() {
   eval "$PROJECT_ROOT/scripts/common/setup.sh"
 
   DISTRO=$(get_setup_distro)
-  eval "$PROJECT_ROOT/config/scripts/$DISTRO/setup.sh"
+  eval "$PRIVATE_FOLDER/scripts/$DISTRO/setup.sh"
 }
 
 list_apps() {

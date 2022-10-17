@@ -29,11 +29,9 @@ export_data() {
 }
 
 push_submodule() {
-  local folder="$1"
+  cd "$PRIVATE_FOLDER" && git pull --quiet
 
-  cd "$PROJECT_ROOT/$folder" && git pull --quiet
-
-  echo "Pushing changes in [ $folder ] submodule..."
+  echo "Pushing changes in [ private ] submodule..."
   git add . && git commit . -m "$commit_message" && git push
 }
 
@@ -41,11 +39,10 @@ push_main() {
   cd "$PROJECT_ROOT" && git pull --quiet
 
   echo "Pushing changes in main folder..."
-  git add . && git commit . -m "<dotfiles> config and data repos revision update" && git push
+  git add . && git commit . -m "<dotfiles> private repo revision update" && git push
 }
 
 export_data
 
-push_submodule config
-push_submodule data
+push_submodule
 push_main

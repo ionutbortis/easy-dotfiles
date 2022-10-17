@@ -11,27 +11,25 @@ sources() {
 setup_log_file "git-setup"
 
 submodule_exists() {
-  local folder="$1"
+  cd "$PRIVATE_FOLDER"
 
-  cd "$PROJECT_ROOT/$folder"
   test "$(git rev-parse --show-superproject-working-tree)" || return 1
 }
 
-check_additional_repos() {
-  echo "Checking if config and data submodules are already configured..."
+check_additional_repo() {
+  echo "Checking if <dotfiles> private data submodule is already configured..."
 
   cd "$PROJECT_ROOT" && git pull --quiet
 
-  submodule_exists config && submodule_exists data || return 1
+  submodule_exists || return 1
 }
 
-display_new_repos_help() {
+display_new_repo_help() {
   local help="
-    You need to manually create two separate private repositories in you github account:
-    dotfiles-config
-    dotfiles-data
+    You need to manually create a separate 'private' repository in your github account:
+    dotfiles-private
 
-    ❗Important: Please make sure that the repos are not empty (check the 'Add a README file' option) and 
+    ❗Important: Please make sure that the repo is not empty (check the 'Add a README file' option) and 
     the default branch is 'main'.
 
     Official guide on how to create github repositories: 
@@ -42,83 +40,74 @@ display_new_repos_help() {
 }
 
 add_submodule() {
-  local name="$1"
-
   cd "$PROJECT_ROOT"
 
   unset repo
   while [ -z ${repo} ]; do
-    echo; read -p "Enter the ssh URL for <dotfiles-$name> repo: " repo
+    echo; read -p "Enter the ssh URL for <dotfiles-private> repo: " repo
   done
-  rm -rf "$name" && git submodule add --force "$repo" "$name"
+  rm -rf private && git submodule add --force "$repo" private
 }
 
-configure_additional_repos() {
-  echo "You need to provide the ssh repo URLs for <dotfiles-config> and <dotfiles-data>"
-  echo "They should look like: "
-  echo "git@github.com:your_user_name/dotfiles-config.git"
-  echo "git@github.com:your_user_name/dotfiles-data.git"
+configure_additional_repo() {
+  echo "You need to provide the ssh repo URL for <dotfiles-private>."
+  echo "It should look like: "
+  echo "git@github.com:your_user_name/dotfiles-private.git"
 
-  add_submodule config
-  add_submodule data
+  add_submodule
 
   eval "$PROJECT_ROOT/sample/setup.sh"
 
-  cd "$PROJECT_ROOT" && git add . && git commit -m "<dotfiles> Added config and data submodules" && git push
+  cd "$PROJECT_ROOT"
+  git add . && git commit -m "<dotfiles> Added private data submodule" && git push
 }
 
 list_branches() {
-  local folder="$1"
-  cd "$PROJECT_ROOT/$folder"
+  cd "$PRIVATE_FOLDER"
 
   git branch -r | awk '{ print $1 }' | sed -e '1d' -e 's/origin\///'
 }
 
 create_branch() {
-  local name="$1"; local folder="$2"
+  local name="$1"
+  echo "Creating new branch [ $name ] for private repo..."
 
-  echo "Creating new branch [ $name ] for $folder"
-
-  cd "$PROJECT_ROOT/$folder" && git checkout -b "$name"
+  cd "$PRIVATE_FOLDER" && git checkout -b "$name"
   git push -u origin "$name"
 }
 
 switch_branch() {
-  local folder="$1"; local name="$2";
+  local name="$1";
+  echo "Switching branch to [ "$name" ] for private repo..."
 
-  echo "Switching branch for <dotfiles> $folder"
-
-  cd "$PROJECT_ROOT/$folder" && git checkout "$name"
+  cd "$PRIVATE_FOLDER" && git checkout "$name"
 }
 
 default_submodule_profile() {
-  local folder="$1"
-  local branches=( $(list_branches $folder) )
+  local branches=( $(list_branches) )
 
-  switch_branch "$folder" "${branches[0]}"
+  switch_branch "${branches[0]}"
 }
 
 submodule_profile_check() {
-  local folder="$1"
-  cd "$PROJECT_ROOT/$folder"; local profile="$(git branch --show-current)"
+  cd "$PRIVATE_FOLDER"; local profile="$(git branch --show-current)"
 
   if [ ! "$profile" ]; then
-    echo -e "\n[WARN] There's no profile set for <dotfiles> $folder. Will use default..."
-    default_submodule_profile "$folder"
+    echo -e "\n[WARN] There's no profile set for the private repo. Will use default..."
+    default_submodule_profile
 
   else
-    echo "Current profile for <dotfiles> $folder is: [ $profile ]"
+    echo "Current profile for <dotfiles> private data is: [ $profile ]"
   fi
 }
 
 display_profiles() {
   echo "Creating the <dotfiles> profiles list..."
-  local profiles_array=( $(list_branches config && list_branches data | sort | uniq -d) )
+  local profiles_array=( $(list_branches) )
 
-  echo "Profiles list for <dotfiles> config and data: [ ${profiles_array[@]} ]"
+  echo "Profiles list for <dotfiles> private data: [ ${profiles_array[@]} ]"
 
-  submodule_profile_check config
-  submodule_profile_check data
+  submodule_profile_check
 }
 
 create_new_profile() {
@@ -127,8 +116,7 @@ create_new_profile() {
 
   read -p "Enter the new <dotfiles> profile name: " new_profile
 
-  create_branch "$new_profile" config
-  create_branch "$new_profile" data
+  create_branch "$new_profile"
 }
 
 switch_profile() {
@@ -137,8 +125,7 @@ switch_profile() {
 
   read -p "Enter the existing <dotfiles> profile name: " profile
 
-  switch_branch config "$profile"
-  switch_branch data "$profile"
+  switch_branch "$profile"
 }
 
 check_anacron_package() {
@@ -194,8 +181,8 @@ configure_anacrontab() {
   echo "Script file [ $script_file ]"
 }
 
-check_additional_repos \
-    || { display_new_repos_help; configure_additional_repos; }
+check_additional_repo \
+    || { display_new_repo_help; configure_additional_repo; }
 
 display_profiles
 create_new_profile || switch_profile

@@ -19,8 +19,8 @@
     "name": "IntelliJ IDEA Ultimate",
     "url": "https://www.jetbrains.com/idea/",
     "install": {
-      "fedora": "../config/scripts/apps/jidea-install.sh",
-      "ubuntu": "../config/scripts/apps/jidea-install.sh"
+      "fedora": "../private/scripts/apps/jidea-install.sh",
+      "ubuntu": "../private/scripts/apps/jidea-install.sh"
     },
     "settings": {
       "config_files": ["~/.config/JetBrains/IntelliJIdea2021.3/idea64.vmoptions"]
