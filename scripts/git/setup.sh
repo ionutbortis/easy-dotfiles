@@ -8,6 +8,8 @@ sources() {
 
 }; sources
 
+setup_log_file "git-setup"
+
 submodule_exists() {
   local folder="$1"
 

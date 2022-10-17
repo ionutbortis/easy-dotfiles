@@ -108,4 +108,6 @@ install_extensions
 # vscode plugins and settings export => https://code.visualstudio.com/docs/editor/command-line
 # script for weekly dotfiles export and git update added in anacrontab
 # other stuff?
+
+# display logout message, import run? afterwards and manual enabling of the auto installed extensions
 cleanup
