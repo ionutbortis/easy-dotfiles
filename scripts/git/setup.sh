@@ -10,18 +10,13 @@ sources() {
 
 setup_log_file "git-setup"
 
-submodule_exists() {
-  cd "$PRIVATE_FOLDER"
-
-  test "$(git rev-parse --show-superproject-working-tree)" || return 1
-}
-
 check_additional_repo() {
-  echo "Checking if <dotfiles> private data submodule is already configured..."
+  echo "Checking if <dotfiles> private repo is already configured..."
 
   cd "$PROJECT_ROOT" && git pull --quiet
 
-  submodule_exists || return 1
+  cd "$PRIVATE_FOLDER"
+  test "$(git rev-parse --show-superproject-working-tree)" || return 1
 }
 
 display_new_repo_help() {
@@ -39,7 +34,11 @@ display_new_repo_help() {
   echo "$help" | sed "s/^[ ]*//"
 }
 
-add_submodule() {
+configure_additional_repo() {
+  echo "You need to provide the ssh repo URL for <dotfiles-private>."
+  echo "It should look like: "
+  echo "git@github.com:your_user_name/dotfiles-private.git"
+
   cd "$PROJECT_ROOT"
 
   unset repo
@@ -47,16 +46,7 @@ add_submodule() {
     echo; read -p "Enter the ssh URL for <dotfiles-private> repo: " repo
   done
   rm -rf private && git submodule add --force "$repo" private
-}
 
-configure_additional_repo() {
-  echo "You need to provide the ssh repo URL for <dotfiles-private>."
-  echo "It should look like: "
-  echo "git@github.com:your_user_name/dotfiles-private.git"
-
-  add_submodule
-
-  cd "$PROJECT_ROOT"
   git add . && git commit -m "<dotfiles> Added private data submodule" && git push
 }
 
