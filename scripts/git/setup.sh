@@ -104,7 +104,7 @@ submodule_profile_check() {
 }
 
 display_profiles() {
-  echo "Creating the <dotfiles> profiles list..."
+  echo -e "\nCreating the <dotfiles> profiles list..."
   local profiles_array=( $(list_branches) )
 
   echo "Profiles list for <dotfiles> private data: [ ${profiles_array[@]} ]"

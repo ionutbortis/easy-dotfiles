@@ -43,7 +43,7 @@ push_main() {
 }
 
 configure_git_props() {
-  echo -e "\n[WARN] Git needs additional info for the <dotfiles> repo!\n"
+  echo -e "\n[WARN] Git needs additional info for the <dotfiles> repos!\n"
 
   cd "$PROJECT_ROOT"
 
@@ -52,7 +52,11 @@ configure_git_props() {
   read -p "Enter your git username [ default: $DEFAULT_GIT_USERNAME, press Enter to use default ]: " username
   git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
 
-  read -p "Enter your git email [ default: $DEFAULT_GIT_EMAIL ]: " email
+  read -p "Enter your git email [ default: $DEFAULT_GIT_EMAIL, press Enter to use default ]: " email
+  git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
+
+  cd "$PRIVATE_FOLDER"
+  git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
   git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
 }
 
