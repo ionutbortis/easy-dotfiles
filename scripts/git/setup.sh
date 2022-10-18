@@ -73,7 +73,12 @@ create_branch() {
   echo "Creating new branch [ $name ] for private repo..."
 
   cd "$PRIVATE_FOLDER" && git checkout -b "$name"
-  # git push -u origin "$name"
+
+  check_git_props "$PROJECT_ROOT" \
+    || check_git_props "$PRIVATE_FOLDER" \
+    || configure_git_props "$DEFAULTS_SCRIPT"
+
+  git push -u origin "$name"
 }
 
 switch_branch() {

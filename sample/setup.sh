@@ -16,18 +16,16 @@ copy_sample() {
 }
 
 configure_defaults() {
-  local defaults_script="$PRIVATE_FOLDER/scripts/defaults.sh"
-
-  echo -e "\nConfiguring the values from the [ "$defaults_script" ] script. These will be used later on."
+  echo -e "\nConfiguring the values from the [ "$DEFAULTS_SCRIPT" ] script. These will be used later on."
 
   read -p $'Enter the default computer name: ' hostname
-  replace_line_in_file "$defaults_script" "DEFAULT_HOST_NAME" "DEFAULT_HOST_NAME=\"$hostname\""
+  replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_HOST_NAME" "DEFAULT_HOST_NAME=\"$hostname\""
 
   read -p $'Enter the default git user name for <dotfiles> repo: ' git_user
-  replace_line_in_file "$defaults_script" "DEFAULT_GIT_USERNAME" "DEFAULT_GIT_USERNAME=\"$git_user\""
+  replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_USERNAME" "DEFAULT_GIT_USERNAME=\"$git_user\""
 
   read -p $'Enter the default git email for <dotfiles> repo: ' git_email
-  replace_line_in_file "$defaults_script" "DEFAULT_GIT_EMAIL" "DEFAULT_GIT_EMAIL=\"$git_email\""
+  replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_EMAIL" "DEFAULT_GIT_EMAIL=\"$git_email\""
 }
 
 copy_sample config 

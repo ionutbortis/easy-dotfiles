@@ -22,6 +22,8 @@ MISC_FOLDER="misc"
 LOGS_DIR="$PROJECT_ROOT/logs"
 WORK_DIR="$PROJECT_ROOT/tmp"
 
+DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
+
 # GIT_SILENT="--quiet"
 
 # For Gnome versions 40 and above

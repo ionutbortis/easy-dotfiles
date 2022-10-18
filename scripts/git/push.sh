@@ -42,36 +42,9 @@ push_main() {
   git add . && git commit . -m "<dotfiles> private repo revision update" && git push
 }
 
-configure_git_props() {
-  echo -e "\n[WARN] Git needs additional info for the <dotfiles> repos!\n"
-
-  source "$PRIVATE_FOLDER/scripts/defaults.sh"
-
-  cd "$PROJECT_ROOT"
-
-  read -p "Enter your git username [ default: $DEFAULT_GIT_USERNAME, press Enter to use default ]: " username
-  git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
-
-  read -p "Enter your git email [ default: $DEFAULT_GIT_EMAIL, press Enter to use default ]: " email
-  git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
-
-  cd "$PRIVATE_FOLDER"
-  git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
-  git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
-}
-
-check_git_props() {
-  local folder="$1"
-
-  cd "$folder"
-  local username="$(git config user.name)"
-  local email="$(git config user.email)"
-
-  [ ! "$username" ] || [ ! "$email" ] && return 1
-}
-
 check_git_props "$PROJECT_ROOT" \
-    || check_git_props "$PRIVATE_FOLDER" || configure_git_props
+    || check_git_props "$PRIVATE_FOLDER" \
+    || configure_git_props "$DEFAULTS_SCRIPT"
 
 [ "$push_method" == "auto" ] && export_data
 
