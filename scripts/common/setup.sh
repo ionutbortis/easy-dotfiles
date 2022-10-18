@@ -9,13 +9,4 @@ configure_hostname() {
   sudo hostnamectl set-hostname "${name:-"$DEFAULT_HOST_NAME"}"
 }
 
-configure_git() {
-  read -p "Enter your git username [ default: $DEFAULT_GIT_USERNAME ]: " name
-  git config --global user.name "${name:-"$DEFAULT_GIT_USERNAME"}"
-
-  read -p "Enter your git email [ default: $DEFAULT_GIT_EMAIL ]: " email
-  git config --global user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
-}
-
 configure_hostname
-configure_git

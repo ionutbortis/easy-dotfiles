@@ -42,6 +42,18 @@ dir_permission_check() {
   fi
 }
 
+is_empty_folder() {
+  local folder="$1"
+
+  [[ "$(ls -A "$folder" 2>/dev/null)" ]] && return 1 || return 0
+}
+
+replace_line_in_file() {
+  local file="$1"; local line_prefix="$2"; local replacement_line="$3"
+
+  sed -i "s/^"$line_prefix".*$/"$replacement_line"/g" "$file"
+}
+
 replace_config_property() {
   local config_file=$1; local property_name=$2; local property_value=$3
 

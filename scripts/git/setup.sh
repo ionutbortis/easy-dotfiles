@@ -34,6 +34,17 @@ display_new_repo_help() {
   echo "$help" | sed "s/^[ ]*//"
 }
 
+handle_additional_repo_data() {
+  cd "$PRIVATE_FOLDER" && is_empty_folder config || return
+
+  echo -e "\nSeems like first time usage since <dotfiles> private data is empty."
+  echo -e "You can use the sample data for bootstraping your <dotfiles configuration or create it manually.\n"
+
+  local message="Do you want to use the sample data for the private repo?"
+
+  confirm_action "$message" && eval "$PROJECT_ROOT/sample/setup.sh" || return 1
+}
+
 configure_additional_repo() {
   echo "You need to provide the ssh repo URL for <dotfiles-private>."
   echo "It should look like: "
@@ -47,7 +58,7 @@ configure_additional_repo() {
   done
   rm -rf private && git submodule add --force "$repo" private
 
-  git add . && git commit -m "<dotfiles> Added private data submodule" && git push
+  handle_additional_repo_data || eval "$PROJECT_ROOT/scripts/git/push.sh"
 }
 
 list_branches() {
