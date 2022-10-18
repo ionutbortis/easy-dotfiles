@@ -43,8 +43,9 @@ handle_additional_repo_data() {
   echo -e "You can use the 'sample' data for bootstraping your <dotfiles> configuration or create it manually.\n"
 
   local message="Do you want to use the 'sample' data for the private repo?"
+  confirm_action "$message" || return 1
 
-  confirm_action "$message" && eval "$PROJECT_ROOT/sample/setup.sh"
+  eval "$PROJECT_ROOT/sample/setup.sh"
 }
 
 configure_additional_repo() {
@@ -60,7 +61,7 @@ configure_additional_repo() {
   done
   rm -rf private && git submodule add --force "$repo" private
 
-  eval "$PROJECT_ROOT/scripts/git/push.sh"
+  handle_additional_repo_data || eval "$PROJECT_ROOT/scripts/git/push.sh"
 }
 
 list_branches() {
