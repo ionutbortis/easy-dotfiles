@@ -31,22 +31,19 @@ export_data() {
 push_submodule() {
   cd "$PRIVATE_FOLDER" && git pull --quiet
 
-  echo "Pushing changes in [ private ] submodule..."
+  echo -e "\nPushing changes in [ private ] submodule..."
   git add . && git commit . -m "$commit_message" && git push
 }
 
 push_main() {
   cd "$PROJECT_ROOT" && git pull --quiet
 
-  echo "Pushing changes in main folder..."
+  echo -e "\nPushing changes in main folder..."
   git add . && git commit . -m "<dotfiles> private repo revision update" && git push
 }
 
-check_git_props "$PROJECT_ROOT" \
-    || check_git_props "$PRIVATE_FOLDER" \
-    || configure_git_props "$DEFAULTS_SCRIPT"
-
 [ "$push_method" == "auto" ] && export_data
 
+check_git_props
 push_submodule
 push_main

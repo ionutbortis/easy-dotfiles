@@ -94,7 +94,7 @@ replace_config_property() {
 configure_git_props() {
   echo -e "\n[WARN] Git needs additional info for the <dotfiles> repos!\n"
 
-  local defaults_script="$1"; source "$defaults_script"
+  source "$DEFAULTS_SCRIPT"
 
   cd "$PROJECT_ROOT"
 
@@ -110,11 +110,16 @@ configure_git_props() {
 }
 
 check_git_props() {
-  local folder="$1"
+  local missing="false"
+  local folders=( "$PROJECT_ROOT" "$PRIVATE_FOLDER" )
 
-  cd "$folder"
-  local username="$(git config user.name)"
-  local email="$(git config user.email)"
+  for folder in "${folders[@]}"; do
+    cd "$folder"
+    local username="$(git config user.name)"
+    local email="$(git config user.email)"
 
-  [ ! "$username" ] || [ ! "$email" ] && return 1
+    [ ! "$username" ] || [ ! "$email" ] && missing="true"
+  done
+
+  [ "$missing" == "true" ] && configure_git_props
 }
