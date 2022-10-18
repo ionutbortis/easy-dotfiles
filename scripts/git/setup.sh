@@ -129,7 +129,7 @@ switch_profile() {
 }
 
 push_git_changes() {
-  eval "$PROJECT_ROOT/scripts/git/push.sh"
+  cd "$PROJECT_ROOT" && eval "./scripts/git/push.sh"
 }
 
 check_anacron_package() {

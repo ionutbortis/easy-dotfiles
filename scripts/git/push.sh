@@ -71,7 +71,7 @@ check_git_props() {
 }
 
 check_git_props "$PROJECT_ROOT" \
-    || check_git_props "$PRIVATE_FOLDER" && configure_git_props
+    || check_git_props "$PRIVATE_FOLDER" || configure_git_props
 
 [ "$push_method" == "auto" ] && export_data
 
