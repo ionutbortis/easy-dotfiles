@@ -30,16 +30,8 @@ configure_defaults() {
   replace_line_in_file "$defaults_script" "DEFAULT_GIT_EMAIL" "DEFAULT_GIT_EMAIL=\"$git_email\""
 }
 
-push_data() {
-  echo -e "\nPushing sample data to private repo..."
-
-  eval "$PROJECT_ROOT/scripts/git/push.sh"
-}
-
 copy_sample config 
 copy_sample data
 copy_sample scripts
 
 configure_defaults
-
-push_data

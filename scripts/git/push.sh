@@ -45,9 +45,9 @@ push_main() {
 configure_git_props() {
   echo -e "\n[WARN] Git needs additional info for the <dotfiles> repos!\n"
 
-  cd "$PROJECT_ROOT"
-
   source "$PRIVATE_FOLDER/scripts/defaults.sh"
+
+  cd "$PROJECT_ROOT"
 
   read -p "Enter your git username [ default: $DEFAULT_GIT_USERNAME, press Enter to use default ]: " username
   git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
@@ -61,15 +61,17 @@ configure_git_props() {
 }
 
 check_git_props() {
-  cd "$PROJECT_ROOT"
+  local folder="$1"
 
+  cd "$folder"
   local username="$(git config user.name)"
   local email="$(git config user.email)"
 
-  [ ! "$username" ] || [ ! "$email" ] && configure_git_props
+  [ ! "$username" ] || [ ! "$email" ] && return 1
 }
 
-check_git_props
+check_git_props "$PROJECT_ROOT" \
+    || check_git_props "$PRIVATE_FOLDER" && configure_git_props
 
 [ "$push_method" == "auto" ] && export_data
 

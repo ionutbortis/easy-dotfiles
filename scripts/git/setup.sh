@@ -60,8 +60,6 @@ configure_additional_repo() {
     echo; read -p "Enter the ssh URL for <dotfiles-private> repo: " repo
   done
   rm -rf private && git submodule add --force "$repo" private
-
-  handle_additional_repo_data || eval "$PROJECT_ROOT/scripts/git/push.sh"
 }
 
 list_branches() {
@@ -75,7 +73,7 @@ create_branch() {
   echo "Creating new branch [ $name ] for private repo..."
 
   cd "$PRIVATE_FOLDER" && git checkout -b "$name"
-  git push -u origin "$name"
+  # git push -u origin "$name"
 }
 
 switch_branch() {
@@ -128,6 +126,10 @@ switch_profile() {
   read -p "Enter the existing <dotfiles> profile name: " profile
 
   switch_branch "$profile"
+}
+
+push_git_changes() {
+  eval "$PROJECT_ROOT/scripts/git/push.sh"
 }
 
 check_anacron_package() {
@@ -190,5 +192,7 @@ handle_additional_repo_data
 
 display_profiles
 create_new_profile || switch_profile
+
+push_git_changes
 
 configure_anacrontab
