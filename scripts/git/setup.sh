@@ -37,12 +37,14 @@ display_new_repo_help() {
 handle_additional_repo_data() {
   cd "$PRIVATE_FOLDER" && is_empty_folder config || return
 
-  echo -e "\nSeems like first time usage since <dotfiles> private data is empty."
-  echo -e "You can use the sample data for bootstraping your <dotfiles configuration or create it manually.\n"
+  cd "$PROJECT_ROOT"
 
-  local message="Do you want to use the sample data for the private repo?"
+  echo -e "\nIt seems that <dotfiles> private configuration is empty."
+  echo -e "You can use the 'sample' data for bootstraping your <dotfiles> configuration or create it manually.\n"
 
-  confirm_action "$message" && eval "$PROJECT_ROOT/sample/setup.sh" || return 1
+  local message="Do you want to use the 'sample' data for the private repo?"
+
+  confirm_action "$message" && eval "$PROJECT_ROOT/sample/setup.sh"
 }
 
 configure_additional_repo() {
@@ -58,7 +60,7 @@ configure_additional_repo() {
   done
   rm -rf private && git submodule add --force "$repo" private
 
-  handle_additional_repo_data || eval "$PROJECT_ROOT/scripts/git/push.sh"
+  eval "$PROJECT_ROOT/scripts/git/push.sh"
 }
 
 list_branches() {
@@ -182,6 +184,8 @@ configure_anacrontab() {
 
 check_additional_repo \
     || { display_new_repo_help; configure_additional_repo; }
+
+handle_additional_repo_data
 
 display_profiles
 create_new_profile || switch_profile
