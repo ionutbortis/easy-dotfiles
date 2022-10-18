@@ -26,9 +26,7 @@ confirm_action() {
 
 prompt_user() {
   echo "$1"
-  if ! confirm_action "Are you sure that you want to do this?"; then
-    exit 0
-  fi
+  confirm_action "Are you sure that you want to do this?" || exit 0
 }
 
 dir_permission_check() {
@@ -96,24 +94,20 @@ configure_git_props() {
 
   source "$DEFAULTS_SCRIPT"
 
-  cd "$PROJECT_ROOT"
-
   read -p "Enter your git username [ default: $DEFAULT_GIT_USERNAME, press Enter to use default ]: " username
-  git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
-
   read -p "Enter your git email [ default: $DEFAULT_GIT_EMAIL, press Enter to use default ]: " email
-  git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
 
-  cd "$PRIVATE_FOLDER"
-  git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
-  git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
+  for folder in "$PROJECT_ROOT" "$PRIVATE_FOLDER"; do
+    cd "$folder"
+    git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
+    git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
+  done
 }
 
 check_git_props() {
   local missing="false"
-  local folders=( "$PROJECT_ROOT" "$PRIVATE_FOLDER" )
 
-  for folder in "${folders[@]}"; do
+  for folder in "$PROJECT_ROOT" "$PRIVATE_FOLDER"; do
     cd "$folder"
     local username="$(git config user.name)"
     local email="$(git config user.email)"
