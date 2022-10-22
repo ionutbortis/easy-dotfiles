@@ -170,6 +170,24 @@ read_anacron_schedule() {
   done
 }
 
+create_anacron_script() {
+  local schedule="$1"
+
+  local script_folder="/etc/cron.$schedule"
+  local script_file="$script_folder/$ANACRON_SCRIPT_NAME"
+  local script_content='#!/bin/sh\n\n'"cd $PROJECT_ROOT && ./scripts/git/push.sh auto $schedule"
+
+  for folder in "${ANACRON_FOLDERS[@]}"; do
+    sudo rm -f "$folder/$ANACRON_SCRIPT_NAME"
+  done
+
+  echo -e "$script_content" | sudo tee "$script_file" > /dev/null
+  sudo chmod +x "$script_file"
+
+  echo -e "\nAnacron $schedule push configured successfully!"
+  echo "Script file [ $script_file ]"
+}
+
 configure_anacrontab() {
   local existing_schedule="$(get_existing_schedule)"
 
@@ -186,19 +204,7 @@ configure_anacrontab() {
 
   local schedule="$(read_anacron_schedule | tr -d " \t\n\r" )"; echo
 
-  local script_folder="/etc/cron.$schedule"
-  local script_file="$script_folder/$ANACRON_SCRIPT_NAME"
-  local script_content='#!/bin/sh\n\n'"cd $PROJECT_ROOT && ./scripts/git/push.sh auto $schedule"
-
-  for folder in "${ANACRON_FOLDERS[@]}"; do
-    sudo rm -f "$folder/$ANACRON_SCRIPT_NAME"
-  done
-
-  echo -e "$script_content" | sudo tee "$script_file" > /dev/null
-  sudo chmod +x "$script_file"
-
-  echo -e "\nAnacron $schedule push configured successfully!"
-  echo "Script file [ $script_file ]"
+  create_anacron_script "$schedule"
 }
 
 check_additional_repo \
