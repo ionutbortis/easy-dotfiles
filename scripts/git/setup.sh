@@ -152,7 +152,7 @@ check_anacron_package() {
   done
 }
 
-get_configured_schedule() {
+get_existing_schedule() {
   for folder in "${ANACRON_FOLDERS[@]}"; do
     $(ls "$folder/$ANACRON_SCRIPT_NAME" &>/dev/null) && echo "${folder##*.}" && return
   done
@@ -171,7 +171,7 @@ read_anacron_schedule() {
 }
 
 configure_anacrontab() {
-  local existing_schedule="$(get_configured_schedule)"
+  local existing_schedule="$(get_existing_schedule)"
 
   if [[ "$existing_schedule" ]]; then
     echo -e "\nAutomatic git pushes are configured with [ $existing_schedule ] frequency."
