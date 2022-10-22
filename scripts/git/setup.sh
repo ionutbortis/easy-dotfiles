@@ -42,7 +42,7 @@ configure_additional_repo() {
   cd "$PROJECT_ROOT"
 
   unset repo
-  while [ -z ${repo} ]; do
+  while [[ -z ${repo} ]]; do
     echo; read -p "Enter the ssh URL for <dotfiles-private> repo: " repo
   done
   rm -rf private && git submodule add --force "$repo" private
@@ -94,7 +94,7 @@ default_submodule_profile() {
 submodule_profile_check() {
   cd "$PRIVATE_FOLDER"; local profile="$(git branch --show-current)"
 
-  if [ ! "$profile" ]; then
+  if [[ ! "$profile" ]]; then
     echo -e "\n[WARN] There's no profile set for the private repo. Will use default..."
     default_submodule_profile
 
@@ -131,6 +131,8 @@ switch_profile() {
 }
 
 push_git_changes() {
+  echo -e "\nPushing the git configuration changes..."
+
   cd "$PROJECT_ROOT" && eval "./scripts/git/push.sh"
 }
 
@@ -150,6 +152,12 @@ check_anacron_package() {
   done
 }
 
+get_configured_schedule() {
+  for folder in "${ANACRON_FOLDERS[@]}"; do
+    $(ls "$folder/$ANACRON_SCRIPT_NAME" &>/dev/null) && echo "${folder##*.}" && return
+  done
+}
+
 read_anacron_schedule() {
   while true; do
     read -p $'\nEnter the desired push schedule [ d (daily) / w (weekly) / m (monthly) ]: ' -n 1 schedule
@@ -163,21 +171,27 @@ read_anacron_schedule() {
 }
 
 configure_anacrontab() {
-  local message="Do you want to schedule git automatic pushes of <dotfiles> private data?"
-  echo; confirm_action "$message" || return 1
+  local existing_schedule="$(get_configured_schedule)"
+
+  if [[ "$existing_schedule" ]]; then
+    echo -e "\nAutomatic git pushes are configured with [ $existing_schedule ] frequency."
+    local message="Do you want another schedule for git automatic pushes of <dotfiles> private data?"
+  else
+    local message="Do you want to schedule git automatic pushes of <dotfiles> private data?"; echo
+  fi
+
+  confirm_action "$message" || return 1
 
   check_anacron_package
 
   local schedule="$(read_anacron_schedule | tr -d " \t\n\r" )"; echo
 
-  local script_name="dotfiles-push"
   local script_folder="/etc/cron.$schedule"
-  local script_file="$script_folder/$script_name"
+  local script_file="$script_folder/$ANACRON_SCRIPT_NAME"
   local script_content='#!/bin/sh\n\n'"cd $PROJECT_ROOT && ./scripts/git/push.sh auto $schedule"
 
-  local anacron_folders=(/etc/cron.daily /etc/cron.weekly /etc/cron.monthly)
-  for folder in "${anacron_folders[@]}"; do
-    sudo rm -f "$folder/$script_name"
+  for folder in "${ANACRON_FOLDERS[@]}"; do
+    sudo rm -f "$folder/$ANACRON_SCRIPT_NAME"
   done
 
   echo -e "$script_content" | sudo tee "$script_file" > /dev/null

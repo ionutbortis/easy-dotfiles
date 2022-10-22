@@ -12,7 +12,7 @@ push_method="manual"
 log_file_name="$push_method-push"
 commit_message="<dotfiles> push"
 
-if [ "$1" == "auto" ] && [ -n "$2" ]; then
+if [[ "$1" == "auto" && "$2" ]]; then
   push_method="auto"
   push_schedule="$2"
   commit_message="<dotfiles> $push_schedule push"
@@ -42,7 +42,7 @@ push_main() {
   git add . && git commit . -m "<dotfiles> private repo revision update" && git push
 }
 
-[ "$push_method" == "auto" ] && export_data
+[[ "$push_method" == "auto" ]] && export_data
 
 check_git_props
 push_submodule

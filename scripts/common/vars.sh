@@ -24,6 +24,9 @@ WORK_DIR="$PROJECT_ROOT/tmp"
 
 DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
 
+ANACRON_FOLDERS=( "/etc/cron.daily" "/etc/cron.weekly" "/etc/cron.monthly" )
+ANACRON_SCRIPT_NAME="dotfiles-push"
+
 # GIT_SILENT="--quiet"
 
 # For Gnome versions 40 and above

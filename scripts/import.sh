@@ -53,12 +53,13 @@ load_files() {
     local target="${file/#~/"$HOME"}"
     unset local cmd_prefix
 
-    if [[ ! -d $source &&  ! -f $source ]]; then
+    if [[ ! -d $source && ! -f $source ]]; then
       echo "[WARN] Invalid file to import: $file [source folder: $data_folder]" && continue
     fi
 
     local target_parent_dir="$(dirname "$target")"
-    if ! dir_permission_check "$target_parent_dir"; then local cmd_prefix="sudo"; fi
+
+    dir_permission_check "$target_parent_dir" || local cmd_prefix="sudo"
 
     if [[ -d $source ]]; then
       $cmd_prefix mkdir -p "$target" && $cmd_prefix rsync -a "$source"/* "$target"

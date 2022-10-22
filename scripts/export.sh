@@ -102,7 +102,7 @@ export_misc_files() {
   dump_files "$MISC_FOLDER" ".[].files | select(. != null) | .[] | select(. != \"\")"
 }
 
-[ "$1" == "auto" ] || \
+[[ "$1" == "auto" ]] || \
     prompt_user "[WARN] This will override the settings in <dotfiles> with the ones from your system."
 
 remove_data_files

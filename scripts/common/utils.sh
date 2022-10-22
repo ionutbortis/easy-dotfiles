@@ -68,7 +68,7 @@ replace_config_property() {
   local property_line="$property_name""$value_separator""$property_value"
 
   local existing_property_config="$(sed -n "$section_pattern/! p" "$config_file" | grep "$property_pattern")"
-  if [[ "$existing_property_config" != "" ]]; then
+  if [[ "$existing_property_config" ]]; then
     echo "[WARN] Property <$property_name> is already configured! Will be commented out. (file: $config_file)"
   fi
 
@@ -76,16 +76,16 @@ replace_config_property() {
   sed "$section_pattern/! s/$property_pattern/$comment_line\n$comment_prefix &/" -i "$config_file"
 
   local auto_config_section="$(sed -n "$section_pattern/ p" "$config_file")"
-  if [[ "$auto_config_section" == "" ]]; then
+  if [[ ! "$auto_config_section" ]]; then
     echo -e "\n\n$section_start\n$property_line\n$section_end" >> "$config_file"
     return
   fi 
 
   local property_auto_config="$(echo "$auto_config_section" | grep "$property_pattern")"
-  if [[ "$property_auto_config" == "" ]]; then
-    sed -e "s/^$section_end/$property_line\n&/g" -i "$config_file"
-  else
+  if [[ "$property_auto_config" ]]; then
     sed -e "$section_pattern/ s/$property_pattern.*/$property_line/" -i "$config_file"
+  else
+    sed -e "s/^$section_end/$property_line\n&/g" -i "$config_file"
   fi
 }
 
@@ -112,8 +112,8 @@ check_git_props() {
     local username="$(git config user.name)"
     local email="$(git config user.email)"
 
-    [ ! "$username" ] || [ ! "$email" ] && missing="true"
+    [[ "$username" && "$email" ]] || missing="true"
   done
 
-  [ "$missing" == "true" ] && configure_git_props
+  [[ "$missing" == "true" ]] && configure_git_props
 }
