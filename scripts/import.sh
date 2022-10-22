@@ -15,7 +15,7 @@ load_settings() {
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
   local jq_filter="$2"
 
-  echo "Loading settings from [$data_folder]..."
+  echo "Loading settings from [ $data_folder ]..."
 
   while read -r schema_path
   do
@@ -43,7 +43,7 @@ load_files() {
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
   local jq_filter="$2"
 
-  echo "Importing files from [$data_folder]..."
+  echo "Importing files from [ $data_folder ]..."
 
   cd "$data_folder"
 

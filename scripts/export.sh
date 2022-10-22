@@ -20,7 +20,7 @@ remove_data_files() {
   )
 
   for folder in "${folder_names[@]/#/"$PARENT_DATA_FOLDER/"}"; do
-    echo "Removing all files from [$folder]..."
+    echo "Removing all files from [ $folder ]..."
     rm -rf "$folder" && mkdir -p "$folder"
   done
 }
@@ -30,7 +30,7 @@ dump_settings() {
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
   local jq_filter="$2"
 
-  echo "Exporting settings to [$data_folder]..."
+  echo "Exporting settings to [ $data_folder ]..."
 
   while read -r schema_path; read -r file 
   do
@@ -70,7 +70,7 @@ dump_files() {
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
   local jq_filter="$2"
 
-  echo "Exporting files to [$data_folder]..."
+  echo "Exporting files to [ $data_folder ]..."
 
   cd "$data_folder"
 

@@ -27,10 +27,5 @@ DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
 ANACRON_FOLDERS=( "/etc/cron.daily" "/etc/cron.weekly" "/etc/cron.monthly" )
 ANACRON_SCRIPT_NAME="dotfiles-push"
 
-# GIT_SILENT="--quiet"
-
-# For Gnome versions 40 and above
+# Only for Gnome versions 40 and above
 GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1)"
-
-# For Gnome versions under 40
-#GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1,2)"

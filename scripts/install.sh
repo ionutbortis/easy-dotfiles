@@ -100,7 +100,7 @@ install_extensions() {
 }
 
 cleanup() {
-  echo "Removing [$WORK_DIR] folder..."
+  echo "Removing [ $WORK_DIR ] folder..."
 
   cd "$PROJECT_ROOT" && rm -rf "$WORK_DIR"
 }
