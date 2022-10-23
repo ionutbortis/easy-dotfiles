@@ -4,6 +4,10 @@
     "files": ["~/.config/autostart"]
   },
   {
+    "name": "Backgrounds",
+    "files": ["~/.local/share/backgrounds"]
+  },
+  {
     "name": "Dev related",
     "files": ["~/work/notes", "~/work/scripts"]
   },
