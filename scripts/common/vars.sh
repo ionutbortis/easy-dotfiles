@@ -27,4 +27,5 @@ DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
 ANACRON_FOLDERS=( "/etc/cron.daily" "/etc/cron.weekly" "/etc/cron.monthly" )
 ANACRON_SCRIPT_NAME="dotfiles-push"
 
+# This method of determining the version only works for Gnome 40+
 GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1)"

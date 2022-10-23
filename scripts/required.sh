@@ -3,11 +3,11 @@
 required=(gnome-shell gnome-extensions curl wget jq dconf git)
 
 check_required() {
-  local error=false
+  local error="false"
 
   for name in "${required[@]}"
   do
-    command -v "$name" >/dev/null 2>&1 || { echo "[ERROR] Command not found: $name"; error=true; }
+    command -v "$name" >/dev/null 2>&1 || { echo "[ERROR] Command not found: $name"; error="true"; }
   done
 
   if [[ "$error" == "true" ]]; then
