@@ -13,11 +13,11 @@ PRIVATE_FOLDER="$PROJECT_ROOT/private"
 PARENT_CONFIG_FOLDER="$PRIVATE_FOLDER/config"
 PARENT_DATA_FOLDER="$PRIVATE_FOLDER/data"
 
-KEYBINDINGS_FOLDER="keybindings"
-EXTENSIONS_FOLDER="extensions"
-TWEAKS_FOLDER="tweaks"
 APPS_FOLDER="apps"
+EXTENSIONS_FOLDER="extensions"
+KEYBINDINGS_FOLDER="keybindings"
 MISC_FOLDER="misc"
+TWEAKS_FOLDER="tweaks"
 
 LOGS_DIR="$PROJECT_ROOT/logs"
 WORK_DIR="$PROJECT_ROOT/tmp"
@@ -27,5 +27,4 @@ DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
 ANACRON_FOLDERS=( "/etc/cron.daily" "/etc/cron.weekly" "/etc/cron.monthly" )
 ANACRON_SCRIPT_NAME="dotfiles-push"
 
-# Only for Gnome versions 40 and above
 GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1)"
