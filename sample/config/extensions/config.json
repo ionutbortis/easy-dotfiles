@@ -1,7 +1,6 @@
 [
   {
     "name": "Bedtime Mode",
-    "ego_id": 4012,
     "url": "https://extensions.gnome.org/extension/4012/gnome-bedtime/",
     "settings": {
       "schema_path": "/org/gnome/shell/extensions/bedtime-mode/",
@@ -10,7 +9,6 @@
   },
   {
     "name": "AppIndicator and KStatusNotifierItem Support",
-    "ego_id": 615,
     "url": "https://extensions.gnome.org/extension/615/appindicator-support/",
     "settings": {
       "schema_path": "/org/gnome/shell/extensions/appindicator/",
@@ -19,12 +17,10 @@
   },
   {
     "name": "Auto select headset",
-    "ego_id": 3928,
     "url": "https://extensions.gnome.org/extension/3928/auto-select-headset/"
   },
   {
     "name": "Dash to Dock",
-    "ego_id": 307,
     "url": "https://extensions.gnome.org/extension/307/dash-to-dock/",
     "settings": {
       "schema_path": "/org/gnome/shell/extensions/dash-to-dock/",
@@ -33,7 +29,6 @@
   },
   {
     "name": "Hide Top Bar",
-    "ego_id": 545,
     "url": "https://extensions.gnome.org/extension/545/hide-top-bar/",
     "settings": {
       "schema_path": "/org/gnome/shell/extensions/hidetopbar/",
@@ -42,7 +37,6 @@
   },
   {
     "name": "Lock Keys",
-    "ego_id": 36,
     "url": "https://extensions.gnome.org/extension/36/lock-keys/",
     "settings": {
       "schema_path": "/org/gnome/shell/extensions/lockkeys/",
@@ -51,7 +45,6 @@
   },
   {
     "name": "Unite",
-    "ego_id": 1287,
     "url": "https://extensions.gnome.org/extension/1287/unite/",
     "settings": {
       "schema_path": "/org/gnome/shell/extensions/unite/",

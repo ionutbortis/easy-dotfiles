@@ -16,7 +16,7 @@ APPS_CONFIG_JSON="$PARENT_CONFIG_FOLDER/$APPS_FOLDER/config.json"
 EXTENSIONS_CONFIG_JSON="$PARENT_CONFIG_FOLDER/$EXTENSIONS_FOLDER/config.json"
 
 select_setup_distro() {
-  echo "Please select distro for setup: "
+  echo -e "\nPlease select distro for setup: "
 
   select DISTRO in "${SUPPORTED_DISTROS[@]}" ; do 
     [[ "$DISTRO" ]] && break || echo "Please input a valid number!"
@@ -33,7 +33,7 @@ setup() {
   local distro_setup_script="$PRIVATE_FOLDER/scripts/$DISTRO/setup.sh"
 
   if [[ ! -x "$distro_setup_script" ]]; then
-    echo -e "\n[WARN] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]\n"
+    echo -e "\n[WARN] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]"
     return
   fi
 
@@ -44,11 +44,12 @@ list_apps() {
   local jq_filter=".[] | select(.install.$DISTRO | .!=null and .!=\"\") | .name"
 
   readarray -t apps_array < <(jq -c "$jq_filter" "$APPS_CONFIG_JSON")
-  echo ${apps_array[@]}
+
+  [[ ${#apps_array[@]} -gt 0 ]] && echo ${apps_array[@]} || echo "No apps configured for [ $DISTRO ]"
 }
 
 install_apps() {
-  echo "Starting installation of the following apps: " && list_apps
+  echo -e "\nStarting installation of the following apps: " && list_apps
 
   cd $WORK_DIR
 
@@ -65,16 +66,17 @@ install_apps() {
 }
 
 install_extensions() {
-  echo "Starting installation of extensions..."
+  echo -e "\nStarting installation of extensions..."
 
   cd $WORK_DIR
 
-  while read -r ego_id
+  while read -r url
   do
     read -r name 
     
-    echo "Downloading '$name' extension..."
+    echo -e "\nDownloading '$name' extension..."
 
+    local ego_id="$(basename $(dirname "$url"))"
     local request_url="https://extensions.gnome.org/extension-info/?pk=$ego_id&shell_version=$GNOME_SHELL_VERSION"
     local http_response="$(curl -s -o /dev/null -I -w "%{http_code}" "$request_url")"
 
@@ -95,7 +97,7 @@ install_extensions() {
     echo "Installing '$name' extension..."
     gnome-extensions install --force "$package"
 
-  done < <( jq -cr '.[] | (.ego_id, .name)' "$EXTENSIONS_CONFIG_JSON")
+  done < <( jq -cr '.[] | (.url, .name)' "$EXTENSIONS_CONFIG_JSON")
 }
 
 cleanup() {
