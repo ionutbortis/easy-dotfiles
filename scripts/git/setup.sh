@@ -24,8 +24,7 @@ display_new_repo_help() {
     You need to manually create a separate 'private' repository in your github account:
     dotfiles-private
 
-    ❗Important: Please make sure that the repo is not empty (check the 'Add a README file' option) and 
-    the default branch is 'main'.
+    ❗Important: Please make sure that the repo is not empty (check the 'Add a README file' option).
 
     Official guide on how to create github repositories: 
     https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository
