@@ -203,7 +203,6 @@ configure_anacrontab() {
   check_anacron_package
 
   local schedule="$(read_anacron_schedule | tr -d " \t\n\r" )"; echo
-
   create_anacron_script "$schedule"
 }
 

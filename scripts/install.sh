@@ -6,6 +6,8 @@ sources() {
   source "$script_folder/common/vars.sh"
   source "$script_folder/common/utils.sh"
 
+  source "$PRIVATE_FOLDER/scripts/defaults.sh"
+
 }; sources
 
 setup_log_file "install"
@@ -13,14 +15,11 @@ setup_log_file "install"
 APPS_CONFIG_JSON="$PARENT_CONFIG_FOLDER/$APPS_FOLDER/config.json"
 EXTENSIONS_CONFIG_JSON="$PARENT_CONFIG_FOLDER/$EXTENSIONS_FOLDER/config.json"
 
-get_setup_distro() {
-  while true; do
-    read -p "Please input distro name for setup [ fedora / ubuntu ]: " distro
-    case "$distro" in
-      "fedora" ) echo "$distro"; return;;
-      "ubuntu" ) echo "$distro"; return;;
-      * ) echo -e "[ERROR] Only 'fedora' and 'ubuntu' are supported.\n" >&2;;
-    esac
+select_setup_distro() {
+  echo "Please select distro for setup: "
+
+  select DISTRO in "${SUPPORTED_DISTROS[@]}" ; do 
+    [[ "$DISTRO" ]] && break || echo "Please input a valid number!"
   done
 }
 
@@ -29,7 +28,7 @@ setup() {
 
   eval "$PROJECT_ROOT/scripts/common/setup.sh"
 
-  DISTRO=$(get_setup_distro)
+  select_setup_distro
 
   local distro_setup_script="$PRIVATE_FOLDER/scripts/$DISTRO/setup.sh"
 
