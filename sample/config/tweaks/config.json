@@ -26,6 +26,10 @@
     "file": "gnome.shell.conf"
   },
   {
+    "schema_path": "org/gnome/settings-daemon/plugins/power/",
+    "file": "power.conf"
+  },
+  {
     "schema_path": "/org/gnome/settings-daemon/plugins/color/",
     "file": "night-light.conf"
   },
