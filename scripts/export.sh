@@ -50,7 +50,7 @@ dump_settings() {
       echo "$filtered_dump" >> "$dump_file"
     fi
 
-  done < <( jq -cr "$jq_filter" "$config_json")
+  done < <(jq -cr "$jq_filter" "$config_json")
 }
 
 export_keybindings_settings() {
@@ -90,7 +90,7 @@ dump_files() {
       mkdir -p "$(dirname "$target")" && cp "$source" "$target"
     fi
 
-  done < <( jq -cr "$jq_filter" "$config_json")
+  done < <(jq -cr "$jq_filter" "$config_json")
 }
 
 export_apps_settings() {

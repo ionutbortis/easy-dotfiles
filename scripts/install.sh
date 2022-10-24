@@ -62,13 +62,15 @@ install_apps() {
     echo -e "\nInstalling \"$name\" app with command: [ $install_cmd ]"
     eval "$install_cmd"
 
-  done < <( jq -cr "$jq_filter" "$APPS_CONFIG_JSON")
+  done < <(jq -cr "$jq_filter" "$APPS_CONFIG_JSON")
 }
 
 install_extensions() {
   echo -e "\nStarting installation of extensions..."
 
   cd $WORK_DIR
+
+  local jq_filter=".[] | select(.url != null and .url != \"\") | (.url, .name)"
 
   while read -r url
   do
@@ -80,7 +82,7 @@ install_extensions() {
     local request_url="https://extensions.gnome.org/extension-info/?pk=$ego_id&shell_version=$GNOME_SHELL_VERSION"
     local http_response="$(curl -s -o /dev/null -I -w "%{http_code}" "$request_url")"
 
-    if [ "$http_response" = 404 ]; then
+    if [[ "$http_response" == @("400"|"404") ]]; then
         echo "[ERROR] No extension exists matching the ID: $ego_id and GNOME Shell version $GNOME_SHELL_VERSION (Skipping this)."
         continue;
     fi
@@ -97,7 +99,7 @@ install_extensions() {
     echo "Installing '$name' extension..."
     gnome-extensions install --force "$package"
 
-  done < <( jq -cr '.[] | (.url, .name)' "$EXTENSIONS_CONFIG_JSON")
+  done < <(jq -cr "$jq_filter" "$EXTENSIONS_CONFIG_JSON")
 }
 
 cleanup() {

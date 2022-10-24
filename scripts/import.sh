@@ -23,7 +23,7 @@ load_settings() {
 
     cat "$data_folder/$file" | dconf load -f "$schema_path"
 
-  done < <( jq -cr "$jq_filter" "$config_json")
+  done < <(jq -cr "$jq_filter" "$config_json")
 }
 
 load_keybindings_settings() {
@@ -68,7 +68,7 @@ load_files() {
       $cmd_prefix mkdir -p "$target_parent_dir" && $cmd_prefix cp "$source" "$target"
     fi
 
-  done < <( jq -cr "$jq_filter" "$config_json")
+  done < <(jq -cr "$jq_filter" "$config_json")
 }
 
 load_apps_settings() {
