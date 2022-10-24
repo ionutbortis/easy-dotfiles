@@ -177,7 +177,7 @@ create_anacron_script() {
   local script_file="/etc/cron.$schedule/$ANACRON_SCRIPT_NAME"
   local current_user="$(whoami)"
 
-  local script_content='#!/bin/sh\n\n'"su $current_user"
+  local script_content='#!/bin/sh\n\n'"su - $current_user"
   script_content="$script_content\n""cd $PROJECT_ROOT && ./scripts/git/push.sh auto $schedule"
 
   for folder in "${ANACRON_FOLDERS[@]}"; do
