@@ -53,7 +53,7 @@ load_files() {
     local target="${file/#~/"$HOME"}"
     unset local cmd_prefix
 
-    if [[ ! -d $source && ! -f $source ]]; then
+    if [[ ! -d "$source" && ! -f "$source" ]]; then
       echo "[WARN] Invalid file to import: $file [source folder: $data_folder]" && continue
     fi
 
@@ -61,10 +61,10 @@ load_files() {
 
     dir_permission_check "$target_parent_dir" || local cmd_prefix="sudo"
 
-    if [[ -d $source ]]; then
+    if [[ -d "$source" ]]; then
       $cmd_prefix mkdir -p "$target" && $cmd_prefix rsync -a "$source"/* "$target"
     fi
-    if [[ -f $source ]]; then
+    if [[ -f "$source" ]]; then
       $cmd_prefix mkdir -p "$target_parent_dir" && $cmd_prefix cp "$source" "$target"
     fi
 
