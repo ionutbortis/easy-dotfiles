@@ -1,6 +1,6 @@
 #!/bin/bash
 
-required=(gnome-shell gnome-extensions curl wget jq dconf git)
+required=( gnome-shell gnome-extensions curl wget jq dconf git )
 
 check_required() {
   local error="false"

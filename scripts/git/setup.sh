@@ -172,8 +172,7 @@ read_anacron_schedule() {
 create_anacron_script() {
   local schedule="$1"
 
-  local script_folder="/etc/cron.$schedule"
-  local script_file="$script_folder/$ANACRON_SCRIPT_NAME"
+  local script_file="/etc/cron.$schedule/$ANACRON_SCRIPT_NAME"
   local script_content='#!/bin/sh\n\n'"cd $PROJECT_ROOT && ./scripts/git/push.sh auto $schedule"
 
   for folder in "${ANACRON_FOLDERS[@]}"; do

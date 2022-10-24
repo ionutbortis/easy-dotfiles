@@ -1,5 +1,13 @@
 [
   {
+    "name": "Extension Manager",
+    "url": "https://flathub.org/apps/details/com.mattjakeman.ExtensionManager",
+    "install": {
+      "fedora": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive",
+      "ubuntu": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive"
+    }
+  },
+  {
     "name": "Google Chrome",
     "url": "https://www.google.com/chrome/",
     "install": {
@@ -105,14 +113,6 @@
         "schema_path": "/org/gnome/Weather/",
         "file": "gnome-weather.conf"
       }
-    }
-  },
-  {
-    "name": "Extension Manager",
-    "url": "https://flathub.org/apps/details/com.mattjakeman.ExtensionManager",
-    "install": {
-      "fedora": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive",
-      "ubuntu": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive"
     }
   },
   {
