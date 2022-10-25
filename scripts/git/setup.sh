@@ -132,7 +132,8 @@ switch_profile() {
 }
 
 anacron_setup() {
-  eval "$PROJECT_ROOT/scripts/anacron/setup.sh"
+  echo
+  cd "$PROJECT_ROOT" && eval "./scripts/anacron/setup.sh"
 }
 
 push_git_changes() {

@@ -26,11 +26,15 @@ check_anacron_package() {
   done
 }
 
+crontab_already_configured() {
+  crontab -l | sed '/#/d' | grep -q "$CRONTAB_LINE"
+}
+
 get_existing_schedule() {
   ( crontab_already_configured && [[ -f "$PRIVATE_ANACRONTAB" ]] ) || return
 
   for schedule in daily weekly monthly; do
-    sed "/#/d" "$PRIVATE_ANACRONTAB" | grep "$schedule" &>/dev/null \
+    sed "/#/d" "$PRIVATE_ANACRONTAB" | grep -q "$schedule" \
         && echo "$schedule" && return 
   done
 }
@@ -57,10 +61,6 @@ create_anacron_config() {
   sed -i "/$schedule/s/#[[:space:]]*//" "$PRIVATE_ANACRONTAB"
 }
 
-crontab_already_configured() {
-  crontab -l | sed '/#/d' | grep -q "$CRONTAB_LINE"
-}
-
 configure_crontab() {
   crontab_already_configured || (crontab -l; echo "$CRONTAB_LINE") | crontab -
 }
@@ -69,10 +69,10 @@ configure_anacrontab() {
   local existing_schedule="$(get_existing_schedule)"
 
   if [[ "$existing_schedule" ]]; then
-    echo -e "\nAutomatic git pushes are configured with [ $existing_schedule ] frequency."
+    echo "Automatic git pushes are configured with [ $existing_schedule ] frequency."
     local message="Do you want another schedule for git automatic pushes of <dotfiles> private data?"
   else
-    local message="Do you want to schedule git automatic pushes of <dotfiles> private data?"; echo
+    local message="Do you want to schedule git automatic pushes of <dotfiles> private data?";
   fi
 
   confirm_action "$message" || return 1
@@ -83,6 +83,8 @@ configure_anacrontab() {
   create_anacron_config "$schedule"
 
   configure_crontab
+
+  echo -e "\nAutomatic [ $schedule ] pushes where succcesfully configured!"
 }
 
 configure_anacrontab
