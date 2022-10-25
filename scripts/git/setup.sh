@@ -131,82 +131,14 @@ switch_profile() {
   switch_branch "$profile"
 }
 
+anacron_setup() {
+  eval "$PROJECT_ROOT/scripts/anacron/setup.sh"
+}
+
 push_git_changes() {
   echo -e "\nPushing the git configuration changes..."
 
   cd "$PROJECT_ROOT" && eval "./scripts/git/push.sh"
-}
-
-check_anacron_package() {
-  while true; do
-    command -v anacron &> /dev/null && return
-
-    echo "[WARNING]: Could not find the 'anacron' package!"
-    echo
-    echo "Please open a separate terminal, install the 'anacron' package and come back to this setup."
-    echo "  fedora: sudo dnf install anacron"
-    echo "  ubuntu: sudo apt-get install anacron"
-    echo
-    read -p "Press Enter to continue after the 'anacron' package installation: "
-
-    check_anacron_package
-  done
-}
-
-get_existing_schedule() {
-  for folder in "${ANACRON_FOLDERS[@]}"; do
-    $(ls "$folder/$ANACRON_SCRIPT_NAME" &>/dev/null) && echo "${folder##*.}" && return
-  done
-}
-
-read_anacron_schedule() {
-  while true; do
-    read -p $'\nEnter the desired push schedule [ d (daily) / w (weekly) / m (monthly) ]: ' -n 1 schedule
-
-    case "$schedule" in
-      d) echo daily; return;;
-      w) echo weekly; return;;
-      m) echo monthly; return;; 
-    esac
-  done
-}
-
-create_anacron_script() {
-  local schedule="$1"
-
-  local script_file="/etc/cron.$schedule/$ANACRON_SCRIPT_NAME"
-  local current_user="$(whoami)"
-
-  local script_content='#!/bin/sh\n\n'"su - $current_user"
-  script_content="$script_content\n""cd $PROJECT_ROOT && ./scripts/git/push.sh auto $schedule"
-
-  for folder in "${ANACRON_FOLDERS[@]}"; do
-    sudo rm -f "$folder/$ANACRON_SCRIPT_NAME"
-  done
-
-  echo -e "$script_content" | sudo tee "$script_file" > /dev/null
-  sudo chmod +x "$script_file"
-
-  echo -e "\nAnacron $schedule push configured successfully!"
-  echo "Script file [ $script_file ]"
-}
-
-configure_anacrontab() {
-  local existing_schedule="$(get_existing_schedule)"
-
-  if [[ "$existing_schedule" ]]; then
-    echo -e "\nAutomatic git pushes are configured with [ $existing_schedule ] frequency."
-    local message="Do you want another schedule for git automatic pushes of <dotfiles> private data?"
-  else
-    local message="Do you want to schedule git automatic pushes of <dotfiles> private data?"; echo
-  fi
-
-  confirm_action "$message" || return 1
-
-  check_anacron_package
-
-  local schedule="$(read_anacron_schedule | tr -d " \t\n\r" )"; echo
-  create_anacron_script "$schedule"
 }
 
 check_additional_repo \
@@ -217,6 +149,6 @@ handle_additional_repo_data
 display_profiles
 create_new_profile || switch_profile
 
-push_git_changes
+anacron_setup
 
-configure_anacrontab
+push_git_changes

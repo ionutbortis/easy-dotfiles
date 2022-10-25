@@ -1,0 +1,8 @@
+# Custom configuration file for anacron to be used by dotfiles
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+#1	5	cron.daily	cd PATH_REPLACE && ./scripts/git/push.sh auto daily
+#7	5	cron.weekly	cd PATH_REPLACE && ./scripts/git/push.sh auto weekly
+#@monthly	5	cron.monthly	cd PATH_REPLACE && ./scripts/git/push.sh auto monthly
