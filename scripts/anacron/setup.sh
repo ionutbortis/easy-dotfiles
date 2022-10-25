@@ -10,11 +10,6 @@ sources() {
 
 setup_log_file "anacron-setup"
 
-TEMPLATE_ANACRONTAB="$PROJECT_ROOT/scripts/anacron/anacrontab"
-PRIVATE_ANACRONTAB="$PRIVATE_FOLDER/scripts/anacron/anacrontab"
-
-ANACRON_SPOOL_FOLDER="$PRIVATE_FOLDER/scripts/anacron/spool"
-
 check_anacron_package() {
   while true; do
     command -v anacron &> /dev/null && return
@@ -32,7 +27,7 @@ check_anacron_package() {
 }
 
 get_existing_schedule() {
-  [[ ! -f "$PRIVATE_ANACRONTAB" ]] && return
+  ( crontab_already_configured && [[ -f "$PRIVATE_ANACRONTAB" ]] ) || return
 
   for schedule in daily weekly monthly; do
     sed "/#/d" "$PRIVATE_ANACRONTAB" | grep "$schedule" &>/dev/null \
@@ -62,6 +57,14 @@ create_anacron_config() {
   sed -i "/$schedule/s/#[[:space:]]*//" "$PRIVATE_ANACRONTAB"
 }
 
+crontab_already_configured() {
+  crontab -l | sed '/#/d' | grep -q "$CRONTAB_LINE"
+}
+
+configure_crontab() {
+  crontab_already_configured || (crontab -l; echo "$CRONTAB_LINE") | crontab -
+}
+
 configure_anacrontab() {
   local existing_schedule="$(get_existing_schedule)"
 
@@ -78,12 +81,8 @@ configure_anacrontab() {
 
   local schedule="$(read_anacron_schedule | tr -d " \t\n\r" )"; echo
   create_anacron_config "$schedule"
+
+  configure_crontab
 }
 
-configure_crontab() {
-  local crontab_line="@hourly /usr/sbin/anacron -s -t $PRIVATE_ANACRONTAB -S $ANACRON_SPOOL_FOLDER"
-
-  ! (crontab -l | grep -q "$PRIVATE_ANACRONTAB") && (crontab -l; echo "$crontab_line") | crontab -
-}
-
-configure_anacrontab && configure_crontab
+configure_anacrontab
