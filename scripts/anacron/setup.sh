@@ -54,15 +54,16 @@ read_anacron_schedule() {
 create_anacron_config() {
   local schedule="$1"
 
-  mkdir -p "$ANACRON_SPOOL_FOLDER" && cp "$TEMPLATE_ANACRONTAB" "$PRIVATE_ANACRONTAB"
+  mkdir -p "$ANACRON_SPOOL_FOLDER" && mkdir -p "$(dirname "$PRIVATE_ANACRONTAB")"
+
+  cp "$TEMPLATE_ANACRONTAB" "$PRIVATE_ANACRONTAB"
 
   sed -i "s|PATH_REPLACE|$PROJECT_ROOT|g" "$PRIVATE_ANACRONTAB"
-
   sed -i "/$schedule/s/#[[:space:]]*//" "$PRIVATE_ANACRONTAB"
 }
 
 configure_crontab() {
-  crontab_already_configured || (crontab -l; echo "$CRONTAB_LINE") | crontab -
+  crontab_already_configured || ( crontab -l; echo "$CRONTAB_LINE" ) | crontab -
 }
 
 configure_anacrontab() {
@@ -70,6 +71,7 @@ configure_anacrontab() {
 
   if [[ "$existing_schedule" ]]; then
     echo "Automatic git pushes are configured with [ $existing_schedule ] frequency."
+
     local message="Do you want another schedule for git automatic pushes of <dotfiles> private data?"
   else
     local message="Do you want to schedule git automatic pushes of <dotfiles> private data?";

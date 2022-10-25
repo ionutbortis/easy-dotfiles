@@ -27,7 +27,7 @@ DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
 TEMPLATE_ANACRONTAB="$PROJECT_ROOT/scripts/anacron/anacrontab"
 PRIVATE_ANACRONTAB="$PRIVATE_FOLDER/scripts/anacron/anacrontab"
 
-ANACRON_SPOOL_FOLDER="$PRIVATE_FOLDER/scripts/anacron/spool"
+ANACRON_SPOOL_FOLDER="$PROJECT_ROOT/scripts/anacron/spool"
 
 CRONTAB_LINE="@hourly /usr/sbin/anacron -s -t $PRIVATE_ANACRONTAB -S $ANACRON_SPOOL_FOLDER"
 
