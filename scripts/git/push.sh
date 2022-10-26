@@ -10,12 +10,12 @@ sources() {
 
 push_method="manual"
 log_file_name="$push_method-push"
-commit_message="<dotfiles> push"
+commit_message="<dotfiles> $push_method push"
 
 if [[ "$1" == "auto" && "$2" ]]; then
   push_method="auto"
   push_schedule="$2"
-  commit_message="<dotfiles> $push_schedule push"
+  commit_message="<dotfiles> $push_method $push_schedule push"
 
   log_file_name="$push_schedule-push"
 fi
