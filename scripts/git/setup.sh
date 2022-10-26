@@ -87,9 +87,9 @@ switch_branch() {
 }
 
 default_submodule_profile() {
-  local branches=( $(list_branches) )
+  local default_branch="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
 
-  switch_branch "${branches[0]}"
+  switch_branch "$default_branch"
 }
 
 submodule_profile_check() {
