@@ -9,6 +9,8 @@ sources() {
 }; sources
 
 add_flatpak_support() {
+  echo "Adding flatpak/flathub support..."
+
   sudo apt-get install flatpak -y
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
@@ -48,7 +50,9 @@ add_software_repos() {
 }
 
 replace_snap_firefox() {
-  sudo snap remove firefox
+  echo "Replacing snap firefox with deb version..."
+
+  sudo snap remove firefox > /dev/null
 
   sudo add-apt-repository ppa:mozillateam/ppa -y
   sudo apt-get update -y
@@ -66,6 +70,8 @@ Pin-Priority: 1001
 }
 
 clean_packages() {
+  echo "Cleaning apt packages..."
+
   sudo apt-get autoremove -y
 }
 
