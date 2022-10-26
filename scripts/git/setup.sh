@@ -100,7 +100,7 @@ submodule_profile_check() {
     default_submodule_profile
 
   else
-    echo "Current profile for <dotfiles> private data is: [ $profile ]"
+    echo -e "\nCurrent profile for <dotfiles> private data is: [ $profile ]"
   fi
 }
 
@@ -108,7 +108,8 @@ display_profiles() {
   echo -e "\nCreating the <dotfiles> profiles list..."
   local profiles_array=( $(list_branches) )
 
-  echo "Profiles list for <dotfiles> private data: [ ${profiles_array[@]} ]"
+  echo "Profiles list for <dotfiles> private data:"
+  printf "[ %s ]\n" "${profiles_array[@]}"
 
   submodule_profile_check
 }
