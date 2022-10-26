@@ -16,7 +16,7 @@ add_flatpak_support() {
 add_software_repos() {
   echo "Adding extra software repos (chrome, vscode, atom, skype, etc.)..."
 
-  sudo apt install -y wget gpg apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+  sudo apt-get install -y wget gpg apt-transport-https ca-certificates curl gnupg-agent software-properties-common
  
   # chrome
   wget -qO - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -44,14 +44,14 @@ add_software_repos() {
   # smplayer
   sudo add-apt-repository ppa:rvm/smplayer -y
 
-  sudo apt update -y
+  sudo apt-get update -y
 }
 
 replace_snap_firefox() {
   sudo snap remove firefox
 
   sudo add-apt-repository ppa:mozillateam/ppa -y
-  sudo apt update -y
+  sudo apt-get update -y
 
   echo '
 Package: *
@@ -59,16 +59,17 @@ Pin: release o=LP-PPA-mozillateam
 Pin-Priority: 1001
 ' | sudo tee /etc/apt/preferences.d/mozilla-firefox
 
-  echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
+  echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' \
+      | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
 
-  sudo apt install firefox -y --allow-downgrades
+  sudo apt-get install firefox -y --allow-downgrades
 }
 
-run_apt_clean() {
-  sudo apt autoremove -y
+clean_packages() {
+  sudo apt-get autoremove -y
 }
 
 add_flatpak_support
 add_software_repos
 replace_snap_firefox
-run_apt_clean
+clean_packages
