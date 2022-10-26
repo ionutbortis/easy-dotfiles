@@ -35,6 +35,17 @@
     }
   },
   {
+    "name": "Atom",
+    "url": "https://atom.io/",
+    "install": {
+      "fedora": "sudo dnf install atom -y",
+      "ubuntu": "sudo apt-get install atom -y"
+    },
+    "settings": {
+      "config_files": ["~/.atom/config.cson"]
+    }
+  },
+  {
     "name": "Double Commander",
     "url": "https://doublecmd.sourceforge.io/",
     "install": {
@@ -113,6 +124,17 @@
         "schema_path": "/org/gnome/Weather/",
         "file": "gnome-weather.conf"
       }
+    }
+  },
+  {
+    "name": "SMPlayer",
+    "url": "https://www.smplayer.info/",
+    "install": {
+      "fedora": "sudo dnf install smplayer -y",
+      "ubuntu": "sudo apt-get install smplayer -y"
+    },
+    "settings": {
+      "config_files": ["~/.config/smplayer/smplayer.ini"]
     }
   },
   {

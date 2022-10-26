@@ -48,10 +48,13 @@ add_flatpak_support() {
 }
 
 add_software_repos() {
-  echo "Adding extra software repos (vscode, skype, etc.)..."
+  echo "Adding extra software repos (vscode, atom, skype, etc.)..."
 
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
   sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+  sudo rpm --import https://packagecloud.io/AtomEditor/atom/gpgkey
+  sudo sh -c 'echo -e "[Atom]\nname=Atom Editor\nbaseurl=https://packagecloud.io/AtomEditor/atom/el/7/\$basearch\nenabled=1\ngpgcheck=0\nrepo_gpgcheck=1\ngpgkey=https://packagecloud.io/AtomEditor/atom/gpgkey" > /etc/yum.repos.d/atom.repo'
 
   sudo dnf config-manager -y --add-repo https://repo.skype.com/rpm/stable/skype-stable.repo
 
@@ -63,12 +66,6 @@ install_media_codecs() {
 
   sudo dnf groupupdate -y multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
   sudo dnf groupupdate -y sound-and-video
-}
-
-install_dotfiles_required() {
-  echo "Installing <dotfiles> required packages..."
-
-  sudo dnf install -y jq
 }
 
 install_xprop() {
@@ -83,5 +80,4 @@ enable_rpm_fusion
 add_flatpak_support
 add_software_repos
 install_media_codecs
-install_dotfiles_required
 install_xprop
