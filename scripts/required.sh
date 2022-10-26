@@ -3,16 +3,21 @@
 required=( gnome-shell gnome-extensions curl wget jq dconf git )
 
 check_required() {
-  local error="false"
+  local missing=()
 
   for name in "${required[@]}"
   do
-    command -v "$name" >/dev/null 2>&1 || { echo "[ERROR] Command not found: $name"; error="true"; }
+    command -v "$name" >/dev/null 2>&1 || missing+=( "$name" )
   done
 
-  if [[ "$error" == "true" ]]; then
+  if [[ ${#missing[@]} -gt 0  ]]; then
     echo "[ERROR] One or more required commands are unavailable!"
-    echo "List of required commands: ${required[*]}"
+    echo
+    echo "List of missing commands: ${missing[@]}"
+    echo 
+    echo "You can install the missing by using the following command:"
+    echo "[ fedora ] sudo dnf install ${missing[@]}"
+    echo "[ ubuntu ] sudo apt-get install ${missing[@]}"
     exit 1
   fi
 }
