@@ -52,6 +52,11 @@ replace_line_in_file() {
   sed -i "s/^"$line_prefix".*$/"$replacement_line"/g" "$file"
 }
 
+remove_duplicate_lines() {
+  local file="$1"
+  echo "$(awk '!seen[$0]++' "$file")" > "$file"
+}
+
 replace_config_property() {
   local config_file=$1; local property_name=$2; local property_value=$3
 

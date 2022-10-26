@@ -51,10 +51,18 @@ read_anacron_schedule() {
   done
 }
 
+create_private_gitignore() {
+  local file="$PRIVATE_FOLDER/.gitignore"
+
+  echo "${ANACRON_SPOOL_FOLDER#${PRIVATE_FOLDER}/}" >> "$file"
+
+  remove_duplicate_lines "$file"
+}
+
 create_anacron_config() {
   local schedule="$1"
 
-  mkdir -p "$ANACRON_SPOOL_FOLDER" && mkdir -p "$(dirname "$PRIVATE_ANACRONTAB")"
+  mkdir -p "$ANACRON_SPOOL_FOLDER" && create_private_gitignore  
 
   cp "$TEMPLATE_ANACRONTAB" "$PRIVATE_ANACRONTAB"
 
