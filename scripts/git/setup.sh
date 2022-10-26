@@ -96,7 +96,7 @@ submodule_profile_check() {
   cd "$PRIVATE_FOLDER"; local profile="$(git branch --show-current)"
 
   if [[ ! "$profile" ]]; then
-    echo -e "\n[WARN] There's no profile set for the private repo. Will use default..."
+    echo -e "\n[ WARN ] There's no profile set for the private repo. Will use default..."
     default_submodule_profile
 
   else

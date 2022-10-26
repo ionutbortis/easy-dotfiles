@@ -26,7 +26,7 @@ show_finished_message() {
   echo -e "\nProject <dotfiles> was succesfully removed!"
 }
 
-prompt_user "[WARN] This will remove the <dotfiles> project from your system."
+prompt_user "[ WARN ] This will remove the <dotfiles> project from your system."
 
 remove_crontab_config
 remove_project_root

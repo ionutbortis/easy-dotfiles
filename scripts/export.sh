@@ -80,7 +80,7 @@ dump_files() {
     local target=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
 
     if [[ ! -d "$source" &&  ! -f "$source" ]]; then
-      echo "[WARN] Invalid file to export: $file" && continue
+      echo "[ WARN ] Invalid file to export: $file" && continue
     fi
 
     if [[ -d "$source" ]]; then
@@ -103,7 +103,7 @@ export_misc_files() {
 }
 
 [[ "$1" == "auto" ]] || \
-    prompt_user "[WARN] This will override the settings in <dotfiles> with the ones from your system."
+    prompt_user "[ WARN ] This will override the settings in <dotfiles> with the ones from your system."
 
 remove_data_files
 export_keybindings_settings

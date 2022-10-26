@@ -14,7 +14,7 @@ check_anacron_package() {
   while true; do
     command -v anacron &> /dev/null && return
 
-    echo "[ERROR] Could not find the 'anacron' package!"
+    echo "[ ERROR ] Could not find the 'anacron' package!"
     echo
     echo "Please open a separate terminal, install the 'anacron' package and come back to this setup."
     echo "[ fedora ] sudo dnf install anacron"

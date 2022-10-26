@@ -33,7 +33,7 @@ setup() {
   local distro_setup_script="$PRIVATE_FOLDER/scripts/$DISTRO/setup.sh"
 
   if [[ ! -x "$distro_setup_script" ]]; then
-    echo -e "\n[WARN] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]"
+    echo -e "\n[ WARN ] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]"
     return
   fi
 
@@ -83,7 +83,7 @@ install_extensions() {
     local http_response="$(curl -s -o /dev/null -I -w "%{http_code}" "$request_url")"
 
     if [[ "$http_response" == @("400"|"404") ]]; then
-        echo "[ERROR] No extension exists matching the ID: $ego_id and GNOME Shell version $GNOME_SHELL_VERSION (Skipping this)."
+        echo "[ ERROR ] No extension exists matching the ID: $ego_id and GNOME Shell version $GNOME_SHELL_VERSION (Skipping this)."
         continue;
     fi
 

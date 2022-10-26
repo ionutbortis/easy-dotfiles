@@ -75,7 +75,7 @@ replace_config_property() {
 
   local existing_property_config="$(sed -n "$section_pattern/! p" "$config_file" | grep "$property_pattern")"
   if [[ "$existing_property_config" ]]; then
-    echo "[WARN] Property <$property_name> is already configured! Will be commented out. (file: $config_file)"
+    echo "[ WARN ] Property <$property_name> is already configured! Will be commented out. (file: $config_file)"
   fi
 
   local comment_line="$comment_prefix Commented out by \<dotfiles\>"
@@ -96,7 +96,7 @@ replace_config_property() {
 }
 
 configure_git_props() {
-  echo -e "\n[WARN] Git needs additional info for the <dotfiles> repos!\n"
+  echo -e "\n[ WARN ] Git needs additional info for the <dotfiles> repos.\n"
 
   source "$DEFAULTS_SCRIPT"
 

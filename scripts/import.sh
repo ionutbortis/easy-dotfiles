@@ -54,7 +54,7 @@ load_files() {
     unset local cmd_prefix
 
     if [[ ! -d "$source" && ! -f "$source" ]]; then
-      echo "[WARN] Invalid file to import: $file [source folder: $data_folder]" && continue
+      echo "[ WARN ] Invalid file to import: $file [ source folder: $data_folder ]" && continue
     fi
 
     local target_parent_dir="$(dirname "$target")"
@@ -80,7 +80,7 @@ load_misc_files() {
   load_files "$MISC_FOLDER" ".[].files | select(. != null) | .[] | select(. != \"\")"
 }
 
-prompt_user "[WARN] This will override the settings on your system with the ones from <dotfiles> !"
+prompt_user "[ WARN ] This will override the settings on your system with the ones from <dotfiles> !"
 
 load_keybindings_settings
 load_tweaks_settings

@@ -10,18 +10,18 @@ check_already_installed() {
   local jidea_folder="$(ls $JIDEA_HOME | grep idea)"
 
   if [[ "$jidea_folder" != "" ]]; then
-    echo "[WARN] IntelliJ IDEA install is skipped since it already exists inside the [$JIDEA_HOME] folder!"
+    echo "[ WARN ] IntelliJ IDEA install is skipped since it already exists inside the [ $JIDEA_HOME ] folder!"
     exit 0
   fi
 }
 
 download_package() {
-  echo "Downloading jIDEA package [$package]..."
+  echo "Downloading jIDEA package [ $package ]..."
   wget -nv -t 5 "https://download.jetbrains.com/idea/$package" -O "$package"
 }
 
 install_package() {
-  echo "Installing package to [$JIDEA_HOME]..."
+  echo "Installing package to [ $JIDEA_HOME ]..."
   tar -zxf "$package" && rm "$package"
 
   local jidea_folder="$(ls | grep idea)"
@@ -36,12 +36,12 @@ create_desktop_file() {
   if [[ -f "$desktop_file" ]]; then
     local backup_file="$desktop_file.$(date +'%Y-%m-%d_%H:%M:%S')"
 
-    echo "[WARN] jIDEA desktop file already exists! [$desktop_file]"
-    echo "[WARN] Creating backup file to [$backup_file]"
+    echo "[ WARN ] jIDEA desktop file already exists! [ $desktop_file ]"
+    echo "[ WARN ] Creating backup file to [ $backup_file ]"
     cp "$desktop_file" "$backup_file"
   fi
 
-  echo "Creating new desktop file [$desktop_file]..."
+  echo "Creating new desktop file [ $desktop_file ]..."
 
   bash -c "cat > "$desktop_file" << EOF
     [Desktop Entry]

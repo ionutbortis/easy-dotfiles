@@ -7,11 +7,11 @@ check_required() {
 
   for name in "${required[@]}"
   do
-    command -v "$name" >/dev/null 2>&1 || missing+=( "$name" )
+    command -v "$name" &> /dev/null || missing+=( "$name" )
   done
 
   if [[ ${#missing[@]} -gt 0  ]]; then
-    echo "[ERROR] One or more required commands are unavailable!"
+    echo "[ ERROR ] One or more required commands are unavailable!"
     echo
     echo "List of missing commands: ${missing[@]}"
     echo 
