@@ -81,7 +81,7 @@ create_branch() {
 
 switch_branch() {
   local name="$1";
-  echo "Switching branch to [ "$name" ] for private repo..."
+  echo "Switching branch to [ $name ] for private repo..."
 
   cd "$PRIVATE_FOLDER" && git checkout "$name"
 }

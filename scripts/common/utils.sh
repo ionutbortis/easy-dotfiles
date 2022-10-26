@@ -54,6 +54,7 @@ replace_line_in_file() {
 
 remove_duplicate_lines() {
   local file="$1"
+
   echo "$(awk '!seen[$0]++' "$file")" > "$file"
 }
 
