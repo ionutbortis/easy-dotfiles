@@ -87,7 +87,7 @@ switch_branch() {
 }
 
 default_submodule_profile() {
-  local default_branch="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
+  local default_branch="$(LC_ALL=C git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
 
   switch_branch "$default_branch"
 }
