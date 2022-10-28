@@ -26,6 +26,15 @@
     "file": "gnome.shell.conf"
   },
   {
+    "schema_path": "/org/gnome/shell/weather/",
+    "file": "gnome.weather.conf"
+  },
+  {
+    "schema_path": "/org/gnome/GWeather4/",
+    "keys": ["temperature-unit"],
+    "file": "gnome.weather.temperature.conf"
+  },
+  {
     "schema_path": "/org/gnome/settings-daemon/plugins/power/",
     "file": "power.conf"
   },
@@ -44,5 +53,9 @@
   {
     "schema_path": "/org/gnome/TextEditor/",
     "file": "text-editor.conf"
+  },
+  {
+    "schema_path": "/org/gtk/settings/file-chooser/",
+    "file": "file-chooser.conf"
   }
 ]

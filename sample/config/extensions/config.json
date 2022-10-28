@@ -2,7 +2,7 @@
   {
     "name": "Bedtime Mode",
     "url": "https://extensions.gnome.org/extension/4012/gnome-bedtime/",
-    "settings": {
+    "dconf": {
       "schema_path": "/org/gnome/shell/extensions/bedtime-mode/",
       "file": "bedtime-mode.conf"
     }
@@ -10,7 +10,7 @@
   {
     "name": "AppIndicator and KStatusNotifierItem Support",
     "url": "https://extensions.gnome.org/extension/615/appindicator-support/",
-    "settings": {
+    "dconf": {
       "schema_path": "/org/gnome/shell/extensions/appindicator/",
       "file": "appindicator-support.conf"
     }
@@ -22,7 +22,7 @@
   {
     "name": "Dash to Dock",
     "url": "https://extensions.gnome.org/extension/307/dash-to-dock/",
-    "settings": {
+    "dconf": {
       "schema_path": "/org/gnome/shell/extensions/dash-to-dock/",
       "file": "dash-to-dock.conf"
     }
@@ -30,7 +30,7 @@
   {
     "name": "Hide Top Bar",
     "url": "https://extensions.gnome.org/extension/545/hide-top-bar/",
-    "settings": {
+    "dconf": {
       "schema_path": "/org/gnome/shell/extensions/hidetopbar/",
       "file": "hide-top-bar.conf"
     }
@@ -38,7 +38,7 @@
   {
     "name": "Lock Keys",
     "url": "https://extensions.gnome.org/extension/36/lock-keys/",
-    "settings": {
+    "dconf": {
       "schema_path": "/org/gnome/shell/extensions/lockkeys/",
       "file": "lock-keys.conf"
     }
@@ -46,7 +46,7 @@
   {
     "name": "Unite",
     "url": "https://extensions.gnome.org/extension/1287/unite/",
-    "settings": {
+    "dconf": {
       "schema_path": "/org/gnome/shell/extensions/unite/",
       "file": "unite.conf"
     }

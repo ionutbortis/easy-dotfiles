@@ -31,7 +31,7 @@
       "ubuntu": "../private/scripts/apps/jidea-install.sh"
     },
     "settings": {
-      "config_files": ["~/.config/JetBrains"]
+      "include": ["~/.config/JetBrains"]
     }
   },
   {
@@ -42,7 +42,8 @@
       "ubuntu": "sudo apt-get install atom -y"
     },
     "settings": {
-      "config_files": ["~/.atom/config.cson"]
+      "include": ["~/.atom"],
+      "exclude": ["~/.atom/compile-cache"]
     }
   },
   {
@@ -53,15 +54,8 @@
       "ubuntu": "sudo apt-get install doublecmd-qt -y"
     },
     "settings": {
-      "config_files": [
-        "~/.config/doublecmd/doublecmd.xml",
-        "~/.config/doublecmd/extassoc.xml",
-        "~/.config/doublecmd/highlighters.xml",
-        "~/.config/doublecmd/multiarc.ini",
-        "~/.config/doublecmd/session.ini",
-        "~/.config/doublecmd/shortcuts.scf",
-        "~/.config/doublecmd/zip.ini"
-      ]
+      "include": ["~/.config/doublecmd"],
+      "exclude": ["doublecmd.err", "history.xml", "pixmaps.cache"]
     }
   },
   {
@@ -88,7 +82,7 @@
       "ubuntu": "sudo apt-get install anacron -y"
     },
     "settings": {
-      "config_files": ["/etc/anacrontab"]
+      "include": ["/etc/anacrontab"]
     }
   },
   {
@@ -134,7 +128,8 @@
       "ubuntu": "sudo apt-get install smplayer -y"
     },
     "settings": {
-      "config_files": ["~/.config/smplayer/smplayer.ini"]
+      "include": ["~/.config/smplayer"],
+      "exclude": ["~/.config/smplayer/smplayer_files.ini", "~/.config/smplayer/file_settings"]
     }
   },
   {
@@ -145,7 +140,7 @@
       "ubuntu": "sudo apt-get install skypeforlinux -y"
     },
     "settings": {
-      "config_files": ["~/.config/skypeforlinux/settings.json"]
+      "include": ["~/.config/skypeforlinux/settings.json"]
     }
   }
 ]

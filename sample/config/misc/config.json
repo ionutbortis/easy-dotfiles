@@ -1,22 +1,32 @@
 [
   {
     "name": "Startup Apps",
-    "files": ["~/.config/autostart"]
+    "files": {
+      "include": ["~/.config/autostart"]
+    }
   },
   {
     "name": "Backgrounds",
-    "files": ["~/.local/share/backgrounds"]
+    "files": {
+      "include": ["~/.local/share/backgrounds"]
+    }
   },
   {
     "name": "Dev related",
-    "files": ["~/work/notes", "~/work/scripts"]
+    "files": {
+      "include": ["~/work/notes", "~/work/scripts"]
+    }
   },
   {
     "name": "Bash related",
-    "files": ["~/.bash_aliases"]
+    "files": {
+      "include": ["~/.bash_aliases"]
+    }
   },
   {
     "name": "jIDEA icons",
-    "files": ["~/java-IDEs/jidea/.icons"]
+    "files": {
+      "include": ["~/java-IDEs/jidea/.icons"]
+    }
   }
 ]
