@@ -77,11 +77,11 @@ load_files() {
 
 load_apps_settings() {
   load_settings "$APPS_FOLDER" ".[].settings.dconf | select(. != null) | (.schema_path, .file)"
-  load_files "$APPS_FOLDER" ".[].settings | select(. != null and .include != null) | (.include)"
+  load_files "$APPS_FOLDER" ".[].settings | select(. != null and .include != null) | .include"
 }
 
 load_misc_files() {
-  load_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | (.include)"
+  load_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | .include"
 }
 
 prompt_user "[ WARN ] This will override the settings on your system with the ones from <dotfiles> !"
