@@ -11,6 +11,8 @@ sources() {
 setup_log_file "remove"
 
 remove_crontab_config() {
+  command -v crontab &> /dev/null || return
+
   echo "Removing crontab configuration..."
 
   crontab -l 2> /dev/null | sed "\|^$CRONTAB_LINE*$| d" | crontab -
