@@ -13,7 +13,7 @@ setup_log_file "remove"
 remove_crontab_config() {
   echo "Removing crontab configuration..."
 
-  crontab -l | sed "\|^$CRONTAB_LINE*$| d" | crontab -
+  crontab -l 2> /dev/null | sed "\|^$CRONTAB_LINE*$| d" | crontab -
 }
 
 remove_project_root() {
