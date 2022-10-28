@@ -47,37 +47,41 @@ load_files() {
 
   cd "$data_folder"
 
-  while read -r file; 
+  while read -r include; 
   do
-    local source=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
-    local target="${file/#~/"$HOME"}"
-    unset local cmd_prefix
+    local include_array=( $( echo "$include" | tr ',' ' ' | tr -d '[]"' ) )
 
-    if [[ ! -d "$source" && ! -f "$source" ]]; then
-      echo "[ WARN ] Invalid file to import: $file [ source folder: $data_folder ]" && continue
-    fi
+    for file in "${include_array[@]}"; do
+      local source=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
+      local target="${file/#~/"$HOME"}"
+      unset local cmd_prefix
 
-    local target_parent_dir="$(dirname "$target")"
+      if [[ ! -d "$source" && ! -f "$source" ]]; then
+        echo "[ WARN ] Invalid file to import: $file [ source folder: $data_folder ]" && continue
+      fi
 
-    dir_permission_check "$target_parent_dir" || local cmd_prefix="sudo"
+      local target_parent_dir="$(dirname "$target")"
 
-    if [[ -d "$source" ]]; then
-      $cmd_prefix mkdir -p "$target" && $cmd_prefix rsync -a "$source"/* "$target"
-    fi
-    if [[ -f "$source" ]]; then
-      $cmd_prefix mkdir -p "$target_parent_dir" && $cmd_prefix cp "$source" "$target"
-    fi
+      dir_permission_check "$target_parent_dir" || local cmd_prefix="sudo"
+
+      if [[ -d "$source" ]]; then
+        $cmd_prefix mkdir -p "$target" && $cmd_prefix rsync -a "$source"/* "$target"
+      fi
+      if [[ -f "$source" ]]; then
+        $cmd_prefix mkdir -p "$target_parent_dir" && $cmd_prefix cp "$source" "$target"
+      fi
+    done
 
   done < <(jq -cr "$jq_filter" "$config_json")
 }
 
 load_apps_settings() {
   load_settings "$APPS_FOLDER" ".[].settings.dconf | select(. != null) | (.schema_path, .file)"
-  load_files "$APPS_FOLDER" ".[].settings.config_files | select(. != null) | .[] | select(. != \"\")"
+  load_files "$APPS_FOLDER" ".[].settings | select(. != null and .include != null) | (.include)"
 }
 
 load_misc_files() {
-  load_files "$MISC_FOLDER" ".[].files | select(. != null) | .[] | select(. != \"\")"
+  load_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | (.include)"
 }
 
 prompt_user "[ WARN ] This will override the settings on your system with the ones from <dotfiles> !"
