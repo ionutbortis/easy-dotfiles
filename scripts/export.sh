@@ -43,7 +43,7 @@ dump_settings() {
       echo "$full_dump" > "$dump_file"
 
     else
-      local keys_array=($( echo "$keys" | tr ',' ' ' | tr -d '[]"' ))
+      local keys_array=( $( echo "$keys" | tr ',' ' ' | tr -d '[]"' ) )
       local filtered_dump=$(grep ${keys_array[@]/#/-e } <<< "$full_dump")
 
       echo "$full_dump" | head -1 > "$dump_file"
@@ -74,32 +74,42 @@ dump_files() {
 
   cd "$data_folder"
 
-  while read -r file; 
+  while read -r include; read -r exclude
   do
-    local source="${file/#~/"$HOME"}"
-    local target=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
+    local include_array=( $( echo "$include" | tr ',' ' ' | tr -d '[]"' ) )
+    local exclude_array=( $( echo "$exclude" | tr ',' ' ' | tr -d '[]"' ) )
 
-    if [[ ! -d "$source" &&  ! -f "$source" ]]; then
-      echo "[ WARN ] Invalid file to export: $file" && continue
-    fi
+    for file in "${include_array[@]}"; do
+      local source="${file/#~/"$HOME"}"
+      local target=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
 
-    if [[ -d "$source" ]]; then
-      mkdir -p "$target" && rsync -a --delete "$source"/ "$target"
-    fi
-    if [[ -f "$source" ]]; then
-      mkdir -p "$(dirname "$target")" && cp "$source" "$target"
-    fi
+      if [[ ! -d "$source" &&  ! -f "$source" ]]; then
+        echo "[ WARN ] Invalid file to export: $file" && continue
+      fi
+
+      if [[ -d "$source" ]]; then
+        mkdir -p "$target" && rsync -a --delete "$source"/ "$target"
+      fi
+      if [[ -f "$source" ]]; then
+        mkdir -p "$(dirname "$target")" && cp "$source" "$target"
+      fi
+    done
+
+    for file in "${exclude_array[@]}"; do
+      local target=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
+      rm -rf "$target"
+    done
 
   done < <(jq -cr "$jq_filter" "$config_json")
 }
 
 export_apps_settings() {
   dump_settings "$APPS_FOLDER" ".[].settings.dconf | select(. != null) | (.schema_path, .file, .keys)"
-  dump_files "$APPS_FOLDER" ".[].settings.config_files | select(. != null) | .[] | select(. != \"\")"
+  dump_files "$APPS_FOLDER" ".[].settings | select(. != null and .include != null) | (.include, .exclude)"
 }
 
 export_misc_files() {
-  dump_files "$MISC_FOLDER" ".[].files | select(. != null) | .[] | select(. != \"\")"
+  dump_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | (.include, .exclude)"
 }
 
 [[ "$1" == "auto" ]] || \
