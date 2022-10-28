@@ -27,7 +27,7 @@ check_anacron_package() {
 }
 
 crontab_already_configured() {
-  crontab -l | sed '/#/d' | grep -q "$CRONTAB_LINE"
+  crontab -l 2> /dev/null | sed '/#/d' | grep -q "$CRONTAB_LINE"
 }
 
 get_existing_schedule() {
@@ -71,7 +71,7 @@ create_anacron_config() {
 }
 
 configure_crontab() {
-  crontab_already_configured || ( crontab -l; echo "$CRONTAB_LINE" ) | crontab -
+  crontab_already_configured || ( crontab -l 2> /dev/null; echo "$CRONTAB_LINE" ) | crontab -
 }
 
 configure_anacrontab() {
