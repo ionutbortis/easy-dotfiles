@@ -62,7 +62,7 @@ export_tweaks_settings() {
 }
 
 export_extensions_settings() {
-  dump_settings "$EXTENSIONS_FOLDER" ".[].settings | select(. != null) | (.schema_path, .file, .keys)"
+  dump_settings "$EXTENSIONS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file, .keys)"
 }
 
 dump_files() {

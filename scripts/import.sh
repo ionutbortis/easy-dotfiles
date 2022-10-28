@@ -35,7 +35,7 @@ load_tweaks_settings() {
 }
 
 load_extensions_settings() {
-  load_settings "$EXTENSIONS_FOLDER" ".[].settings | select(. != null) | (.schema_path, .file)"
+  load_settings "$EXTENSIONS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file)"
 }
 
 load_files() {
