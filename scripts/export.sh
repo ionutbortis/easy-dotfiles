@@ -76,8 +76,8 @@ dump_files() {
 
   while read -r include; read -r exclude
   do
-    local include_array=( $( echo "$include" | tr ',' '\n' | tr -d '[]"' ) )
-    local exclude_array=( $( echo "$exclude" | tr ',' '\n' | tr -d '[]"' ) )
+    readarray -t include_array < <(echo "$include" | jq -cr "select(. != null) | .[]")
+    readarray -t exclude_array < <(echo "$exclude" | jq -cr "select(. != null) | .[]")
 
     for file in "${include_array[@]}"; do
       local source="${file/#~/"$HOME"}"
