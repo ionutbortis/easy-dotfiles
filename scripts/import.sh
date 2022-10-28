@@ -49,7 +49,7 @@ load_files() {
 
   while read -r include; 
   do
-    local include_array=( $( echo "$include" | tr ',' ' ' | tr -d '[]"' ) )
+    local include_array=( $( echo "$include" | tr ',' ' ' | tr -d '[]' ) )
 
     for file in "${include_array[@]}"; do
       local source=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"

@@ -76,8 +76,8 @@ dump_files() {
 
   while read -r include; read -r exclude
   do
-    local include_array=( $( echo "$include" | tr ',' ' ' | tr -d '[]"' ) )
-    local exclude_array=( $( echo "$exclude" | tr ',' ' ' | tr -d '[]"' ) )
+    local include_array=( $( echo "$include" | tr ',' ' ' | tr -d '[]' ) )
+    local exclude_array=( $( echo "$exclude" | tr ',' ' ' | tr -d '[]' ) )
 
     for file in "${include_array[@]}"; do
       local source="${file/#~/"$HOME"}"
