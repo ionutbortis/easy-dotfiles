@@ -55,7 +55,7 @@
     },
     "settings": {
       "include": ["~/.config/doublecmd"],
-      "exclude": ["doublecmd.err", "history.xml", "pixmaps.cache"]
+      "exclude": ["~/.config/doublecmd/doublecmd.err", "~/.config/doublecmd/history.xml", "~/.config/doublecmd/pixmaps.cache"]
     }
   },
   {
