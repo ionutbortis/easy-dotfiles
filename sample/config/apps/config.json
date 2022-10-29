@@ -8,6 +8,17 @@
     }
   },
   {
+    "name": "Github Desktop",
+    "url": "https://github.com/shiftkey/desktop",
+    "install": {
+      "fedora": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive",
+      "ubuntu": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive"
+    },
+    "settings": {
+      "include": ["~/.var/app/io.github.shiftey.Desktop/data/recently-used.xbel", "~/.var/app/io.github.shiftey.Desktop/config/GitHub Desktop/"]
+    }
+  },
+  {
     "name": "Google Chrome",
     "url": "https://www.google.com/chrome/",
     "install": {
@@ -50,8 +61,8 @@
     "name": "Double Commander",
     "url": "https://doublecmd.sourceforge.io/",
     "install": {
-      "fedora": "sudo dnf install doublecmd-qt -y",
-      "ubuntu": "sudo apt-get install doublecmd-qt -y"
+      "fedora": "sudo dnf install doublecmd-gtk -y",
+      "ubuntu": "sudo apt-get install doublecmd-gtk -y"
     },
     "settings": {
       "include": ["~/.config/doublecmd"],
