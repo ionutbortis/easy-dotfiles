@@ -15,7 +15,7 @@
       "ubuntu": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive"
     },
     "settings": {
-      "include": ["~/.var/app/io.github.shiftey.Desktop/data/recently-used.xbel", "~/.var/app/io.github.shiftey.Desktop/config/GitHub Desktop/"]
+      "include": ["~/.var/app/io.github.shiftey.Desktop/data/recently-used.xbel", "~/.var/app/io.github.shiftey.Desktop/config"]
     }
   },
   {
