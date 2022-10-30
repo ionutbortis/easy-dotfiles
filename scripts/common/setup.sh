@@ -1,7 +1,14 @@
 #!/bin/bash
 
-PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-source "$PROJECT_ROOT/private/scripts/defaults.sh"
+sources() {
+  local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
+  
+  source "$script_folder/vars.sh"
+  source "$script_folder/utils.sh"
+
+}; sources
+
+source "$PRIVATE_FOLDER/scripts/defaults.sh"
 
 configure_hostname() {
   echo "Enter the desired computer name"
@@ -9,4 +16,16 @@ configure_hostname() {
   sudo hostnamectl set-hostname "${name:-"$DEFAULT_HOST_NAME"}"
 }
 
+run_private_common_setup_script() {
+  local setup_script="$PRIVATE_FOLDER/scripts/common/setup.sh"
+
+  if [[ ! -x "$setup_script" ]]; then
+    echo -e "\n[ WARN ] Private common setup script cannot be executed! Skipping [ $setup_script ]"
+    return
+  fi
+
+  eval "$setup_script"
+}
+
 configure_hostname
+run_private_common_setup_script
