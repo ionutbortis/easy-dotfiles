@@ -16,7 +16,7 @@ Type=oneshot
 ExecStart=/bin/bash -c 'echo $charge_limit > /sys/class/power_supply/BAT0/charge_control_end_threshold'
 
 [Install]
-WantedBy=multi-user.target" | sudo tee "$service_file"
+WantedBy=multi-user.target" | sudo tee "$service_file" > /dev/null
 
   sudo chmod 644 "$service_file"
   sudo systemctl daemon-reload

@@ -11,7 +11,7 @@ sources() {
 source "$PRIVATE_FOLDER/scripts/defaults.sh"
 
 configure_hostname() {
-  echo "Enter the desired computer name"
+  echo -e "\nEnter the desired computer name"
   read -p "[ default: $DEFAULT_HOST_NAME, press Enter to use default ]: " name
   sudo hostnamectl set-hostname "${name:-"$DEFAULT_HOST_NAME"}"
 }
@@ -24,8 +24,9 @@ run_private_common_setup_script() {
     return
   fi
 
-  eval "$setup_script"
+  echo -e "\nRunning private common setup file [ $setup_script ]..." && eval "$setup_script"
 }
 
+echo "Starting common setup..."
 configure_hostname
 run_private_common_setup_script

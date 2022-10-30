@@ -37,7 +37,8 @@ setup() {
     return
   fi
 
-  eval "$distro_setup_script"
+  echo -e "\nRunning [ $DISTRO ] specific setup file [ $distro_setup_script ]..." \
+      && eval "$distro_setup_script"
 }
 
 list_apps() {
