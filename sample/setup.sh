@@ -12,7 +12,7 @@ copy_sample() {
   local name="$1"
   echo "Copying sample [ $name ] to private repo..."
 
-  rsync -a "$PROJECT_ROOT/sample/$name"/ "$PRIVATE_FOLDER/$name"
+  rsync -a "$PROJECT_ROOT/sample/$name" "$PRIVATE_FOLDER"
 }
 
 configure_defaults() {
@@ -31,5 +31,6 @@ configure_defaults() {
 copy_sample config 
 copy_sample data
 copy_sample scripts
+copy_sample README.md
 
 configure_defaults
