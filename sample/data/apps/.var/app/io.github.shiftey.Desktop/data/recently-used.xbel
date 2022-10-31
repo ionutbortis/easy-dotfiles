@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xbel version="1.0"
+      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
+      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
+>
+  <bookmark href="file:///home/ionut/dotfiles" added="2022-10-31T12:35:34.148798Z" modified="2022-10-31T12:35:34.148806Z" visited="2022-10-31T12:35:34.148800Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="inode/directory"/>
+        <bookmark:applications>
+          <bookmark:application name="github-desktop" exec="&apos;github-desktop %u&apos;" modified="2022-10-31T12:35:34.148802Z" count="1"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/ionut/dotfiles/private" added="2022-10-31T12:35:53.619691Z" modified="2022-10-31T12:35:53.619699Z" visited="2022-10-31T12:35:53.619692Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="inode/directory"/>
+        <bookmark:applications>
+          <bookmark:application name="github-desktop" exec="&apos;github-desktop %u&apos;" modified="2022-10-31T12:35:53.619694Z" count="1"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+</xbel>

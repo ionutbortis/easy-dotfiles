@@ -172,9 +172,9 @@
       <Splitter>49.9739175795514</Splitter>
       <Left>170</Left>
       <Top>63</Top>
-      <Width>816</Width>
-      <Height>431</Height>
-      <PixelsPerInch>96</PixelsPerInch>
+      <Width>1020</Width>
+      <Height>539</Height>
+      <PixelsPerInch>120</PixelsPerInch>
     </Position>
   </MainWindow>
   <Tabs>
@@ -633,7 +633,7 @@
     <Exclude>False</Exclude>
     <ExcludeDirs/>
     <CustomIcons>0</CustomIcons>
-    <PixelsPerInch>96</PixelsPerInch>
+    <PixelsPerInch>120</PixelsPerInch>
     <ShowInMenus Enabled="False">
       <Size>16</Size>
     </ShowInMenus>
@@ -799,7 +799,7 @@
       <Name>Default</Name>
       <CustomView>False</CustomView>
       <FileSystem>&lt;General&gt;</FileSystem>
-      <PixelsPerInch>96</PixelsPerInch>
+      <PixelsPerInch>120</PixelsPerInch>
       <CursorBorder Enabled="False">
         <Color>0</Color>
       </CursorBorder>
@@ -807,7 +807,7 @@
         <Column>
           <Title>Name</Title>
           <FuncString>[DC().GETFILENAMENOEXT{}]</FuncString>
-          <Width>373</Width>
+          <Width>466</Width>
           <Align>0</Align>
           <Font>
             <Name>default</Name>
@@ -830,7 +830,7 @@
         <Column>
           <Title>Ext</Title>
           <FuncString>[DC().GETFILEEXT{}]</FuncString>
-          <Width>62</Width>
+          <Width>78</Width>
           <Align>0</Align>
           <Font>
             <Name>default</Name>
@@ -853,7 +853,7 @@
         <Column>
           <Title>Size</Title>
           <FuncString>[DC().GETFILESIZE{}]</FuncString>
-          <Width>65</Width>
+          <Width>81</Width>
           <Align>1</Align>
           <Font>
             <Name>default</Name>
@@ -876,7 +876,7 @@
         <Column>
           <Title>Date</Title>
           <FuncString>[DC().GETFILETIME{}]</FuncString>
-          <Width>167</Width>
+          <Width>209</Width>
           <Align>1</Align>
           <Font>
             <Name>default</Name>
@@ -899,7 +899,7 @@
         <Column>
           <Title>Attr</Title>
           <FuncString>[DC().GETFILEATTR{}]</FuncString>
-          <Width>81</Width>
+          <Width>101</Width>
           <Align>0</Align>
           <Font>
             <Name>default</Name>
@@ -925,7 +925,7 @@
       <Name>Custom (2021-12-12@14-04-43)</Name>
       <CustomView>False</CustomView>
       <FileSystem>&lt;General&gt;</FileSystem>
-      <PixelsPerInch>96</PixelsPerInch>
+      <PixelsPerInch>120</PixelsPerInch>
       <CursorBorder Enabled="False">
         <Color>-2147483635</Color>
       </CursorBorder>
@@ -933,7 +933,7 @@
         <Column>
           <Title>Name</Title>
           <FuncString>[DC().GETFILENAMENOEXT{}]</FuncString>
-          <Width>399</Width>
+          <Width>499</Width>
           <Align>0</Align>
           <Font>
             <Name>Ubuntu</Name>
@@ -956,7 +956,7 @@
         <Column>
           <Title>Ext</Title>
           <FuncString>[DC().GETFILEEXT{}]</FuncString>
-          <Width>116</Width>
+          <Width>145</Width>
           <Align>0</Align>
           <Font>
             <Name>Ubuntu</Name>
@@ -979,7 +979,7 @@
         <Column>
           <Title>Size</Title>
           <FuncString>[DC().GETFILESIZE{}]</FuncString>
-          <Width>65</Width>
+          <Width>81</Width>
           <Align>1</Align>
           <Font>
             <Name>Ubuntu</Name>
@@ -1002,7 +1002,7 @@
         <Column>
           <Title>Date</Title>
           <FuncString>[DC().GETFILETIME{}]</FuncString>
-          <Width>167</Width>
+          <Width>209</Width>
           <Align>1</Align>
           <Font>
             <Name>Ubuntu</Name>
