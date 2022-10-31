@@ -32,6 +32,10 @@
     "install": {
       "fedora": "sudo dnf install code -y",
       "ubuntu": "sudo apt-get install code -y"
+    },
+    "settings": {
+      "include":["~/.config/Code"],
+      "exclude":["~/.config/Code/Cache", "~/.config/Code/CachedData"]
     }
   },
   {
