@@ -60,7 +60,7 @@ install_apps() {
   do
     read -r install_cmd 
 
-    echo -e "\nInstalling \"$name\" app with command: [ $install_cmd ]"
+    echo -e "\nInstalling [ $name ] app with command: [ $install_cmd ]"
     eval "$install_cmd"
 
   done < <(jq -cr "$jq_filter" "$APPS_CONFIG_JSON")
@@ -77,7 +77,7 @@ install_extensions() {
   do
     read -r name 
     
-    echo -e "\nDownloading '$name' extension..."
+    echo -e "\nDownloading [ $name ] extension..."
 
     local ego_id="$(basename $(dirname "$url"))"
     local request_url="https://extensions.gnome.org/extension-info/?pk=$ego_id&shell_version=$GNOME_SHELL_VERSION"
@@ -97,7 +97,7 @@ install_extensions() {
 
     wget -nv -t 5 "$ego_download_url" -O "$package"
 
-    echo "Installing '$name' extension..."
+    echo "Installing [ $name ] extension..."
     gnome-extensions install --force "$package"
 
   done < <(jq -cr "$jq_filter" "$EXTENSIONS_CONFIG_JSON")
