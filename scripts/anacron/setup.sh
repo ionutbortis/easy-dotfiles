@@ -62,6 +62,8 @@ remove_config() {
   rm -rf "$PRIVATE_ANACRON_FOLDER"
 
   remove_crontab_config
+
+  echo -e "\nAutomatic git push configuration was succesfully removed."
 }
 
 handle_existing_config() {

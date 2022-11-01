@@ -71,7 +71,7 @@ list_branches() {
 
 create_branch() {
   local name="$1"
-  echo "Creating new branch [ $name ] for private repo..."
+  echo -e "\nCreating new branch [ $name ] for private repo..."
 
   check_git_props
 
@@ -81,7 +81,7 @@ create_branch() {
 
 switch_branch() {
   local name="$1";
-  echo "Switching branch to [ $name ] for private repo..."
+  echo -e "\nSwitching branch to [ $name ] for private repo..."
 
   cd "$PRIVATE_FOLDER" && git checkout "$name"
 }
@@ -106,10 +106,10 @@ submodule_profile_check() {
 
 display_profiles() {
   echo -e "\nCreating the <dotfiles> profiles list..."
-  local profiles_array=( $(list_branches) )
+  PROFILES_ARRAY=( $(list_branches) )
 
   echo "Profiles list for <dotfiles> private data:"
-  printf "[ %s ]\n" "${profiles_array[@]}"
+  printf "[ %s ]\n" "${PROFILES_ARRAY[@]}"
 
   submodule_profile_check
 }
@@ -127,7 +127,10 @@ switch_profile() {
   local message="Do you want to switch to another profile for this <dotfiles> installation?"
   echo; confirm_action "$message" || return 1
 
-  read -p "Enter the existing <dotfiles> profile name: " profile
+  echo "Select the desired <dotfiles> profile:"
+  select profile in "${PROFILES_ARRAY[@]}"; do 
+    [[ "$profile" ]] && break || echo "Please input a valid number!"
+  done
 
   switch_branch "$profile"
 }
