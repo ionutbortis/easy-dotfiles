@@ -123,3 +123,11 @@ check_git_props() {
 
   [[ "$missing" == "true" ]] && configure_git_props
 }
+
+remove_crontab_config() {
+  command -v crontab &> /dev/null || return
+
+  echo "Removing crontab configuration..."
+
+  crontab -l 2> /dev/null | sed "\|^$CRONTAB_LINE*$| d" | crontab -
+}

@@ -132,11 +132,6 @@ switch_profile() {
   switch_branch "$profile"
 }
 
-anacron_setup() {
-  echo
-  cd "$PROJECT_ROOT" && eval "./scripts/anacron/setup.sh"
-}
-
 push_git_changes() {
   echo -e "\nPushing the git configuration changes..."
 
@@ -150,7 +145,5 @@ handle_additional_repo_data
 
 display_profiles
 create_new_profile || switch_profile
-
-anacron_setup
 
 push_git_changes
