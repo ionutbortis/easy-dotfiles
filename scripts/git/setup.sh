@@ -34,16 +34,20 @@ display_new_repo_help() {
 }
 
 configure_additional_repo() {
-  echo "You need to provide the ssh repo URL for <dotfiles-private>."
-  echo "It should look like: "
-  echo "git@github.com:your_user_name/dotfiles-private.git"
-
   cd "$PROJECT_ROOT"
 
-  unset repo
-  while [[ -z ${repo} ]]; do
-    echo; read -p "Enter the ssh URL for <dotfiles-private> repo: " repo
-  done
+  local main_repo_url="$(git ls-remote --get-url)"
+  local expected_private_url="${main_repo_url/dotfiles/dotfiles-private}"
+
+  echo "Please provide the ssh repo URL for <dotfiles-private>."
+  echo "The repo needs to be already created and the URL should look like: "
+  echo "$expected_private_url"
+  echo
+  echo "Enter the ssh URL for <dotfiles-private> repo"
+  read -p "[ or press Enter to use '$expected_private_url' ]: " provided_url
+
+  local repo="${provided_url:-"$expected_private_url"}"
+  
   rm -rf private && git submodule add --force "$repo" private
 }
 
