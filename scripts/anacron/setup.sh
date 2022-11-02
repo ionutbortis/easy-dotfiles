@@ -77,12 +77,12 @@ handle_existing_config() {
   done
   echo
 
-  [[ "$option" == "reschedule" ]] && handle_new_config && return
+  [[ "$option" == "reschedule" ]] && create_new_config && return
 
   [[ "$option" == "remove" ]] && remove_config && return
 }
 
-handle_new_config() {
+create_new_config() {
   echo "Select the desired push schedule:"
 
   select schedule in daily weekly monthly; do 
@@ -97,7 +97,7 @@ handle_new_config() {
 configure_anacrontab() {
   local schedule="$(get_existing_schedule)"
 
-  [[ "$schedule" ]] && handle_existing_config "$schedule" || handle_new_config
+  [[ "$schedule" ]] && handle_existing_config "$schedule" || create_new_config
 }
 
 check_anacron_package

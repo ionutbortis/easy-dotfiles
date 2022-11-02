@@ -79,15 +79,15 @@ create_branch() {
 
   check_git_props
 
-  cd "$PRIVATE_FOLDER" && git checkout -b "$name"
-  git push -u origin "$name"
+  cd "$PRIVATE_FOLDER" && git switch --force-create "$name"
+  git push --set-upstream origin "$name"
 }
 
 switch_branch() {
   local name="$1";
   echo -e "\nSwitching branch to [ $name ] for private repo..."
 
-  cd "$PRIVATE_FOLDER" && git checkout "$name"
+  cd "$PRIVATE_FOLDER" && git switch "$name"
 }
 
 default_submodule_profile() {
