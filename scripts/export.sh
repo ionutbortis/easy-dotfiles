@@ -120,16 +120,11 @@ dump_files() {
       local source="${file/#~/"$HOME"}"
       local target=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
 
-      if [[ ! -d "$source" &&  ! -f "$source" ]]; then
-        echo "[ WARN ] Invalid file to export: $file" && continue
-      fi
+      [[ ! -d "$source" &&  ! -f "$source" ]] \
+          && echo "[ WARN ] Invalid file to export: $file" && continue
 
-      if [[ -d "$source" ]]; then
-        mkdir -p "$target" && rsync -a --delete "$source"/ "$target"
-      fi
-      if [[ -f "$source" ]]; then
-        mkdir -p "$(dirname "$target")" && cp "$source" "$target"
-      fi
+      [[ -d "$source" ]] && mkdir -p "$target" && rsync -a --delete "$source"/ "$target"
+      [[ -f "$source" ]] && mkdir -p "$(dirname "$target")" && cp "$source" "$target"
     done
 
     for file in "${exclude_array[@]}"; do
