@@ -52,6 +52,14 @@ filter_settings() {
 
     local filter_keys=( ${filter_map["$current_sub_path"]} )
 
+    if [[ "${#filter_keys[@]}" -eq 0 && "${!filter_map[@]}" =~ "$current_sub_path" ]]; then
+
+      [[ "$sub_path_written" == "false" ]] \
+          && echo -e "\n$current_sub_path" >> "$dump_file" && sub_path_written="true"
+
+      echo "$line" >> "$dump_file" && continue
+    fi
+
     [[ "${#filter_keys[@]}" -eq 0 ]] && continue
 
     grep -q ${filter_keys[@]/#/-e } <<< "$line" || continue
