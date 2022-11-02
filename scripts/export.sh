@@ -48,32 +48,22 @@ filter_settings() {
   create_filter_map "$keys"
   
   local current_sub_path="none"
-  local sub_path_written="false"
 
   while read -r line; do
     [[ ! "$line" ]] && continue
 
-    [[ "$line" =~ ^\[.*\]$ ]] \
-        && current_sub_path="$line" && sub_path_written="false" && continue
+    [[ "$line" =~ ^\[.*\]$ ]] && current_sub_path="$line"
+
+    [[ "${!FILTER_MAP[@]}" =~ "$line" ]] \
+        && echo -e "\n$line" >> "$dump_file" && continue
 
     local filter_keys=( ${FILTER_MAP["$current_sub_path"]} )
 
-    if [[ "${#filter_keys[@]}" -eq 0 && "${!FILTER_MAP[@]}" =~ "$current_sub_path" ]]; then
+    [[ "${#filter_keys[@]}" -eq 0 && "${!FILTER_MAP[@]}" =~ "$current_sub_path" ]] \
+        && echo "$line" >> "$dump_file" && continue
 
-      [[ "$sub_path_written" == "false" ]] \
-          && echo -e "\n$current_sub_path" >> "$dump_file" && sub_path_written="true"
-
-      echo "$line" >> "$dump_file" && continue
-    fi
-
-    [[ "${#filter_keys[@]}" -eq 0 ]] && continue
-
-    grep -q ${filter_keys[@]/#/-e } <<< "$line" || continue
-
-    [[ "$sub_path_written" == "false" ]] \
-        && echo -e "\n$current_sub_path" >> "$dump_file" && sub_path_written="true"
-
-    echo "$line" >> "$dump_file"
+    [[ "${#filter_keys[@]}" -gt 0 ]] \
+        && grep -q ${filter_keys[@]/#/-e } <<< "$line" && echo "$line" >> "$dump_file"
 
   done <<< "$settings"
 
