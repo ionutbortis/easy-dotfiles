@@ -25,6 +25,47 @@ remove_data_files() {
   done
 }
 
+filter_settings() {
+  local keys="$1"; local settings="$2"; local dump_file="$3"
+
+  local root_path="[/]"
+  local -A filter_map=( )
+
+  readarray -t keys_array < <(echo "$keys" | jq -cr ".[]")
+
+  for key in "${keys_array[@]}"; do
+    local sub_path="$(grep -o '#.*#' <<< "$key" | sed -e 's/^#/[/' -e 's/#$/]/')"
+    
+    [[ "$sub_path" ]] \
+        && filter_map["$sub_path"]="${key##*\#}" \
+        || filter_map["$root_path"]+=" ""$key"
+  done
+
+  local current_sub_path="none"
+  local sub_path_written="false"
+
+  while read -r line; do
+    [[ ! "$line" ]] && continue
+
+    [[ "$line" =~ ^\[.*\]$ ]] \
+        && current_sub_path="$line" && sub_path_written="false" && continue
+
+    local filter_keys=( ${filter_map["$current_sub_path"]} )
+
+    [[ "${#filter_keys[@]}" -eq 0 ]] && continue
+
+    grep -q ${filter_keys[@]/#/-e } <<< "$line" || continue
+
+    [[ "$sub_path_written" == "false" ]] \
+        && echo -e "\n$current_sub_path" >> "$dump_file" && sub_path_written="true"
+
+    echo "$line" >> "$dump_file"
+
+  done <<< "$settings"
+
+  [[ -f "$dump_file" ]] && sed -i "1d" "$dump_file"
+}
+
 dump_settings() {
   local data_folder="$PARENT_DATA_FOLDER/$1"
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
@@ -39,16 +80,8 @@ dump_settings() {
     local dump_file="$data_folder/$file"
     local full_dump="$(dconf dump "$schema_path")"
     
-    if [[ "$keys" == "null" ]]; then
-      echo "$full_dump" > "$dump_file"
-
-    else
-      local keys_array=( $( echo "$keys" | tr ',' ' ' | tr -d '[]"' ) )
-      local filtered_dump=$(grep ${keys_array[@]/#/-e } <<< "$full_dump")
-
-      echo "$full_dump" | head -1 > "$dump_file"
-      echo "$filtered_dump" >> "$dump_file"
-    fi
+    [[ "$keys" == "null" ]] && echo "$full_dump" > "$dump_file" \
+        || filter_settings "$keys" "$full_dump" "$dump_file"
 
   done < <(jq -cr "$jq_filter" "$config_json")
 }
