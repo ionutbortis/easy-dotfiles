@@ -25,11 +25,11 @@ remove_data_files() {
   done
 }
 
-filter_settings() {
-  local keys="$1"; local settings="$2"; local dump_file="$3"
+declare -A FILTER_MAP
 
+create_filter_map(){
+  local keys="$1"
   local root_path="[/]"
-  local -A filter_map=( )
 
   readarray -t keys_array < <(echo "$keys" | jq -cr ".[]")
 
@@ -37,10 +37,16 @@ filter_settings() {
     local sub_path="$(grep -o '#.*#' <<< "$key" | sed -e 's/^#/[/' -e 's/#$/]/')"
     
     [[ "$sub_path" ]] \
-        && filter_map["$sub_path"]="${key##*\#}" \
-        || filter_map["$root_path"]+=" ""$key"
+        && FILTER_MAP["$sub_path"]="${key##*\#}" \
+        || FILTER_MAP["$root_path"]+=" ""$key"
   done
+}
 
+filter_settings() {
+  local keys="$1"; local settings="$2"; local dump_file="$3"
+
+  create_filter_map "$keys"
+  
   local current_sub_path="none"
   local sub_path_written="false"
 
@@ -50,9 +56,9 @@ filter_settings() {
     [[ "$line" =~ ^\[.*\]$ ]] \
         && current_sub_path="$line" && sub_path_written="false" && continue
 
-    local filter_keys=( ${filter_map["$current_sub_path"]} )
+    local filter_keys=( ${FILTER_MAP["$current_sub_path"]} )
 
-    if [[ "${#filter_keys[@]}" -eq 0 && "${!filter_map[@]}" =~ "$current_sub_path" ]]; then
+    if [[ "${#filter_keys[@]}" -eq 0 && "${!FILTER_MAP[@]}" =~ "$current_sub_path" ]]; then
 
       [[ "$sub_path_written" == "false" ]] \
           && echo -e "\n$current_sub_path" >> "$dump_file" && sub_path_written="true"
