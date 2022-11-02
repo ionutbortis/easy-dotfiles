@@ -140,6 +140,9 @@ switch_profile() {
 }
 
 push_git_changes() {
+  local message="Do you want to push your git configuration changes?"
+  echo; confirm_action "$message" || return
+
   echo -e "\nPushing the git configuration changes..."
 
   cd "$PROJECT_ROOT" && eval "./scripts/git/push.sh"
