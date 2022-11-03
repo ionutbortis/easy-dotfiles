@@ -27,7 +27,7 @@ setup_log_file "$log_file_name"
 export_data() {
   echo "Exporting settings and files to <dotfiles>..."
 
-  eval "$PROJECT_ROOT/scripts/export.sh --skip-prompt"
+  eval "$PROJECT_ROOT/scripts/export.sh ${schedule+"--skip-prompt"}"
 }
 
 push_submodule() {
