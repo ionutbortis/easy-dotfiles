@@ -3,6 +3,6 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-#1	13	cron.daily	cd PATH_REPLACE && ./scripts/git/push.sh auto daily
-#7	13	cron.weekly	cd PATH_REPLACE && ./scripts/git/push.sh auto weekly
-#@monthly	13	cron.monthly	cd PATH_REPLACE && ./scripts/git/push.sh auto monthly
+#1	13	cron.daily	cd PATH_REPLACE && ./scripts/git/push.sh --schedule=daily --export
+#7	13	cron.weekly	cd PATH_REPLACE && ./scripts/git/push.sh --schedule=weekly --export
+#@monthly	13	cron.monthly	cd PATH_REPLACE && ./scripts/git/push.sh --schedule=monthly --export

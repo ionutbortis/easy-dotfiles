@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# Accepted args: --skip-prompt
+
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
   
+  source "$script_folder/common/args.sh" "$@"
   source "$script_folder/common/vars.sh"
   source "$script_folder/common/utils.sh"
 
-}; sources
+}; sources "$@"
 
 setup_log_file "export"
 
@@ -144,7 +147,7 @@ export_misc_files() {
   dump_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | (.include, .exclude)"
 }
 
-[[ "$1" == "auto" ]] || \
+[[ "$skip_prompt" ]] || \
     prompt_user "[ WARN ] This will override the settings in <dotfiles> with the ones from your system."
 
 remove_data_files

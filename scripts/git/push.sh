@@ -1,23 +1,25 @@
 #!/bin/bash
 
+# Accepted args: --schedule=value --export
+
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
 
+  source "$script_folder/../common/args.sh" "$@"
   source "$script_folder/../common/vars.sh"
   source "$script_folder/../common/utils.sh"
 
-}; sources
+}; sources "$@"
 
 push_method="manual"
 log_file_name="$push_method-push"
 commit_message="<dotfiles> $push_method push"
 
-if [[ "$1" == "auto" && "$2" ]]; then
+if [[ "$schedule" ]]; then
   push_method="auto"
-  push_schedule="$2"
-  commit_message="<dotfiles> $push_method $push_schedule push"
+  commit_message="<dotfiles> $push_method $schedule push"
 
-  log_file_name="$push_schedule-push"
+  log_file_name="$schedule-push"
 fi
 
 setup_log_file "$log_file_name"
@@ -25,7 +27,7 @@ setup_log_file "$log_file_name"
 export_data() {
   echo "Exporting settings and files to <dotfiles>..."
 
-  eval "$PROJECT_ROOT/scripts/export.sh $push_method"
+  eval "$PROJECT_ROOT/scripts/export.sh --skip-prompt"
 }
 
 push_submodule() {
@@ -42,7 +44,7 @@ push_main() {
   git add . && git commit . -m "<dotfiles> private repo revision update" && git push
 }
 
-[[ "$push_method" == "auto" ]] && export_data
+[[ "$export" ]] && export_data
 
 check_git_props
 push_submodule
