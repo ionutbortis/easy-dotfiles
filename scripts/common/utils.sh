@@ -119,6 +119,16 @@ check_git_props() {
   [[ "$missing" == "true" ]] && configure_git_props
 }
 
+check_schedule_arg() {
+  [[ "$schedule" ]] || return
+
+  if [[ ! " ${SUPPORTED_SCHEDULES[@]} " =~ " $schedule " ]]; then
+    echo "[ ERROR ] Script argument '--schedule' has invalid value [ $schedule ]"
+    echo "Valid values are:" && printf "%s\n" "${SUPPORTED_SCHEDULES[@]}"
+    exit 1
+  fi
+}
+
 remove_crontab_config() {
   command -v crontab &> /dev/null || return
 

@@ -57,12 +57,12 @@ filter_settings() {
 
     [[ "$line" =~ ^\[.*\]$ ]] && current_sub_path="$line"
 
-    [[ "${!FILTER_MAP[@]}" =~ "$line" ]] \
+    [[ " ${!FILTER_MAP[@]} " =~ " $line " ]] \
         && echo -e "\n$line" >> "$dump_file" && continue
 
     local filter_keys=( ${FILTER_MAP["$current_sub_path"]} )
 
-    [[ "${#filter_keys[@]}" -eq 0 && "${!FILTER_MAP[@]}" =~ "$current_sub_path" ]] \
+    [[ "${#filter_keys[@]}" -eq 0 && " ${!FILTER_MAP[@]} " =~ " $current_sub_path " ]] \
         && echo "$line" >> "$dump_file" && continue
 
     [[ "${#filter_keys[@]}" -gt 0 ]] \

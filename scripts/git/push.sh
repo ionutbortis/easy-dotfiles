@@ -11,18 +11,9 @@ sources() {
 
 }; sources "$@"
 
-push_method="manual"
-log_file_name="$push_method-push"
-commit_message="<dotfiles> $push_method push"
+check_schedule_arg
 
-if [[ "$schedule" ]]; then
-  push_method="auto"
-  commit_message="<dotfiles> $push_method $schedule push"
-
-  log_file_name="$schedule-push"
-fi
-
-setup_log_file "$log_file_name"
+setup_log_file "${schedule:-"manual"}-push"
 
 export_data() {
   echo "Exporting settings and files to <dotfiles>..."
@@ -33,8 +24,12 @@ export_data() {
 push_submodule() {
   cd "$PRIVATE_FOLDER" && git pull --quiet
 
-  echo -e "\nPushing changes in [ private ] submodule..."
-  git add . && git commit . -m "$commit_message" && git push
+  [[ "$schedule" ]] \
+      && local message="<dotfiles> auto $schedule push" \
+      || local message="<dotfiles> manual push"
+
+  echo "Pushing changes in [ private ] submodule..."
+  git add . && git commit . -m "$message" && git push
 }
 
 push_main() {

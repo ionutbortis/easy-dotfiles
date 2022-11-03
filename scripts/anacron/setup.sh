@@ -28,7 +28,7 @@ crontab_already_configured() {
 get_existing_schedule() {
   ( crontab_already_configured && [[ -f "$PRIVATE_ANACRONTAB" ]] ) || return
 
-  for schedule in daily weekly monthly; do
+  for schedule in "${SUPPORTED_SCHEDULES[@]}"; do
     sed "/#/d" "$PRIVATE_ANACRONTAB" | grep -q "$schedule" \
         && echo "$schedule" && return 
   done
@@ -85,7 +85,7 @@ handle_existing_config() {
 create_new_config() {
   echo "Select the desired push schedule:"
 
-  select schedule in daily weekly monthly; do 
+  select schedule in "${SUPPORTED_SCHEDULES[@]}"; do 
     [[ "$schedule" ]] && break || echo "Please input a valid number!"
   done
 

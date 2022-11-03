@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# Accepted args: --skip-prompt
+
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
-  
+
+  source "$script_folder/common/args.sh" "$@"
   source "$script_folder/common/vars.sh"
   source "$script_folder/common/utils.sh"
 
-}; sources
+}; sources "$@"
 
 setup_log_file "import"
 
@@ -79,7 +82,8 @@ load_misc_files() {
   load_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | .include"
 }
 
-prompt_user "[ WARN ] This will override the settings on your system with the ones from <dotfiles> !"
+[[ "$skip_prompt" ]] || \
+    prompt_user "[ WARN ] This will override the settings on your system with the ones from <dotfiles> !"
 
 load_keybindings_settings
 load_tweaks_settings
