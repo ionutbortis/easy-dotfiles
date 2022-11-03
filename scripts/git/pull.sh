@@ -28,6 +28,6 @@ import_data() {
 }
 
 check_git_props
-pull_data
+pull_data || { echo -e "[ WARN ] Pull action had git errors, will exit script."; exit 1; }
 
 [[ "$import" ]] && import_data
