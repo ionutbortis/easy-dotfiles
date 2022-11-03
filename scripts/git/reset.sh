@@ -24,5 +24,6 @@ reset() {
 
 prompt_user "[ WARN ] This will reset all the unpushed changes from your local copy of <dotfiles> !"
 
+check_git_props
 reset "$PRIVATE_FOLDER"
 reset "$PROJECT_ROOT"
