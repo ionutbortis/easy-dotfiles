@@ -30,14 +30,9 @@ prompt_user() {
 }
 
 dir_permission_check() {
-  if [[ -e "$1" ]]; then
-    if [[ -d "$1" && -w "$1" && -x "$1" ]]; then return 0;
-      else return 1;
-    fi
-  else
-    dir_permission_check "$(dirname "$1")"
-    return $?
-  fi
+  [[ ! -e "$1" ]] && { dir_permission_check "$(dirname "$1")"; return $?; }
+
+  [[ -d "$1" && -w "$1" && -x "$1" ]] && return 0 || return 1
 }
 
 is_empty_folder() {

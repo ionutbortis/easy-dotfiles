@@ -27,7 +27,7 @@ remove_data_files() {
 
 declare -A FILTER_MAP
 
-create_filter_map(){
+create_filter_map() {
   local keys="$1"
   local root_path="[/]"
 

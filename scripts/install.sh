@@ -84,8 +84,8 @@ install_extensions() {
     local http_response="$(curl -s -o /dev/null -I -w "%{http_code}" "$request_url")"
 
     if [[ "$http_response" == @("400"|"404") ]]; then
-        echo "[ ERROR ] No extension exists matching the ID: $ego_id and GNOME Shell version $GNOME_SHELL_VERSION (Skipping this)."
-        continue;
+      echo "[ ERROR ] No extension exists matching the ID: $ego_id and GNOME Shell version $GNOME_SHELL_VERSION (Skipping this)."
+      continue
     fi
 
     local ext_info="$(curl -s "$request_url")"
