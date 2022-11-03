@@ -7,7 +7,6 @@
 #
 # We set an underscore _ char as value to the $no_value_arg in order 
 # to make conditional checks easier:
-# 
 # [[ "$no_value_arg" ]] && echo "arg present" || echo "arg missing"
 #
 

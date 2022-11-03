@@ -28,5 +28,6 @@ run_private_common_setup_script() {
 }
 
 echo "Starting common setup..."
+
 configure_hostname
 run_private_common_setup_script
