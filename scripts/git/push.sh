@@ -35,8 +35,10 @@ push_submodule() {
 push_main() {
   cd "$PROJECT_ROOT" && git pull --quiet
 
+  local message="<dotfiles> private repo revision update"
+
   echo -e "\nPushing changes in main folder..."
-  git add . && git commit . -m "<dotfiles> private repo revision update" && git push
+  git add . && git commit . -m "$message" && git push
 }
 
 [[ "$export" ]] && export_data
