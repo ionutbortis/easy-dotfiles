@@ -52,7 +52,7 @@ list_apps() {
 install_apps() {
   echo -e "\nStarting installation of the following apps: " && list_apps
 
-  cd $WORK_DIR
+  cd "$WORK_DIR"
 
   local jq_filter=".[] | select(.install.$DISTRO | .!=null and .!=\"\") | (.name, .install.$DISTRO)"
 
@@ -61,8 +61,7 @@ install_apps() {
     read -r install_cmd 
 
     echo -e "\nInstalling [ $name ] app with command: [ $install_cmd ]"
-
-    "$install_cmd"
+    $install_cmd
 
   done < <(jq -cr "$jq_filter" "$APPS_CONFIG_JSON")
 }
@@ -70,7 +69,7 @@ install_apps() {
 install_extensions() {
   echo -e "\nStarting installation of extensions..."
 
-  cd $WORK_DIR
+  cd "$WORK_DIR"
 
   local jq_filter=".[] | select(.url != null and .url != \"\") | (.url, .name)"
 

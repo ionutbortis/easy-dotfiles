@@ -10,7 +10,7 @@ setup_log_file() {
   ls -tr "$name"* 2>/dev/null | head -n -3 | xargs --no-run-if-empty rm 
 
   local new_log_file="$LOGS_DIR"/"$name"_"$(date +'%Y-%m-%d_%H:%M:%S')".log
-  exec > >(tee ${new_log_file}) 2>&1
+  exec > >( tee "$new_log_file" ) 2>&1
 }
 
 confirm_action() {

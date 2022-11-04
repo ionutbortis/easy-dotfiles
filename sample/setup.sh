@@ -21,7 +21,7 @@ display_git_info_message() {
   echo "- Your name               e.g. John Doe"
   echo "- Your email address      e.g. john.doe@gmail.com"
   echo
-  echo "Note: For email address is best to use the one from your github account."
+  echo "Note: For email address you need to use the one from your github account."
   echo
   echo "Please provide your defaults for these so they can be easily used later on."
   echo
