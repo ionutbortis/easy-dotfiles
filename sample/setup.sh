@@ -15,16 +15,31 @@ copy_sample() {
   rsync -a "$PROJECT_ROOT/sample/$name" "$PRIVATE_FOLDER"
 }
 
-configure_defaults() {
-  echo -e "\nConfiguring the values from the [ "$DEFAULTS_SCRIPT" ] script. These will be used later on."
+display_git_info_message() {
+  echo
+  echo "When you commit something on a repository, git needs some additional information about you:"
+  echo "- Your name               E.g. John Doe"
+  echo "- Your email address      E.g. john.doe@gmail.com"
+  echo
+  echo "Note: For email address is best to use the one from your github account."
+  echo
+  echo "Please provide your defaults for these so they can be easily used later on."
+  echo
+}
 
-  read -p $'Enter the default computer name: ' hostname
+configure_defaults() {
+  echo -e "\nConfiguring the values from the [ "$DEFAULTS_SCRIPT" ] script."
+  echo -e "These will be used later on when needed.\n"
+
+  read -p "Enter the default computer name: " hostname
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_HOST_NAME" "DEFAULT_HOST_NAME=\"$hostname\""
 
-  read -p $'Enter the default git user name for <dotfiles> repo: ' git_user
-  replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_USERNAME" "DEFAULT_GIT_USERNAME=\"$git_user\""
+  display_git_info_message
 
-  read -p $'Enter the default git email for <dotfiles> repo: ' git_email
+  read -p "Enter the your default git name for <dotfiles> repo: " git_name
+  replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_NAME" "DEFAULT_GIT_NAME=\"$git_name\""
+
+  read -p "Enter the your default git email for <dotfiles> repo: " git_email
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_EMAIL" "DEFAULT_GIT_EMAIL=\"$git_email\""
 }
 

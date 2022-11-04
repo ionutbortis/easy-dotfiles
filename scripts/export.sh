@@ -62,11 +62,11 @@ filter_settings() {
 
     local filter_keys=( ${FILTER_MAP["$current_sub_path"]} )
 
-    [[ "${#filter_keys[@]}" -eq 0 && " ${!FILTER_MAP[@]} " =~ " $current_sub_path " ]] \
+    [[ "${#filter_keys[@]}" -gt 0 ]] && grep -q ${filter_keys[@]/#/-e } <<< "$line" \
         && echo "$line" >> "$dump_file" && continue
 
-    [[ "${#filter_keys[@]}" -gt 0 ]] \
-        && grep -q ${filter_keys[@]/#/-e } <<< "$line" && echo "$line" >> "$dump_file"
+    [[ "${#filter_keys[@]}" -eq 0 && " ${!FILTER_MAP[@]} " =~ " $current_sub_path " ]] \
+        && echo "$line" >> "$dump_file" && continue
 
   done <<< "$settings"
 

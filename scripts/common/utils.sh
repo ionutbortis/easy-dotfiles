@@ -44,7 +44,7 @@ is_empty_folder() {
 replace_line_in_file() {
   local file="$1"; local line_prefix="$2"; local replacement_line="$3"
 
-  sed -i "s/^"$line_prefix".*$/"$replacement_line"/g" "$file"
+  sed -i "s/^$line_prefix.*$/$replacement_line/g" "$file"
 }
 
 remove_duplicate_lines() {
@@ -95,12 +95,12 @@ configure_git_props() {
 
   source "$DEFAULTS_SCRIPT"
 
-  read -p "Enter your git username [ default: $DEFAULT_GIT_USERNAME, press Enter to use default ]: " username
+  read -p "Enter your git name [ default: $DEFAULT_GIT_NAME, press Enter to use default ]: " name
   read -p "Enter your git email [ default: $DEFAULT_GIT_EMAIL, press Enter to use default ]: " email
 
   for folder in "$PROJECT_ROOT" "$PRIVATE_FOLDER"; do
     cd "$folder"
-    git config user.name "${username:-"$DEFAULT_GIT_USERNAME"}"
+    git config user.name "${name:-"$DEFAULT_GIT_NAME"}"
     git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
   done
 }
@@ -110,10 +110,10 @@ check_git_props() {
 
   for folder in "$PROJECT_ROOT" "$PRIVATE_FOLDER"; do
     cd "$folder"
-    local username="$(git config user.name)"
+    local name="$(git config user.name)"
     local email="$(git config user.email)"
 
-    [[ "$username" && "$email" ]] || missing="true"
+    [[ "$name" && "$email" ]] || missing="true"
   done
 
   [[ "$missing" == "true" ]] && configure_git_props

@@ -23,5 +23,5 @@ SUPPORTED_DISTROS=( "fedora" "ubuntu" )
 
 DEFAULT_HOST_NAME="myPC"
 
-DEFAULT_GIT_USERNAME="my_git_username"
+DEFAULT_GIT_NAME="my_git_name"
 DEFAULT_GIT_EMAIL="my_git_email"
