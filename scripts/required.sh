@@ -10,16 +10,16 @@ check_required() {
     command -v "$name" &> /dev/null || missing+=( "$name" )
   done
 
-  if [[ ${#missing[@]} -gt 0  ]]; then
-    echo "[ ERROR ] One or more required commands are unavailable!"
-    echo
-    echo "List of missing commands: ${missing[@]}"
-    echo 
-    echo "You can install the missing by using the following command:"
-    echo "[ fedora ] sudo dnf install ${missing[@]}"
-    echo "[ ubuntu ] sudo apt-get install ${missing[@]}"
-    exit 1
-  fi
+  [[ ${#missing[@]} -eq 0 ]] && return
+
+  echo "[ ERROR ] One or more required commands are unavailable!"
+  echo
+  echo "List of missing commands: ${missing[@]}"
+  echo 
+  echo "You can install the missing by using the following command:"
+  echo "[ fedora ] sudo dnf install ${missing[@]}"
+  echo "[ ubuntu ] sudo apt-get install ${missing[@]}"
+  exit 1
 }
 
 check_required

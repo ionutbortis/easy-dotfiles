@@ -16,9 +16,11 @@ setup_log_file() {
 confirm_action() {
   while true; do
     read -p "$1 [y/n]: " -n 1 answer
+
     case "$answer" in
       y) echo; return 0;;
       n) echo; return 1;;
+
       *) echo -e "\nPlease answer with 'y' or 'n'.\n";;
     esac
   done
@@ -122,11 +124,11 @@ check_git_props() {
 check_schedule_arg() {
   [[ "$schedule" ]] || return
 
-  if [[ ! " ${SUPPORTED_SCHEDULES[@]} " =~ " $schedule " ]]; then
-    echo "[ ERROR ] Script argument '--schedule' has invalid value [ $schedule ]"
-    echo "Valid values are:" && printf "%s\n" "${SUPPORTED_SCHEDULES[@]}"
-    exit 1
-  fi
+  [[ " ${SUPPORTED_SCHEDULES[@]} " =~ " $schedule " ]] && return
+
+  echo "[ ERROR ] Script argument '--schedule' has invalid value [ $schedule ]"
+  echo "Valid values are:" && printf "%s\n" "${SUPPORTED_SCHEDULES[@]}"
+  exit 1
 }
 
 remove_crontab_config() {

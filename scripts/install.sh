@@ -32,10 +32,9 @@ setup() {
 
   local distro_setup_script="$PRIVATE_FOLDER/scripts/$DISTRO/setup.sh"
 
-  if [[ ! -x "$distro_setup_script" ]]; then
-    echo -e "\n[ WARN ] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]"
-    return
-  fi
+  [[ ! -x "$distro_setup_script" ]] \
+      && echo -e "\n[ WARN ] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]" \
+      && return
 
   echo -e "\nRunning [ $DISTRO ] specific setup file [ $distro_setup_script ]..." \
       && "$distro_setup_script"

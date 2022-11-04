@@ -19,10 +19,10 @@ configure_hostname() {
 run_private_common_setup_script() {
   local setup_script="$PRIVATE_FOLDER/scripts/common/setup.sh"
 
-  if [[ ! -x "$setup_script" ]]; then
-    echo -e "\n[ WARN ] Private common setup script cannot be executed! Skipping [ $setup_script ]"
-    return
-  fi
+  [[ ! -x "$setup_script" ]] \
+      && echo -e "\n[ WARN ] Private common setup script cannot be executed!" \
+      && echo "Skipping [ $setup_script ]" \
+      && return
 
   echo -e "\nRunning private common setup file [ $setup_script ]..." && "$setup_script"
 }

@@ -20,10 +20,8 @@ load_settings() {
 
   echo "Loading settings from [ $data_folder ]..."
 
-  while read -r schema_path
+  while read -r schema_path; read -r file 
   do
-    read -r file 
-
     cat "$data_folder/$file" | dconf load -f "$schema_path"
 
   done < <(jq -cr "$jq_filter" "$config_json")
