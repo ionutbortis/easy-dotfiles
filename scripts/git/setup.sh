@@ -56,15 +56,13 @@ handle_additional_repo_data() {
 
   cd "$PRIVATE_FOLDER" && is_empty_folder config || return
 
-  cd "$PROJECT_ROOT"
-
   echo -e "\nIt seems that <dotfiles> private configuration is empty."
-  echo -e "You can use the 'sample' data for bootstraping your <dotfiles> configuration or create it manually.\n"
+  echo -e "It's recommended to use the 'sample' data for initializing your configuration.\n"
 
-  local message="Do you want to use the 'sample' data for the private repo?"
+  local message="Do you want to use the 'sample' data for initializing your private repo?"
   confirm_action "$message" || return
 
-  eval "$PROJECT_ROOT/sample/setup.sh"
+  cd "$PROJECT_ROOT" && ./sample/setup.sh
 }
 
 list_branches() {
@@ -145,7 +143,7 @@ push_git_changes() {
 
   echo -e "\nPushing the git configuration changes..."
 
-  cd "$PROJECT_ROOT" && eval "./scripts/git/push.sh"
+  cd "$PROJECT_ROOT" && ./scripts/git/push.sh
 }
 
 check_additional_repo \

@@ -18,7 +18,7 @@ setup_log_file "${schedule:-"manual"}-push"
 export_data() {
   echo "Exporting settings and files to <dotfiles>..."
 
-  eval "$PROJECT_ROOT/scripts/export.sh ${schedule+"--skip-prompt"}"
+  cd "$PROJECT_ROOT" && ./scripts/export.sh "${schedule+'--skip-prompt'}"
 }
 
 push_submodule() {

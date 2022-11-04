@@ -26,7 +26,7 @@ select_setup_distro() {
 setup() {
   rm -rf "$WORK_DIR" && mkdir -p "$WORK_DIR"
 
-  eval "$PROJECT_ROOT/scripts/common/setup.sh"
+  cd "$PROJECT_ROOT" && ./scripts/common/setup.sh
 
   select_setup_distro
 
@@ -38,7 +38,7 @@ setup() {
   fi
 
   echo -e "\nRunning [ $DISTRO ] specific setup file [ $distro_setup_script ]..." \
-      && eval "$distro_setup_script"
+      && "$distro_setup_script"
 }
 
 list_apps() {
@@ -61,7 +61,8 @@ install_apps() {
     read -r install_cmd 
 
     echo -e "\nInstalling [ $name ] app with command: [ $install_cmd ]"
-    eval "$install_cmd"
+
+    "$install_cmd"
 
   done < <(jq -cr "$jq_filter" "$APPS_CONFIG_JSON")
 }

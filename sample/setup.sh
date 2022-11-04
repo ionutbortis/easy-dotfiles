@@ -18,8 +18,8 @@ copy_sample() {
 display_git_info_message() {
   echo
   echo "When you commit something on a repository, git needs some additional information about you:"
-  echo "- Your name               E.g. John Doe"
-  echo "- Your email address      E.g. john.doe@gmail.com"
+  echo "- Your name               e.g. John Doe"
+  echo "- Your email address      e.g. john.doe@gmail.com"
   echo
   echo "Note: For email address is best to use the one from your github account."
   echo

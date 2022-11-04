@@ -2,7 +2,7 @@
 
 check_required() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
-  eval "$script_folder/../required.sh" || exit 1
+  "$script_folder/../required.sh" || exit 1
 
 }; check_required
 
