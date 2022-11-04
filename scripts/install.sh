@@ -46,7 +46,7 @@ list_apps() {
 
   readarray -t apps_array < <(jq -c "$jq_filter" "$APPS_CONFIG_JSON")
 
-  [[ ${#apps_array[@]} -gt 0 ]] && echo ${apps_array[@]} || echo "No apps configured for [ $DISTRO ]"
+  [[ ${#apps_array[@]} -gt 0 ]] && echo "${apps_array[@]}" || echo "No apps configured for [ $DISTRO ]"
 }
 
 install_apps() {

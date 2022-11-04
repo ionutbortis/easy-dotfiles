@@ -18,7 +18,8 @@ while [[ $# -gt 0 ]]; do
   variable_name="$( echo "${argument_split[0]#--}" | tr '-' '_' )"
   variable_value="${argument_split[1]:-"_"}"
 
-  eval "${variable_name}=\$variable_value" # Safe eval: http://mywiki.wooledge.org/BashFAQ/006#eval
+  # Safe eval => http://mywiki.wooledge.org/BashFAQ/006#eval
+  eval "${variable_name}=\$variable_value"
 
   shift
 done
