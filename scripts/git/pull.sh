@@ -24,7 +24,7 @@ pull_data() {
 import_data() {
   echo -e "\nImporting settings and files from <dotfiles>..."
 
-  cd "$PROJECT_ROOT" && ./scripts/import.sh "${schedule+'--skip-prompt'}"
+  cd "$PROJECT_ROOT" && ./scripts/import.sh "${schedule+"--skip-prompt"}"
 }
 
 check_git_props
