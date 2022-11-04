@@ -31,10 +31,25 @@ prompt_user() {
   confirm_action "Are you sure that you want to do this?" || exit 0
 }
 
-dir_permission_check() {
-  [[ ! -e "$1" ]] && { dir_permission_check "$(dirname "$1")"; return $?; }
+path_exists() {
+  local path="$1"
 
-  [[ -d "$1" && -w "$1" && -x "$1" ]] && return 0 || return 1
+  read_permission_check "$path" || local cmd_prefix="sudo"
+  $cmd_prefix test -e "$path"
+}
+
+read_permission_check() {
+  local path="$1"
+
+  test -e "$path" || { read_permission_check "$(dirname "$path")"; return $?; }
+  test -r "$path"
+}
+
+write_permission_check() {
+  local path="$1"
+
+  test -e "$path" || { write_permission_check "$(dirname "$path")"; return $?; }
+  test -w "$path"
 }
 
 is_empty_folder() {

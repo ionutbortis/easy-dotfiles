@@ -123,11 +123,16 @@ dump_files() {
       local source="${file/#~/"$HOME"}"
       local target=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
 
-      [[ ! -d "$source" &&  ! -f "$source" ]] \
-          && echo "[ WARN ] Invalid file to export: $file" && continue
+      path_exists "$source" \
+          || { echo "[ WARN ] Invalid file to export: $file"; continue; }
 
-      [[ -d "$source" ]] && mkdir -p "$target" && rsync -a --delete "$source"/ "$target"
-      [[ -f "$source" ]] && mkdir -p "$(dirname "$target")" && cp "$source" "$target"
+      unset local cmd_prefix
+      read_permission_check "$source" || local cmd_prefix="sudo"
+
+      local target_parent_dir="$(dirname "$target")"
+      mkdir -p "$target_parent_dir" && $cmd_prefix rsync -a "$source" "$target_parent_dir"
+
+      [[ "$cmd_prefix" ]] && $cmd_prefix chown -R "$USER" "$target"
     done
 
     for file in "${exclude_array[@]}"; do

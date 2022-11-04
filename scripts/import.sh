@@ -55,17 +55,15 @@ load_files() {
     for file in "${include_array[@]}"; do
       local source=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
       local target="${file/#~/"$HOME"}"
-      unset local cmd_prefix
 
-      [[ ! -d "$source" && ! -f "$source" ]] \
-          && echo "[ WARN ] Invalid file to import: $file [ source folder: $data_folder ]" && continue
+      path_exists "$source" \
+          || { echo "[ WARN ] Invalid file to import: $file [ source folder: $data_folder ]"; continue; }
+
+      unset local cmd_prefix
+      write_permission_check "$target" || local cmd_prefix="sudo"
 
       local target_parent_dir="$(dirname "$target")"
-
-      dir_permission_check "$target_parent_dir" || local cmd_prefix="sudo"
-
-      [[ -d "$source" ]] && $cmd_prefix mkdir -p "$target" && $cmd_prefix rsync -a "$source"/* "$target"
-      [[ -f "$source" ]] && $cmd_prefix mkdir -p "$target_parent_dir" && $cmd_prefix cp "$source" "$target"
+      $cmd_prefix mkdir -p "$target_parent_dir" && $cmd_prefix rsync -a "$source" "$target_parent_dir"
     done
 
   done < <(jq -cr "$jq_filter" "$config_json")
