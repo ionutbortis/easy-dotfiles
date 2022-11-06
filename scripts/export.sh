@@ -37,10 +37,10 @@ create_filter_map() {
   readarray -t keys_array < <(echo "$keys" | jq -cr ".[]")
 
   for key in "${keys_array[@]}"; do
-    local sub_path="$(grep -o '#.*#' <<< "$key" | sed -e 's/^#/[/' -e 's/#$/]/')"
+    local sub_path="$(grep -o '/.*/' <<< "$key" | sed -e 's|[ \t]*||g' -e 's|^/|[|' -e 's|/$|]|')"
     
     [[ "$sub_path" ]] \
-        && FILTER_MAP["$sub_path"]="${key##*\#}" \
+        && FILTER_MAP["$sub_path"]="$(sed 's|/.*/||' <<< "$key")" \
         || FILTER_MAP["$root_path"]+=" ""$key"
   done
 }
@@ -121,7 +121,7 @@ dump_files() {
 
     for file in "${include_array[@]}"; do
       local source="${file/#~/"$HOME"}"
-      local target=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
+      local target=./"${file#*/}"
 
       path_exists "$source" \
           || { echo "[ WARN ] Invalid file to export: $file"; continue; }
@@ -130,14 +130,14 @@ dump_files() {
       read_permission_check "$source" || local cmd_prefix="sudo"
 
       local target_parent_dir="$(dirname "$target")"
-      mkdir -p "$target_parent_dir" && $cmd_prefix rsync -a "$source" "$target_parent_dir"
+      mkdir -p "$target_parent_dir" \
+          && $cmd_prefix rsync -a "$source" "$target_parent_dir"
 
       [[ "$cmd_prefix" ]] && $cmd_prefix chown -R "$USER" "$target"
     done
 
-    for file in "${exclude_array[@]}"; do
-      local target=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
-      rm -rf "$target"
+    for file in "${exclude_array[@]}"; do 
+      local target=./"${file#*/}" && rm -rf "$target"
     done
 
   done < <(jq -cr "$jq_filter" "$config_json")

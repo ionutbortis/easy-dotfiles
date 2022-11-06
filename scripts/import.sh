@@ -53,7 +53,7 @@ load_files() {
     readarray -t include_array < <(echo "$include" | jq -cr "select(. != null) | .[]")
 
     for file in "${include_array[@]}"; do
-      local source=./"$(echo $file | sed -e 's/^~\///' -e 's/^\///')"
+      local source=./"${file#*/}"
       local target="${file/#~/"$HOME"}"
 
       path_exists "$source" \
@@ -63,7 +63,8 @@ load_files() {
       write_permission_check "$target" || local cmd_prefix="sudo"
 
       local target_parent_dir="$(dirname "$target")"
-      $cmd_prefix mkdir -p "$target_parent_dir" && $cmd_prefix rsync -a "$source" "$target_parent_dir"
+      $cmd_prefix mkdir -p "$target_parent_dir" \
+          && $cmd_prefix rsync -a "$source" "$target_parent_dir"
     done
 
   done < <(jq -cr "$jq_filter" "$config_json")
