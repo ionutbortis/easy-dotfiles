@@ -131,7 +131,7 @@ dump_files() {
 
       local target_parent_dir="$(dirname "$target")"
       mkdir -p "$target_parent_dir" \
-          && $cmd_prefix rsync -a "$source" "$target_parent_dir"
+          && $cmd_prefix rsync -a --no-o "$source" "$target_parent_dir"
 
       [[ "$cmd_prefix" ]] && $cmd_prefix chown -R "$USER" "$target"
     done

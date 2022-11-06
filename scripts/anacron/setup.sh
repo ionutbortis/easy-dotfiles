@@ -21,6 +21,34 @@ check_anacron_package() {
   exit 1
 }
 
+check_root_ssh_config() {
+  local config="$(sudo /bin/bash -c 'cat ~/.ssh/known_hosts 2>/dev/null | grep github.com')"
+
+  [[ "$config" ]] && return
+
+  local known_hosts="~/.ssh/known_hosts"
+  echo
+  echo "[ WARN ] github.com is not added to root's [ $known_hosts ] file!"
+  echo "This will crash the <dotfiles> automatic pushes."
+  echo
+  echo "You can fix this manually by running this command: "
+  echo "sudo /bin/bash -c 'mkdir -p ~/.ssh && ssh-keyscan github.com >> $known_hosts'"
+  echo
+  confirm_action "Or do it automatically righ now?" || exit 1
+
+  echo -e "\nConfiguring root's [ $known_hosts ] file..."
+  sudo /bin/bash -c "mkdir -p ~/.ssh && ssh-keyscan github.com >> $known_hosts"
+
+  [[ $? -eq 0 ]] || { echo "Error while configuring, please try to do it manually..."; exit 1; }
+
+  echo
+  echo "The file was successfully configured!"
+  echo
+  echo "You can check the file contents by running this command:"
+  echo "sudo /bin/bash -c 'cat $known_hosts'"
+  echo
+}
+
 get_sync_script() {
   for file in "${SCHEDULE_FOLDERS[@]/%/"/$SYNC_SCRIPT_NAME"}"; do
     [[ -e "$file" ]] && echo "$file" && return 
@@ -68,6 +96,8 @@ create_new_schedule() {
   select schedule in "${SUPPORTED_SCHEDULES[@]}"; do 
     [[ "$schedule" ]] && break || echo "Please input a valid number!"
   done
+
+  check_root_ssh_config
 
   create_sync_script "$schedule" \
       && echo -e "\nAutomatic [ $schedule ] pushes were succcesfully configured!"

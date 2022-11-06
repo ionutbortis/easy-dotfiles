@@ -64,7 +64,7 @@ load_files() {
 
       local target_parent_dir="$(dirname "$target")"
       $cmd_prefix mkdir -p "$target_parent_dir" \
-          && $cmd_prefix rsync -a "$source" "$target_parent_dir"
+          && $cmd_prefix rsync -a --no-o "$source" "$target_parent_dir"
     done
 
   done < <(jq -cr "$jq_filter" "$config_json")
