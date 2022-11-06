@@ -148,3 +148,12 @@ check_schedule_arg() {
   echo "Valid values are:" && printf "%s\n" "${SUPPORTED_SCHEDULES[@]}"
   exit 1
 }
+
+remove_sync_script() {
+  for file in "${SCHEDULE_FOLDERS[@]/%/"/$SYNC_SCRIPT_NAME"}"; do
+    [[ -e "$file" ]] || continue
+
+    echo "Removing <dotfiles> sync script [ "$file" ]..."
+    sudo rm "$file"
+  done
+}

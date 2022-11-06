@@ -10,15 +10,6 @@ sources() {
 
 setup_log_file "remove"
 
-remove_sync_script() {
-  for file in "${SCHEDULE_FOLDERS[@]/%/"/$SYNC_SCRIPT_NAME"}"; do
-    [[ -e "$file" ]] || continue
-
-    echo "Removing <dotfiles> sync script [ "$file" ]..."
-    sudo rm "$file"
-  done
-}
-
 remove_project_root() {
   echo "Removing [ $PROJECT_ROOT ] folder..."
 

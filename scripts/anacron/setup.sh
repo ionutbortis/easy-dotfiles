@@ -42,15 +42,6 @@ create_sync_script() {
   done
 }
 
-remove_schedule() {
-  local sync_script="$1"
-
-  echo "Removing <dotfiles> sync script [ "$sync_script" ]..."
-
-  sudo rm "$sync_script" \
-      && echo -e "\nAutomatic git push configuration was succesfully removed."
-}
-
 handle_existing_schedule() {
   local sync_script="$1"
   local schedule="$(sed -e 's|.*\.||' -e 's|/.*||' <<< "$sync_script")"
@@ -64,9 +55,11 @@ handle_existing_schedule() {
   echo
 
   [[ "$option" == "reschedule" ]] \
-      && sudo rm "$sync_script" && create_new_schedule && return
+      && { remove_sync_script; echo; create_new_schedule; return; }
 
-  [[ "$option" == "remove" ]] && remove_schedule "$sync_script" && return
+  [[ "$option" == "remove" ]] \
+      && remove_sync_script \
+      && echo -e "\nAutomatic git push configuration was succesfully removed."
 }
 
 create_new_schedule() {
