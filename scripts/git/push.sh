@@ -29,7 +29,8 @@ push_submodule() {
       || local message="<dotfiles> manual push"
 
   echo "Pushing changes in [ private ] submodule..."
-  git add . && git commit . -m "$message" && git push
+  git add . && git commit . -m "$message"
+  git push
 }
 
 push_main() {
@@ -38,7 +39,8 @@ push_main() {
   local message="<dotfiles> private repo revision update"
 
   echo -e "\nPushing changes in main folder..."
-  git add . && git commit . -m "$message" && git push
+  git add . && git commit . -m "$message"
+  git push
 }
 
 [[ "$export" ]] && export_data
