@@ -12,12 +12,6 @@
     }
   },
   {
-    "name": "My user account config",
-    "files": {
-      "include": ["/var/lib/AccountsService/users/ionut"]
-    }
-  },
-  {
     "name": "Dev related",
     "files": {
       "include": ["~/work/notes", "~/work/scripts"]
