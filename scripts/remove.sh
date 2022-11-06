@@ -10,6 +10,15 @@ sources() {
 
 setup_log_file "remove"
 
+remove_sync_script() {
+  for file in "${SCHEDULE_FOLDERS[@]/%/"/$SYNC_SCRIPT_NAME"}"; do
+    [[ -e "$file" ]] || continue
+
+    echo "Removing <dotfiles> sync script [ "$file" ]..."
+    sudo rm "$file"
+  done
+}
+
 remove_project_root() {
   echo "Removing [ $PROJECT_ROOT ] folder..."
 
@@ -17,11 +26,13 @@ remove_project_root() {
 }
 
 show_finished_message() {
-  echo -e "\nProject <dotfiles> was succesfully removed!"
+  [[ $1 -eq 0 ]] \
+      && echo -e "\nProject <dotfiles> was succesfully removed!" \
+      || echo -e "\n[ WARN ] Project <dotfiles> wasn't removed properly!"
 }
 
 prompt_user "[ WARN ] This will remove the <dotfiles> project from your system."
 
-remove_crontab_config
+remove_sync_script
 remove_project_root
-show_finished_message
+show_finished_message $?

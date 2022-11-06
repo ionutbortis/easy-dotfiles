@@ -25,14 +25,10 @@ WORK_DIR="$PROJECT_ROOT/tmp"
 DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
 
 SUPPORTED_SCHEDULES=( "daily" "weekly" "monthly" )
+SCHEDULE_FOLDERS=( "/etc/cron.daily" "/etc/cron.weekly" "/etc/cron.monthly" )
 
-PRIVATE_ANACRON_FOLDER="$PRIVATE_FOLDER/scripts/anacron"
-ANACRON_SPOOL_FOLDER="$PRIVATE_ANACRON_FOLDER/spool"
-
-TEMPLATE_ANACRONTAB="$PROJECT_ROOT/scripts/anacron/anacrontab"
-PRIVATE_ANACRONTAB="$PRIVATE_ANACRON_FOLDER/anacrontab"
-
-CRONTAB_LINE="@hourly /usr/sbin/anacron -s -t '$PRIVATE_ANACRONTAB' -S '$ANACRON_SPOOL_FOLDER'"
+SYNC_SCRIPT_NAME="dotfiles-sync"
+TEMPLATE_SYNC_SCRIPT="$PROJECT_ROOT/scripts/anacron/$SYNC_SCRIPT_NAME"
 
 # This method of determining the version only works for Gnome 40+
 GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1)"

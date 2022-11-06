@@ -21,53 +21,39 @@ check_anacron_package() {
   exit 1
 }
 
-crontab_already_configured() {
-  crontab -l 2> /dev/null | sed '/#/d' | grep -q "$CRONTAB_LINE"
-}
-
-get_existing_schedule() {
-  ( crontab_already_configured && [[ -f "$PRIVATE_ANACRONTAB" ]] ) || return
-
-  for schedule in "${SUPPORTED_SCHEDULES[@]}"; do
-    sed "/#/d" "$PRIVATE_ANACRONTAB" | grep -q "$schedule" \
-        && echo "$schedule" && return 
+get_sync_script() {
+  for file in "${SCHEDULE_FOLDERS[@]/%/"/$SYNC_SCRIPT_NAME"}"; do
+    [[ -e "$file" ]] && echo "$file" && return 
   done
 }
 
-create_private_gitignore() {
-  local file="$PRIVATE_FOLDER/.gitignore"
-
-  echo "${ANACRON_SPOOL_FOLDER#${PRIVATE_FOLDER}/}" >> "$file"
-
-  remove_duplicate_lines "$file"
-}
-
-create_anacron_config() {
+create_sync_script() {
   local schedule="$1"
+  local target_folder="$(printf '%s\n' "${SCHEDULE_FOLDERS[@]}" | grep "$schedule")"
 
-  mkdir -p "$ANACRON_SPOOL_FOLDER" && create_private_gitignore  
+  local sync_script="$target_folder/$SYNC_SCRIPT_NAME"
 
-  cp "$TEMPLATE_ANACRONTAB" "$PRIVATE_ANACRONTAB"
+  echo "Creating <dotfiles> sync script [ "$sync_script" ]..."
 
-  sed -i "s|PATH_REPLACE|$PROJECT_ROOT|g" "$PRIVATE_ANACRONTAB"
-  sed -i "/$schedule/s/#[[:space:]]*//" "$PRIVATE_ANACRONTAB"
+  sudo cp "$TEMPLATE_SYNC_SCRIPT" "$sync_script"
+
+  for var_name in HOME USER SSH_AUTH_SOCK PROJECT_ROOT PRIVATE_FOLDER LOGS_DIR; do
+    replace_template_var "$var_name" "${!var_name}" "$sync_script"
+  done
 }
 
-configure_crontab() {
-  crontab_already_configured || ( crontab -l 2> /dev/null; echo "$CRONTAB_LINE" ) | crontab -
+remove_schedule() {
+  local sync_script="$1"
+
+  echo "Removing <dotfiles> sync script [ "$sync_script" ]..."
+
+  sudo rm "$sync_script" \
+      && echo -e "\nAutomatic git push configuration was succesfully removed."
 }
 
-remove_config() {
-  echo "Removing private anacron folder [ $PRIVATE_ANACRON_FOLDER ]..."
-  rm -rf "$PRIVATE_ANACRON_FOLDER"
-
-  remove_crontab_config
-
-  echo -e "\nAutomatic git push configuration was succesfully removed."
-}
-
-handle_existing_config() {
-  local schedule="$1"
+handle_existing_schedule() {
+  local sync_script="$1"
+  local schedule="$(sed -e 's|.*\.||' -e 's|/.*||' <<< "$sync_script")"
 
   echo "Automatic git pushes are configured with [ $schedule ] frequency."
 
@@ -77,28 +63,28 @@ handle_existing_config() {
   done
   echo
 
-  [[ "$option" == "reschedule" ]] && create_new_config && return
+  [[ "$option" == "reschedule" ]] \
+      && sudo rm "$sync_script" && create_new_schedule && return
 
-  [[ "$option" == "remove" ]] && remove_config && return
+  [[ "$option" == "remove" ]] && remove_schedule "$sync_script" && return
 }
 
-create_new_config() {
+create_new_schedule() {
   echo "Select the desired push schedule:"
 
   select schedule in "${SUPPORTED_SCHEDULES[@]}"; do 
     [[ "$schedule" ]] && break || echo "Please input a valid number!"
   done
 
-  create_anacron_config "$schedule" && configure_crontab
-
-  echo -e "\nAutomatic [ $schedule ] pushes were succcesfully configured!"
+  create_sync_script "$schedule" \
+      && echo -e "\nAutomatic [ $schedule ] pushes were succcesfully configured!"
 }
 
-configure_anacrontab() {
-  local schedule="$(get_existing_schedule)"
+configure_anacron() {
+  local sync_script="$(get_sync_script)"
 
-  [[ "$schedule" ]] && handle_existing_config "$schedule" || create_new_config
+  [[ "$sync_script" ]] && handle_existing_schedule "$sync_script" || create_new_schedule
 }
 
 check_anacron_package
-configure_anacrontab
+configure_anacron

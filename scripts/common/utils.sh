@@ -58,16 +58,19 @@ is_empty_folder() {
   [[ "$(ls -A "$folder" 2>/dev/null)" ]] && return 1 || return 0
 }
 
+replace_template_var() {
+  local var_name="$1"; local var_value="$2" local file="$3"
+  local var_suffix="___REPLACE"
+
+  write_permission_check "$file" || local cmd_prefix="sudo"
+
+  $cmd_prefix sed -i "s|"$var_name$var_suffix"|"$var_value"|g" "$file"
+}
+
 replace_line_in_file() {
   local file="$1"; local line_prefix="$2"; local replacement_line="$3"
 
   sed -i "s/^$line_prefix.*$/$replacement_line/g" "$file"
-}
-
-remove_duplicate_lines() {
-  local file="$1"
-
-  echo "$(awk '!seen[$0]++' "$file")" > "$file"
 }
 
 replace_config_property() {
@@ -144,12 +147,4 @@ check_schedule_arg() {
   echo "[ ERROR ] Script argument '--schedule' has invalid value [ $schedule ]"
   echo "Valid values are:" && printf "%s\n" "${SUPPORTED_SCHEDULES[@]}"
   exit 1
-}
-
-remove_crontab_config() {
-  command -v crontab &> /dev/null || return
-
-  echo "Removing crontab configuration..."
-
-  crontab -l 2> /dev/null | sed "\|^$CRONTAB_LINE*$| d" | crontab -
 }

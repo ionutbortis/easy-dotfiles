@@ -1,0 +1,11 @@
+#!/bin/sh
+
+script_folder="$(dirname "$(realpath -s "$0")")"
+schedule="${script_folder#*\.}"
+
+export HOME="HOME___REPLACE"
+export SSH_AUTH_SOCK="SSH_AUTH_SOCK___REPLACE"
+
+cd "PROJECT_ROOT___REPLACE" && ./scripts/git/push.sh --schedule=$schedule --export
+
+chown -R USER___REPLACE "PRIVATE_FOLDER___REPLACE" "LOGS_DIR___REPLACE"
