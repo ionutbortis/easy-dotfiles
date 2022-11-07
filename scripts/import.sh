@@ -17,6 +17,13 @@ check_import_export_args
 
 setup_log_file "${schedule:-"manual"}-import""${only_files+"-files"}${only_dconfs+"-dconfs"}"
 
+check_file_existence() {
+  local file="$1"
+
+  [[ ! -e "$file" ]] \
+      && echo "[ WARN ] Missing file to import [ $file ]" && return 1
+}
+
 import_dconfs() {
   local data_folder="$PARENT_DATA_FOLDER/$1"
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
@@ -24,9 +31,13 @@ import_dconfs() {
 
   echo "Importing dconfs from [ $data_folder ]..."
 
+  cd "$data_folder"
+
   while read -r schema_path; read -r file 
   do
-    cat "$data_folder/$file" | dconf load -f "$schema_path"
+    check_file_existence "$file" || continue
+
+    cat "$file" | dconf load -f "$schema_path"
 
   done < <(jq -cr "$jq_filter" "$config_json")
 }
@@ -48,15 +59,15 @@ import_files() {
       local source=./"${file#*/}"
       local target="${file/#~/"$HOME"}"
 
-      path_exists "$source" \
-          || { echo "[ WARN ] Invalid file to import: $file [ source folder: $data_folder ]"; continue; }
+      check_file_existence "$source" || continue
 
       unset local cmd_prefix
       write_permission_check "$target" || local cmd_prefix="sudo"
 
       local target_parent_dir="$(dirname "$target")"
-      $cmd_prefix mkdir -p "$target_parent_dir" \
-          && $cmd_prefix rsync -a --no-o -I "$source" "$target_parent_dir"
+
+      $cmd_prefix mkdir -p "$target_parent_dir"
+      $cmd_prefix rsync -a --no-o -I "$source" "$target_parent_dir"
 
       set_owner_from_parent "$target"
     done

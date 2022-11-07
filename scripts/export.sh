@@ -118,16 +118,17 @@ export_files() {
       local target=./"${file#*/}"
 
       path_exists "$source" \
-          || { echo "[ WARN ] Invalid file to export: $file"; continue; }
+          || { echo "[ WARN ] Missing file to export [ $file ]"; continue; }
 
       unset local cmd_prefix
       read_permission_check "$source" || local cmd_prefix="sudo"
 
       local target_parent_dir="$(dirname "$target")"
-      mkdir -p "$target_parent_dir" \
-          && $cmd_prefix rsync -a --no-o --delete "$source" "$target_parent_dir"
 
-      chown -R "$USER" "$target_parent_dir"
+      mkdir -p "$target_parent_dir"
+      $cmd_prefix rsync -a --no-o --delete "$source" "$target_parent_dir"
+
+      chown -R "$USER" "$target"
     done
 
     for file in "${exclude_array[@]}"; do 
