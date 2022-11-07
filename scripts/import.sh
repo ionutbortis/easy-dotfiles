@@ -19,9 +19,9 @@ setup_log_file "${schedule:-"manual"}-import""${only_files+"-files"}${only_dconf
 
 check_file_existence() {
   local file="$1"
+  [[ -e "$file" ]] && return
 
-  [[ ! -e "$file" ]] \
-      && echo "[ WARN ] Missing file to import [ $file ]" && return 1
+  echo "[ WARN ] Missing file to import [ $file ]" && return 1
 }
 
 import_dconfs() {
