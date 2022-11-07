@@ -5,7 +5,7 @@ export HOME="HOME___REPLACE"
 export DBUS_SESSION_BUS_ADDRESS="DBUS_SESSION_BUS_ADDRESS___REPLACE"
 
 fix_ownership() {
-  chown -R USER___REPLACE "PROJECT_ROOT___REPLACE"
+  chown -R USER___REPLACE:USER___REPLACE "PROJECT_ROOT___REPLACE"
 }
 check_exit_status() {
   [ $1 -eq 0 ] || { fix_ownership; exit 1; }

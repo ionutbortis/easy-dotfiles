@@ -128,7 +128,7 @@ export_files() {
       mkdir -p "$target_parent_dir"
       $cmd_prefix rsync -a --no-o --delete "$source" "$target_parent_dir"
 
-      chown -R "$USER" "$target"
+      chown -R "$USER:$USER" "$target"
     done
 
     for file in "${exclude_array[@]}"; do 
