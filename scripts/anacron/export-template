@@ -3,11 +3,11 @@
 export USER="USER___REPLACE"
 export HOME="HOME___REPLACE"
 
-fix_owner() {
+fix_ownership() {
   chown -R USER___REPLACE "PROJECT_ROOT___REPLACE"
 }
 check_exit_status() {
-  [ $1 -eq 0 ] || { fix_owner; exit 1; }
+  [ $1 -eq 0 ] || { fix_ownership; exit 1; }
 }
 
 cd "PROJECT_ROOT___REPLACE" && ./scripts/export.sh --schedule=schedule___REPLACE
@@ -15,4 +15,4 @@ check_exit_status $?
 
 su USER___REPLACE -c 'cd "PROJECT_ROOT___REPLACE" && ./scripts/git/push.sh --schedule=schedule___REPLACE'
 
-fix_owner
+fix_ownership

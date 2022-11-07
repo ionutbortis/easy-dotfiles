@@ -4,11 +4,11 @@ export USER="USER___REPLACE"
 export HOME="HOME___REPLACE"
 export DBUS_SESSION_BUS_ADDRESS="DBUS_SESSION_BUS_ADDRESS___REPLACE"
 
-fix_owner() {
+fix_ownership() {
   chown -R USER___REPLACE "PROJECT_ROOT___REPLACE"
 }
 check_exit_status() {
-  [ $1 -eq 0 ] || { fix_owner; exit 1; }
+  [ $1 -eq 0 ] || { fix_ownership; exit 1; }
 }
 
 su USER___REPLACE -c 'cd "PROJECT_ROOT___REPLACE" && ./scripts/git/pull.sh --schedule=schedule___REPLACE'
@@ -19,4 +19,4 @@ check_exit_status $?
 
 cd "PROJECT_ROOT___REPLACE" && ./scripts/import.sh --only-files --schedule=schedule___REPLACE
 
-fix_owner
+fix_ownership
