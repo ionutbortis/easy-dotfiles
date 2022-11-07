@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Accepted args: --skip-prompt
+# TODO explain args
+# Accepted args: --schedule=value --only-files --only-dconfs --full-clean
 
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
@@ -11,7 +12,10 @@ sources() {
 
 }; sources "$@"
 
-setup_log_file "export"
+check_schedule_arg
+check_import_export_args
+
+setup_log_file "${schedule:-"manual"}-export""${only_files+"-files"}${only_dconfs+"-dconfs"}"
 
 remove_data_files() {
   local folder_names=(
@@ -46,7 +50,8 @@ create_filter_map() {
 }
 
 filter_settings() {
-  local keys="$1"; local settings="$2"; local dump_file="$3"
+  local keys="$1"; local settings="$2"
+  local dump_file="$3" && truncate -s 0 "$dump_file"
 
   create_filter_map "$keys"
   
@@ -70,15 +75,16 @@ filter_settings() {
 
   done <<< "$settings"
 
-  [[ -f "$dump_file" ]] && sed -i "1d" "$dump_file"
+  [[ -s "$dump_file" ]] || { rm "$dump_file"; return; }
+  sed -i "1d" "$dump_file"
 }
 
-dump_settings() {
+export_dconfs() {
   local data_folder="$PARENT_DATA_FOLDER/$1"
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
   local jq_filter="$2"
 
-  echo "Exporting settings to [ $data_folder ]..."
+  echo "Exporting dconfs to [ $data_folder ]..."
 
   while read -r schema_path; read -r file 
   do
@@ -93,19 +99,7 @@ dump_settings() {
   done < <(jq -cr "$jq_filter" "$config_json")
 }
 
-export_keybindings_settings() {
-  dump_settings "$KEYBINDINGS_FOLDER" ".[] | (.schema_path, .file, .keys)"
-}
-
-export_tweaks_settings() {
-  dump_settings "$TWEAKS_FOLDER" ".[] | (.schema_path, .file, .keys)"
-}
-
-export_extensions_settings() {
-  dump_settings "$EXTENSIONS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file, .keys)"
-}
-
-dump_files() {
+export_files() {
   local data_folder="$PARENT_DATA_FOLDER/$1"
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
   local jq_filter="$2"
@@ -131,9 +125,9 @@ dump_files() {
 
       local target_parent_dir="$(dirname "$target")"
       mkdir -p "$target_parent_dir" \
-          && $cmd_prefix rsync -a --no-o "$source" "$target_parent_dir"
+          && $cmd_prefix rsync -a --no-o --delete "$source" "$target_parent_dir"
 
-      [[ "$cmd_prefix" ]] && $cmd_prefix chown -R "$USER" "$target"
+      chown -R "$USER" "$target_parent_dir"
     done
 
     for file in "${exclude_array[@]}"; do 
@@ -143,21 +137,29 @@ dump_files() {
   done < <(jq -cr "$jq_filter" "$config_json")
 }
 
-export_apps_settings() {
-  dump_settings "$APPS_FOLDER" ".[].settings.dconf | select(. != null) | (.schema_path, .file, .keys)"
-  dump_files "$APPS_FOLDER" ".[].settings | select(. != null and .include != null) | (.include, .exclude)"
+export_all_files() {
+  echo -e "\nStarted exporting files to <dotfiles>..."
+
+  export_files "$APPS_FOLDER" ".[].settings | select(. != null and .include != null) | (.include, .exclude)"
+  export_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | (.include, .exclude)"
 }
 
-export_misc_files() {
-  dump_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | (.include, .exclude)"
+export_all_dconfs() {
+  echo -e "\nStarted exporting dconfs to <dotfiles>..."
+
+  export_dconfs "$APPS_FOLDER" ".[].settings.dconf | select(. != null) | (.schema_path, .file, .keys)"
+  export_dconfs "$TWEAKS_FOLDER" ".[] | (.schema_path, .file, .keys)"
+  export_dconfs "$KEYBINDINGS_FOLDER" ".[] | (.schema_path, .file, .keys)"
+  export_dconfs "$TWEAKS_FOLDER" ".[] | (.schema_path, .file, .keys)"
 }
 
-[[ "$skip_prompt" ]] || \
+[[ "$schedule" ]] || \
     prompt_user "[ WARN ] This will override the settings in <dotfiles> with the ones from your system."
 
-remove_data_files
-export_keybindings_settings
-export_tweaks_settings
-export_extensions_settings
-export_apps_settings
-export_misc_files
+[[ "$full_clean" ]] && remove_data_files
+
+[[ "$only_files" ]] && export_all_files && exit
+[[ "$only_dconfs" ]] && export_all_dconfs && exit
+
+export_all_files
+export_all_dconfs

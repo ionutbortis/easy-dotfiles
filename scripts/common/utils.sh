@@ -52,6 +52,13 @@ write_permission_check() {
   test -w "$path"
 }
 
+set_owner_from_parent() {
+  local file="$1"; local parent="$(dirname "$file")"
+  
+  local owner="$(ls -ld "$parent" | awk '{print $3}')"
+  sudo chown "$owner" "$file"
+}
+
 is_empty_folder() {
   local folder="$1"
 
@@ -149,11 +156,21 @@ check_schedule_arg() {
   exit 1
 }
 
-remove_sync_script() {
-  for file in "${SCHEDULE_FOLDERS[@]/%/"/$SYNC_SCRIPT_NAME"}"; do
-    [[ -e "$file" ]] || continue
+check_import_export_args() {
+  [[ "$only_files" && "$only_dconfs" ]] \
+      && echo "[ ERROR ] Using both '--only-files' and '--only-dconfs' args is prohibited!" \
+      && exit 1
+}
 
-    echo "Removing <dotfiles> sync script [ "$file" ]..."
-    sudo rm "$file"
+remove_anacron_script() {
+  for folder in "${SCHEDULE_FOLDERS[@]}"; do
+    for action in "${ANACRON_ACTIONS[@]}"; do
+
+      local file="$folder/$ANACRON_SCRIPT_PREFFIX""$action"
+      [[ -e "$file" ]] || continue
+
+      echo "Removing <dotfiles> anacron script [ "$file" ]..."
+      sudo rm "$file"
+    done
   done
 }

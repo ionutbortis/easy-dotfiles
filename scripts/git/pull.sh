@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Accepted args: --schedule=value --import
+# TODO explain args
+# Accepted args: --schedule=value
 
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
@@ -21,14 +22,6 @@ pull_data() {
   cd "$PROJECT_ROOT" && git pull --recurse-submodules
 }
 
-import_data() {
-  echo -e "\nImporting settings and files from <dotfiles>..."
-
-  cd "$PROJECT_ROOT" && ./scripts/import.sh "${schedule+"--skip-prompt"}"
-}
-
 check_git_props
 pull_data \
     || { echo -e "[ WARN ] Pull action had git errors, will exit script."; exit 1; }
-
-[[ "$import" ]] && import_data

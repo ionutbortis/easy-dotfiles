@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Accepted args: --schedule=value --export
+# TODO explain args
+# Accepted args: --schedule=value
 
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
@@ -14,12 +15,6 @@ sources() {
 check_schedule_arg
 
 setup_log_file "${schedule:-"manual"}-push"
-
-export_data() {
-  echo "Exporting settings and files to <dotfiles>..."
-
-  cd "$PROJECT_ROOT" && ./scripts/export.sh "${schedule+"--skip-prompt"}"
-}
 
 push_submodule() {
   cd "$PRIVATE_FOLDER" && git pull --quiet
@@ -42,8 +37,6 @@ push_main() {
   git add . && git commit . -m "$message"
   git push
 }
-
-[[ "$export" ]] && export_data
 
 check_git_props
 push_submodule

@@ -24,6 +24,6 @@ show_finished_message() {
 
 prompt_user "[ WARN ] This will remove the <dotfiles> project from your system."
 
-remove_sync_script
+remove_anacron_script
 remove_project_root
 show_finished_message $?
