@@ -4,7 +4,7 @@ export USER="USER___REPLACE"
 export HOME="HOME___REPLACE"
 
 fix_owner() {
-  chown -R USER___REPLACE "LOGS_DIR___REPLACE"
+  chown -R USER___REPLACE "PROJECT_ROOT___REPLACE"
 }
 check_exit_status() {
   [ $1 -eq 0 ] || { fix_owner; exit 1; }
