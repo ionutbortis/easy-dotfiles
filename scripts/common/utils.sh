@@ -52,11 +52,11 @@ write_permission_check() {
   test -w "$path"
 }
 
-set_owner_from_parent() {
+set_ownership_from_parent() {
   local file="$1"; local parent="$(dirname "$file")"
-  
-  local owner="$(ls -ld "$parent" | awk '{print $3}')"
-  sudo chown "$owner" "$file"
+
+  local ownership="$(ls -ld "$parent" | awk '{ print $3 ":" $4 }')"
+  sudo chown "$ownership" "$file"
 }
 
 is_empty_folder() {
@@ -67,7 +67,7 @@ is_empty_folder() {
 
 replace_template_var() {
   local var_name="$1"; local var_value="$2" local file="$3"
-  local var_suffix="___REPLACE"
+  local var_suffix="_@REPLACE"
 
   write_permission_check "$file" || local cmd_prefix="sudo"
 
@@ -156,7 +156,7 @@ check_schedule_arg() {
   exit 1
 }
 
-check_import_export_args() {
+check_restriction_args() {
   [[ "$only_files" && "$only_dconfs" ]] \
       && echo "[ ERROR ] Using both '--only-files' and '--only-dconfs' args is prohibited!" \
       && exit 1

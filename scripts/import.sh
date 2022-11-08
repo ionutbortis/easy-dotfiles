@@ -12,12 +12,11 @@ sources() {
 
 }; sources "$@"
 
-check_schedule_arg
-check_import_export_args
+check_schedule_arg && check_restriction_args
 
 setup_log_file "${schedule:-"manual"}-import""${only_files+"-files"}${only_dconfs+"-dconfs"}"
 
-check_file_existence() {
+file_existence_check() {
   local file="$1"
   [[ -e "$file" ]] && return
 
@@ -30,12 +29,11 @@ import_dconfs() {
   local jq_filter="$2"
 
   echo "Importing dconfs from [ $data_folder ]..."
-
   cd "$data_folder"
 
   while read -r schema_path; read -r file 
   do
-    check_file_existence "$file" || continue
+    file_existence_check "$file" || continue
 
     cat "$file" | dconf load -f "$schema_path"
 
@@ -48,7 +46,6 @@ import_files() {
   local jq_filter="$2"
 
   echo "Importing files from [ $data_folder ]..."
-
   cd "$data_folder"
 
   while read -r include; 
@@ -59,7 +56,7 @@ import_files() {
       local source=./"${file#*/}"
       local target="${file/#~/"$HOME"}"
 
-      check_file_existence "$source" || continue
+      file_existence_check "$source" || continue
 
       unset local cmd_prefix
       write_permission_check "$target" || local cmd_prefix="sudo"
@@ -69,7 +66,7 @@ import_files() {
       $cmd_prefix mkdir -p "$target_parent_dir"
       $cmd_prefix rsync -a --no-o -I "$source" "$target_parent_dir"
 
-      set_owner_from_parent "$target"
+      set_ownership_from_parent "$target"
     done
 
   done < <(jq -cr "$jq_filter" "$config_json")

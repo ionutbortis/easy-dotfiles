@@ -42,8 +42,9 @@ create_script() {
   echo "Creating <dotfiles> anacron script [ "$script" ]..."
 
   sudo cp "$PROJECT_ROOT/scripts/anacron/$action-template" "$script"
+  sudo chmod +x "$script"
 
-  local var_names=( schedule PROJECT_ROOT LOGS_DIR USER HOME DBUS_SESSION_BUS_ADDRESS )
+  local var_names=( schedule PROJECT_ROOT USER HOME DBUS_SESSION_BUS_ADDRESS )
 
   for var_name in "${var_names[@]}"; do
     replace_template_var "$var_name" "${!var_name}" "$script"
@@ -72,9 +73,9 @@ handle_existing_schedule() {
 }
 
 display_action_help() {
-  echo "There are two automatic actions available"
-  echo "[ export ] Exports settings from your system and pushes them to remote repositories."
-  echo "[ import ] Pulls new settings from remote repositories and imports them to your system."
+  echo "There are two automatic actions available:"
+  echo "[ export ] Exports settings from your system and pushes them to the private repository."
+  echo "[ import ] Pulls new settings from the private repository and imports them to your system."
   echo
 }
 

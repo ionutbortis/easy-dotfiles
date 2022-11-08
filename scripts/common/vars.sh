@@ -6,7 +6,21 @@ check_required() {
 
 }; check_required
 
-PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+get_project_root() {
+  local root="$(git rev-parse --show-superproject-working-tree 2>/dev/null)"
+  [[ "$root" ]] || root="$(git rev-parse --show-toplevel 2>/dev/null)"
+
+  echo "$root"
+}
+
+check_working_dir() {
+  [[ "$PROJECT_ROOT" && "$PWD" =~ "$PROJECT_ROOT" ]] && return
+
+  echo "[ ERROR ] <dotfiles> scripts invocations should be done from inside the project folder!"
+  exit 1
+}
+
+PROJECT_ROOT="$(get_project_root)" && check_working_dir
 
 PRIVATE_FOLDER="$PROJECT_ROOT/private"
 

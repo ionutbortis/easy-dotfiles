@@ -12,8 +12,7 @@ sources() {
 
 }; sources "$@"
 
-check_schedule_arg
-check_import_export_args
+check_schedule_arg && check_restriction_args
 
 setup_log_file "${schedule:-"manual"}-export""${only_files+"-files"}${only_dconfs+"-dconfs"}"
 
@@ -85,16 +84,14 @@ export_dconfs() {
   local jq_filter="$2"
 
   echo "Exporting dconfs to [ $data_folder ]..."
+  cd "$data_folder"
 
-  while read -r schema_path; read -r file 
+  while read -r schema_path; read -r file; read -r keys
   do
-    read -r keys; 
-
-    local dump_file="$data_folder/$file"
     local full_dump="$(dconf dump "$schema_path")"
     
-    [[ "$keys" == "null" ]] && echo "$full_dump" > "$dump_file" \
-        || filter_settings "$keys" "$full_dump" "$dump_file"
+    [[ "$keys" == "null" ]] && echo "$full_dump" > "$file" \
+        || filter_settings "$keys" "$full_dump" "$file"
 
   done < <(jq -cr "$jq_filter" "$config_json")
 }
@@ -105,7 +102,6 @@ export_files() {
   local jq_filter="$2"
 
   echo "Exporting files to [ $data_folder ]..."
-
   cd "$data_folder"
 
   while read -r include; read -r exclude
@@ -128,7 +124,7 @@ export_files() {
       mkdir -p "$target_parent_dir"
       $cmd_prefix rsync -a --no-o --delete "$source" "$target_parent_dir"
 
-      chown -R "$USER:$USER" "$target"
+      $cmd_prefix chown -R "$USER:$USER" "$target"
     done
 
     for file in "${exclude_array[@]}"; do 

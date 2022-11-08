@@ -1,18 +1,18 @@
 #!/bin/sh
 
-export USER="USER___REPLACE"
-export HOME="HOME___REPLACE"
+export USER="USER_@REPLACE"
+export HOME="HOME_@REPLACE"
 
 fix_ownership() {
-  chown -R USER___REPLACE:USER___REPLACE "PROJECT_ROOT___REPLACE"
+  chown -R USER_@REPLACE:USER_@REPLACE "PROJECT_ROOT_@REPLACE"
 }
 check_exit_status() {
   [ $1 -eq 0 ] || { fix_ownership; exit 1; }
 }
 
-cd "PROJECT_ROOT___REPLACE" && ./scripts/export.sh --schedule=schedule___REPLACE
+cd "PROJECT_ROOT_@REPLACE" && ./scripts/export.sh --schedule=schedule_@REPLACE
 check_exit_status $?
 
-su USER___REPLACE -c 'cd "PROJECT_ROOT___REPLACE" && ./scripts/git/push.sh --schedule=schedule___REPLACE'
-
 fix_ownership
+
+su USER_@REPLACE -c 'cd "PROJECT_ROOT_@REPLACE" && ./scripts/git/push.sh --schedule=schedule_@REPLACE'

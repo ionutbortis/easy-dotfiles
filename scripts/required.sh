@@ -5,8 +5,7 @@ required=( gnome-shell gnome-extensions curl wget jq dconf git )
 check_required() {
   local missing=()
 
-  for name in "${required[@]}"
-  do
+  for name in "${required[@]}"; do
     command -v "$name" &> /dev/null || missing+=( "$name" )
   done
 

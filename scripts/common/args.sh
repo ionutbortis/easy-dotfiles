@@ -11,7 +11,7 @@
 #
 
 while [[ $# -gt 0 ]]; do
-  [[ ! "$1" =~ ^[--] || ! "${1#--}" ]] && shift && continue
+  [[ "$1" =~ ^[--] && "${1#--}" ]] || { shift; continue; }
 
   argument_split=( ${1/=/ } )
 
