@@ -73,14 +73,14 @@ import_files() {
 }
 
 import_all_files() {
-  echo -e "\nStarted importing files from <dotfiles>..."
+  echo -e "\nStarted importing files from $PRJ_DISPLAY..."
 
   import_files "$APPS_FOLDER" ".[].settings | select(. != null and .include != null) | .include"
   import_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | .include"
 }
 
 import_all_dconfs() {
-  echo -e "\nStarted importing dconfs from <dotfiles>..."
+  echo -e "\nStarted importing dconfs from $PRJ_DISPLAY..."
 
   import_dconfs "$APPS_FOLDER" ".[].settings.dconf | select(. != null) | (.schema_path, .file)"
   import_dconfs "$EXTENSIONS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file)"
@@ -89,7 +89,7 @@ import_all_dconfs() {
 }
 
 [[ "$schedule" ]] || \
-    prompt_user "[ WARN ] This will override the settings on your system with the ones from <dotfiles> !"
+    prompt_user "[ WARN ] This will override the settings on your system with the ones from $PRJ_DISPLAY !"
 
 [[ "$only_files" ]] && import_all_files && exit
 [[ "$only_dconfs" ]] && import_all_dconfs && exit

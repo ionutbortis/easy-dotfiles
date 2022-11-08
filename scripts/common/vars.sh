@@ -16,9 +16,12 @@ get_project_root() {
 check_working_dir() {
   [[ "$PROJECT_ROOT" && "$PWD" =~ "$PROJECT_ROOT" ]] && return
 
-  echo "[ ERROR ] <dotfiles> scripts invocations should be done from inside the project folder!"
+  echo "[ ERROR ] $PRJ_DISPLAY scripts invocations should be done from inside the project folder!"
   exit 1
 }
+
+PROJECT_NAME="dotfiles"
+PRJ_DISPLAY="<"$PROJECT_NAME">"
 
 PROJECT_ROOT="$(get_project_root)" && check_working_dir
 

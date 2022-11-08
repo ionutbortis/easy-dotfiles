@@ -24,7 +24,6 @@ remove_data_files() {
     "$MISC_FOLDER" 
     "$TWEAKS_FOLDER"
   )
-
   for folder in "${folder_names[@]/#/"$PARENT_DATA_FOLDER/"}"; do
     echo "Removing all files from [ $folder ]..."
     rm -rf "$folder" && mkdir -p "$folder"
@@ -135,14 +134,14 @@ export_files() {
 }
 
 export_all_files() {
-  echo -e "\nStarted exporting files to <dotfiles>..."
+  echo -e "\nStarted exporting files to $PRJ_DISPLAY..."
 
   export_files "$APPS_FOLDER" ".[].settings | select(. != null and .include != null) | (.include, .exclude)"
   export_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | (.include, .exclude)"
 }
 
 export_all_dconfs() {
-  echo -e "\nStarted exporting dconfs to <dotfiles>..."
+  echo -e "\nStarted exporting dconfs to $PRJ_DISPLAY..."
 
   export_dconfs "$APPS_FOLDER" ".[].settings.dconf | select(. != null) | (.schema_path, .file, .keys)"
   export_dconfs "$EXTENSIONS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file, .keys)"
@@ -151,7 +150,7 @@ export_all_dconfs() {
 }
 
 [[ "$schedule" ]] || \
-    prompt_user "[ WARN ] This will override the settings in <dotfiles> with the ones from your system."
+    prompt_user "[ WARN ] This will override the settings in $PRJ_DISPLAY with the ones from your system."
 
 [[ "$full_clean" ]] && remove_data_files
 

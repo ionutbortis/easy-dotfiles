@@ -22,7 +22,7 @@ reset() {
   git pull
 }
 
-prompt_user "[ WARN ] This will reset all the unpushed changes from your local copy of <dotfiles> !"
+prompt_user "[ WARN ] This will reset all the unpushed changes from your local copy of $PRJ_DISPLAY !"
 
 check_git_props
 reset "$PRIVATE_FOLDER"

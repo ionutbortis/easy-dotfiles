@@ -18,11 +18,11 @@ remove_project_root() {
 
 show_finished_message() {
   [[ $1 -eq 0 ]] \
-      && echo -e "\nProject <dotfiles> was succesfully removed!" \
-      || echo -e "\n[ WARN ] Project <dotfiles> wasn't removed properly!"
+      && echo -e "\nProject $PRJ_DISPLAY was succesfully removed!" \
+      || echo -e "\n[ WARN ] Project $PRJ_DISPLAY wasn't removed properly!"
 }
 
-prompt_user "[ WARN ] This will remove the <dotfiles> project from your system."
+prompt_user "[ WARN ] This will remove the $PRJ_DISPLAY project from your system."
 
 remove_anacron_script
 remove_project_root

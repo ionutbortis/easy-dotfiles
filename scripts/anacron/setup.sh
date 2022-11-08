@@ -39,7 +39,7 @@ create_script() {
 
   local script="$target_folder/$ANACRON_SCRIPT_PREFFIX""$action"
 
-  echo "Creating <dotfiles> anacron script [ "$script" ]..."
+  echo "Creating $PRJ_DISPLAY anacron script [ "$script" ]..."
 
   sudo cp "$PROJECT_ROOT/scripts/anacron/$action-template" "$script"
   sudo chmod +x "$script"
@@ -56,7 +56,7 @@ handle_existing_schedule() {
   local schedule="$(sed -e 's|.*\.||' -e 's|/.*||' <<< "$script")"
   local action="${script##*-}"
 
-  echo "Automatic <dotfiles> [ "$action"s ] are configured with [ "$schedule" ] frequency."
+  echo "Automatic $PRJ_DISPLAY [ "$action"s ] are configured with [ "$schedule" ] frequency."
 
   echo "Do you want to:"
   select option in reschedule remove; do 

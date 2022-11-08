@@ -110,7 +110,7 @@ cleanup() {
 
 show_finished_message() {
   echo
-  echo "<dotfiles> apps and extensions installation finished!"
+  echo "$PRJ_DISPLAY apps and extensions installation finished!"
   echo
   echo "You can check the install log inside the [ $LOGS_DIR ] folder."
   echo "There you can search for any 'error' or 'warn' messages."

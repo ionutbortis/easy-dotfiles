@@ -87,8 +87,8 @@ replace_config_property() {
 
   local section_prefix="$comment_prefix""$comment_prefix""$comment_prefix"
 
-  local section_start="$section_prefix Start <dotfiles> changes"
-  local section_end="$section_prefix End <dotfiles> changes"
+  local section_start="$section_prefix Start $PRJ_DISPLAY changes"
+  local section_end="$section_prefix End $PRJ_DISPLAY changes"
 
   local section_pattern="/^$section_start/,/^$section_end"
   local property_pattern="^\s*$property_name$value_separator"
@@ -118,7 +118,7 @@ replace_config_property() {
 }
 
 configure_git_props() {
-  echo -e "\n[ WARN ] Git needs additional info for the <dotfiles> repos.\n"
+  echo -e "\n[ WARN ] Git needs additional info for the $PRJ_DISPLAY repos.\n"
 
   source "$DEFAULTS_SCRIPT"
 
@@ -169,7 +169,7 @@ remove_anacron_script() {
       local file="$folder/$ANACRON_SCRIPT_PREFFIX""$action"
       [[ -e "$file" ]] || continue
 
-      echo "Removing <dotfiles> anacron script [ "$file" ]..."
+      echo "Removing $PRJ_DISPLAY anacron script [ "$file" ]..."
       sudo rm "$file"
     done
   done

@@ -36,10 +36,10 @@ configure_defaults() {
 
   display_git_info_message
 
-  read -p "Enter the your default git name for <dotfiles> repo: " git_name
+  read -p "Enter the your default git name for $PRJ_DISPLAY repos: " git_name
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_NAME" "DEFAULT_GIT_NAME=\"$git_name\""
 
-  read -p "Enter the your default git email for <dotfiles> repo: " git_email
+  read -p "Enter the your default git email for $PRJ_DISPLAY repos: " git_email
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_EMAIL" "DEFAULT_GIT_EMAIL=\"$git_email\""
 }
 

@@ -20,8 +20,8 @@ push_submodule() {
   cd "$PRIVATE_FOLDER" && git pull --quiet
 
   [[ "$schedule" ]] \
-      && local message="<dotfiles> auto $schedule push" \
-      || local message="<dotfiles> manual push"
+      && local message="$PRJ_DISPLAY auto $schedule push" \
+      || local message="$PRJ_DISPLAY manual push"
 
   echo "Pushing changes in [ private ] submodule..."
   git add . && git commit . -m "$message"
@@ -31,7 +31,7 @@ push_submodule() {
 push_main() {
   cd "$PROJECT_ROOT" && git pull --quiet
 
-  local message="<dotfiles> private repo revision update"
+  local message="$PRJ_DISPLAY private repo revision update"
 
   echo -e "\nPushing changes in main folder..."
   git add . && git commit . -m "$message"

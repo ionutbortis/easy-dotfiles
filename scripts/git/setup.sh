@@ -11,7 +11,7 @@ sources() {
 setup_log_file "git-setup"
 
 check_additional_repo() {
-  echo "Checking if <dotfiles> private repo is already configured..."
+  echo "Checking if $PRJ_DISPLAY private repo is already configured..."
 
   cd "$PROJECT_ROOT" && git pull --quiet
 
@@ -56,7 +56,7 @@ handle_additional_repo_data() {
 
   cd "$PRIVATE_FOLDER" && is_empty_folder config || return
 
-  echo -e "\nIt seems that <dotfiles> private configuration is empty."
+  echo -e "\nIt seems that $PRJ_DISPLAY private configuration is empty."
   echo -e "It's recommended to use the 'sample' data for initializing your configuration.\n"
 
   local message="Do you want to use the 'sample' data for initializing your private repo?"
@@ -98,7 +98,7 @@ submodule_profile_check() {
   cd "$PRIVATE_FOLDER"; local profile="$(git branch --show-current)"
 
   [[ "$profile" ]] \
-      && echo -e "\nCurrent profile for <dotfiles> private data is: [ $profile ]" \
+      && echo -e "\nCurrent profile for $PRJ_DISPLAY private data is: [ $profile ]" \
       && return
 
   echo -e "\n[ WARN ] There's no profile set for the private repo. Will use default..."
@@ -106,29 +106,29 @@ submodule_profile_check() {
 }
 
 display_profiles() {
-  echo -e "\nCreating the <dotfiles> profiles list..."
+  echo -e "\nCreating the $PRJ_DISPLAY profiles list..."
   PROFILES_ARRAY=( $(list_branches) )
 
-  echo "Profiles list for <dotfiles> private data:"
+  echo "Profiles list for $PRJ_DISPLAY private data:"
   printf "[ %s ]\n" "${PROFILES_ARRAY[@]}"
 
   submodule_profile_check
 }
 
 create_new_profile() {
-  local message="Do you want to create and use a new profile for this <dotfiles> installation?"
+  local message="Do you want to create and use a new profile for this $PRJ_DISPLAY installation?"
   echo; confirm_action "$message" || return 1
 
-  read -p "Enter the new <dotfiles> profile name: " new_profile
+  read -p "Enter the new $PRJ_DISPLAY profile name: " new_profile
 
   create_branch "$new_profile"
 }
 
 switch_profile() {
-  local message="Do you want to switch to another profile for this <dotfiles> installation?"
+  local message="Do you want to switch to another profile for this $PRJ_DISPLAY installation?"
   echo; confirm_action "$message" || return 1
 
-  echo "Select the desired <dotfiles> profile:"
+  echo "Select the desired $PRJ_DISPLAY profile:"
   select profile in "${PROFILES_ARRAY[@]}"; do 
     [[ "$profile" ]] && break || echo "Please input a valid number!"
   done
