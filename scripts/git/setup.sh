@@ -109,7 +109,7 @@ display_profiles() {
   echo -e "\nCreating the $PRJ_DISPLAY profiles list..."
   PROFILES_ARRAY=( $(list_branches) )
 
-  echo "Profiles list for $PRJ_DISPLAY private data:"
+  echo "Profiles list for private data:"
   printf "[ %s ]\n" "${PROFILES_ARRAY[@]}"
 
   submodule_profile_check
