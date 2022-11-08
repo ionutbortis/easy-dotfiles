@@ -44,7 +44,7 @@ DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
 SUPPORTED_SCHEDULES=( "daily" "weekly" "monthly" )
 SCHEDULE_FOLDERS=( "/etc/cron.daily" "/etc/cron.weekly" "/etc/cron.monthly" )
 
-ANACRON_SCRIPT_PREFFIX="$USER-dotfiles-"
+ANACRON_SCRIPT_PREFFIX="$USER-$PROJECT_NAME-"
 ANACRON_ACTIONS=( "export" "import" )
 
 # This method of determining the version only works for Gnome 40+

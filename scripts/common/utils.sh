@@ -100,7 +100,7 @@ replace_config_property() {
     echo "[ WARN ] Property <$property_name> is already configured! Will be commented out. (file: $config_file)"
   fi
 
-  local comment_line="$comment_prefix Commented out by \<dotfiles\>"
+  local comment_line="$comment_prefix Commented out by $PRJ_DISPLAY"
   sed "$section_pattern/! s/$property_pattern/$comment_line\n$comment_prefix &/" -i "$config_file"
 
   local auto_config_section="$(sed -n "$section_pattern/ p" "$config_file")"
