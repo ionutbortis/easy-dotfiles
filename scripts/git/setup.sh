@@ -22,9 +22,9 @@ check_additional_repo() {
 display_new_repo_help() {
   local help="
     You need to manually create a separate 'private' repository in your git provider account:
-    dotfiles-private
+    $PROJECT_NAME-private
 
-    ❗Important: Please make sure that the repo is not empty (check the 'Add a README file' option).
+    ❗Important: Make sure that the repo is private and not empty (check the 'Add a README file' option).
 
     Official guide on how to create repositories on github: 
     https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository
@@ -37,13 +37,14 @@ configure_additional_repo() {
   cd "$PROJECT_ROOT"
 
   local main_repo_url="$(git ls-remote --get-url)"
-  local expected_private_url="${main_repo_url%%/*}/dotfiles-private"
+  local expected_private_url="${main_repo_url%%/*}/$PROJECT_NAME-private"
 
-  echo "Please provide the repositoy URL for <dotfiles-private>."
-  echo "The repo needs to be already created and the URL should look like: "
+  echo "Please provide the repositoy URL for '$PROJECT_NAME-private'..."
+  echo
+  echo "It needs to be already created and the URL should look like: "
   echo "$expected_private_url"
   echo
-  echo "Enter the URL for <dotfiles-private> repo"
+  echo "Enter the URL for the private repo"
   read -p "[ or press Enter to use '$expected_private_url' ]: " provided_url
 
   local repo="${provided_url:-"$expected_private_url"}"
