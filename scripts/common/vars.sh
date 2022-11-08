@@ -20,7 +20,8 @@ check_working_dir() {
   exit 1
 }
 
-PROJECT_NAME="dotfiles"
+# BE CAREFUL if changing this since it's used in a lot of places [ file names, sed patterns, etc. ]
+PROJECT_NAME="dotfiles" 
 PRJ_DISPLAY="<"$PROJECT_NAME">"
 
 PROJECT_ROOT="$(get_project_root)" && check_working_dir
