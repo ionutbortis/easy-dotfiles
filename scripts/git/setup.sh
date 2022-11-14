@@ -116,13 +116,28 @@ display_profiles() {
   submodule_profile_check
 }
 
+display_new_profile_error() {
+  local name="$1"
+  echo
+  echo "[ ERROR ] The provided name [ $name ] is invalid!"
+  echo
+  echo "Please see the official git docs on how to name references (branches):"
+  echo "https://git-scm.com/docs/git-check-ref-format"
+  echo
+}
+
 create_new_profile() {
   local message="Do you want to create and use a new profile for this $PRJ_DISPLAY installation?"
   echo; confirm_action "$message" || return 1
 
-  read -p "Enter the new $PRJ_DISPLAY profile name: " new_profile
+  while [[ ! "$valid_name" ]]; do
+    read -p "Enter the new $PRJ_DISPLAY profile name: " name
 
-  create_branch "$new_profile"
+    git check-ref-format --branch "$name" &>/dev/null \
+        && local valid_name="$name" || display_new_profile_error "$name"
+  done
+
+  create_branch "$valid_name"
 }
 
 switch_profile() {
