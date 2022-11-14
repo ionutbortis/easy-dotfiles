@@ -13,6 +13,19 @@ setup_log_file() {
   exec > >( tee "$new_log_file" ) 2>&1
 }
 
+create_work_dir() {
+  cd "$PROJECT_ROOT" && mkdir -p "$WORK_DIR"
+}
+
+clean_work_dir() {
+  cd "$PROJECT_ROOT" && rm -rf "$WORK_DIR" && create_work_dir
+}
+
+create_temp_file() {
+  local suffix="$1"
+  create_work_dir && echo "$(mktemp --tmpdir="$WORK_DIR" --suffix="$suffix")"
+}
+
 confirm_action() {
   while true; do
     read -p "$1 [y/n]: " -n 1 answer
@@ -31,18 +44,10 @@ prompt_user() {
   confirm_action "Are you sure that you want to do this?" || exit 0
 }
 
-path_exists() {
-  local path="$1"
+is_empty_folder() {
+  local folder="$1"
 
-  read_permission_check "$path" || local cmd_prefix="sudo"
-  $cmd_prefix test -e "$path"
-}
-
-read_permission_check() {
-  local path="$1"
-
-  test -e "$path" || { read_permission_check "$(dirname "$path")"; return $?; }
-  test -r "$path"
+  [[ "$(ls -A "$folder" 2>/dev/null)" ]] && return 1 || return 0
 }
 
 write_permission_check() {
@@ -50,19 +55,6 @@ write_permission_check() {
 
   test -e "$path" || { write_permission_check "$(dirname "$path")"; return $?; }
   test -w "$path"
-}
-
-set_ownership_from_parent() {
-  local file="$1"; local parent="$(dirname "$file")"
-
-  local ownership="$(ls -ld "$parent" | awk '{ print $3 ":" $4 }')"
-  sudo chown "$ownership" "$file"
-}
-
-is_empty_folder() {
-  local folder="$1"
-
-  [[ "$(ls -A "$folder" 2>/dev/null)" ]] && return 1 || return 0
 }
 
 replace_template_var() {

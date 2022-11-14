@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TODO explain args
-# Accepted args: --schedule=value --only-files --only-dconfs --full-clean
+# Accepted args: --schedule=value --only-files --only-dconfs
 
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
@@ -18,11 +18,7 @@ setup_log_file "${schedule:-"manual"}-export""${only_files+"-files"}${only_dconf
 
 remove_data_files() {
   local folder_names=(
-    "$APPS_FOLDER" 
-    "$EXTENSIONS_FOLDER" 
-    "$KEYBINDINGS_FOLDER" 
-    "$MISC_FOLDER" 
-    "$TWEAKS_FOLDER"
+    "$APPS_FOLDER" "$EXTENSIONS_FOLDER" "$KEYBINDINGS_FOLDER" "$MISC_FOLDER" "$TWEAKS_FOLDER"
   )
   for folder in "${folder_names[@]/#/"$PARENT_DATA_FOLDER/"}"; do
     echo "Removing all files from [ $folder ]..."
@@ -95,39 +91,67 @@ export_dconfs() {
   done < <(jq -cr "$jq_filter" "$config_json")
 }
 
+create_permissions_file() {
+  local source="$1"; local target="$2"
+  local all_permissions="$(sudo bash -c "cd \"$source\" && getfacl -R . ")\n"
+
+  cd "$target" && rm -f "$PERMISSIONS_FILE"
+
+  local exported_files="$(find . )"
+
+  while read -r file; do
+    local section_start="^# file: ${file/#.\//}$"
+    printf "$all_permissions" | grep "$section_start" --after-context=6 >> "$PERMISSIONS_FILE"
+
+  done <<< "$exported_files"
+}
+
+export_file_path() {
+  local path="$1"; local data_folder="$2"; local exclude_list="$3"; local cmd_prefix="$4"
+
+  local folder="$(dirname "$path")"
+  local search="$(basename "$path")"
+
+  local includes_file="$(create_temp_file '_includes')"
+  local excludes_file="$(create_temp_file '_excludes')"
+
+  local source="${folder/#~/"$HOME"}"
+
+  $cmd_prefix bash -c "cd \"$source\" && find . -maxdepth 1 -name \"$search\"" > "$includes_file"
+  [[ -s "$includes_file" ]] \
+      || { echo "[ WARN ] Missing file to export [ $path ]"; return; }
+
+  echo "$exclude_list" | grep "^$folder" | sed "s|"^$folder/"|./|g" > "$excludes_file"
+
+  local target="$data_folder/$folder" && mkdir -p "$target"
+
+  $cmd_prefix bash -c "cd \"$source\" \
+      && tar -c --no-unquote -X \"$excludes_file\" -T \"$includes_file\" | ( cd \"$target\" && tar xf - )"
+
+  [[ "$cmd_prefix" ]] \
+      && sudo chown "$USER":"$USER" -R "$target" \
+      && create_permissions_file "$source" "$target"
+}
+
 export_files() {
   local data_folder="$PARENT_DATA_FOLDER/$1"
   local config_json="$PARENT_CONFIG_FOLDER/$1/config.json"
   local jq_filter="$2"
 
   echo "Exporting files to [ $data_folder ]..."
-  cd "$data_folder"
 
   while read -r include; read -r exclude
   do
     readarray -t include_array < <(echo "$include" | jq -cr "select(. != null) | .[]")
     readarray -t exclude_array < <(echo "$exclude" | jq -cr "select(. != null) | .[]")
 
-    for file in "${include_array[@]}"; do
-      local source="${file/#~/"$HOME"}"
-      local target=./"${file#*/}"
+    local exclude_list="$(printf '%s\n' "${exclude_array[@]}")"
 
-      path_exists "$source" \
-          || { echo "[ WARN ] Missing file to export [ $file ]"; continue; }
-
+    for path in "${include_array[@]}"; do
       unset local cmd_prefix
-      read_permission_check "$source" || local cmd_prefix="sudo"
+      [[ "$path" =~ ^~ || "$path" =~ ^"$HOME" ]] || local cmd_prefix="sudo"
 
-      local target_parent_dir="$(dirname "$target")"
-
-      mkdir -p "$target_parent_dir"
-      $cmd_prefix rsync -a --no-o --delete "$source" "$target_parent_dir"
-
-      $cmd_prefix chown -R "$USER:$USER" "$target"
-    done
-
-    for file in "${exclude_array[@]}"; do 
-      local target=./"${file#*/}" && rm -rf "$target"
+      export_file_path "$path" "$data_folder" "$exclude_list" "$cmd_prefix"
     done
 
   done < <(jq -cr "$jq_filter" "$config_json")
@@ -152,10 +176,10 @@ export_all_dconfs() {
 [[ "$schedule" ]] || \
     prompt_user "[ WARN ] This will override the settings in $PRJ_DISPLAY with the ones from your system."
 
-[[ "$full_clean" ]] && remove_data_files
+[[ "$only_files" ]] && { export_all_files; exit; }
+[[ "$only_dconfs" ]] && { export_all_dconfs; exit; }
 
-[[ "$only_files" ]] && export_all_files && exit
-[[ "$only_dconfs" ]] && export_all_dconfs && exit
-
+remove_data_files
 export_all_files
 export_all_dconfs
+clean_work_dir

@@ -16,11 +16,11 @@ check_schedule_arg && check_restriction_args
 
 setup_log_file "${schedule:-"manual"}-import""${only_files+"-files"}${only_dconfs+"-dconfs"}"
 
-file_existence_check() {
-  local file="$1"
-  [[ -e "$file" ]] && return
+missing_file_message() {
+  local path="$1"
+  local relative_path="$(sed -e 's|^/||' -e 's|^|./|' <<< "$path")"
 
-  echo "[ WARN ] Missing file to import [ $file ]" && return 1
+  echo "[ WARN ] Missing file to import [ "$relative_path" ]" 
 }
 
 import_dconfs() {
@@ -33,11 +33,40 @@ import_dconfs() {
 
   while read -r schema_path; read -r file 
   do
-    file_existence_check "$file" || continue
+    [[ -e "$file" ]] || {  missing_file_message "$file"; continue; }
 
     cat "$file" | dconf load -f "$schema_path"
 
   done < <(jq -cr "$jq_filter" "$config_json")
+}
+
+restore_permissions() {
+  local source="$1"; local target="$2"
+  local file="$source/$PERMISSIONS_FILE"
+
+  sudo bash -c "cd \"$target\" && setfacl --restore=\"$file\"" 
+}
+
+import_file_path() {
+  local path="$1"; local data_folder="$2"; local cmd_prefix="$3"
+
+  local folder="$(dirname "$path")"
+  local search="$(basename "$path")"
+
+  local includes_file="$(create_temp_file '_includes')"
+
+  local source="$data_folder/$folder"
+  [[ -e "$source" ]] || { missing_file_message "$path"; return; }
+
+  cd "$source" && find . -maxdepth 1 -name "$search" > "$includes_file"
+  [[ -s "$includes_file" ]] || { missing_file_message "$path"; return; }
+
+  local target="${folder/#~/"$HOME"}" && $cmd_prefix mkdir -p "$target"
+
+  $cmd_prefix bash -c "cd \"$source\" \
+      && tar -c --no-unquote -T \"$includes_file\" | ( cd \"$target\" && tar xf - )"
+
+  [[ "$cmd_prefix" ]] && restore_permissions "$source" "$target"
 }
 
 import_files() {
@@ -52,21 +81,11 @@ import_files() {
   do
     readarray -t include_array < <(echo "$include" | jq -cr "select(. != null) | .[]")
 
-    for file in "${include_array[@]}"; do
-      local source=./"${file#*/}"
-      local target="${file/#~/"$HOME"}"
-
-      file_existence_check "$source" || continue
-
+    for path in "${include_array[@]}"; do
       unset local cmd_prefix
-      write_permission_check "$target" || local cmd_prefix="sudo"
+      [[ "$path" =~ ^~ || "$path" =~ ^"$HOME" ]] || local cmd_prefix="sudo"
 
-      local target_parent_dir="$(dirname "$target")"
-
-      $cmd_prefix mkdir -p "$target_parent_dir"
-      $cmd_prefix rsync -a --no-o -I "$source" "$target_parent_dir"
-
-      set_ownership_from_parent "$target"
+      import_file_path "$path" "$data_folder" "$cmd_prefix"
     done
 
   done < <(jq -cr "$jq_filter" "$config_json")
@@ -91,8 +110,8 @@ import_all_dconfs() {
 [[ "$schedule" ]] || \
     prompt_user "[ WARN ] This will override the settings on your system with the ones from $PRJ_DISPLAY !"
 
-[[ "$only_files" ]] && import_all_files && exit
-[[ "$only_dconfs" ]] && import_all_dconfs && exit
+[[ "$only_files" ]] && { import_all_files; exit; }
+[[ "$only_dconfs" ]] && { import_all_dconfs; exit; }
 
 import_all_files
 import_all_dconfs

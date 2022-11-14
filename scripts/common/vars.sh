@@ -41,6 +41,7 @@ LOGS_DIR="$PROJECT_ROOT/logs"
 WORK_DIR="$PROJECT_ROOT/tmp"
 
 DEFAULTS_SCRIPT="$PRIVATE_FOLDER/scripts/defaults.sh"
+PERMISSIONS_FILE=".permissions"
 
 SUPPORTED_SCHEDULES=( "daily" "weekly" "monthly" )
 SCHEDULE_FOLDERS=( "/etc/cron.daily" "/etc/cron.weekly" "/etc/cron.monthly" )

@@ -24,7 +24,7 @@ select_setup_distro() {
 }
 
 setup() {
-  rm -rf "$WORK_DIR" && mkdir -p "$WORK_DIR"
+  create_work_dir
 
   cd "$PROJECT_ROOT" && ./scripts/common/setup.sh
 
@@ -102,12 +102,6 @@ install_extensions() {
   done < <(jq -cr "$jq_filter" "$EXTENSIONS_CONFIG_JSON")
 }
 
-cleanup() {
-  echo "Removing [ $WORK_DIR ] folder..."
-
-  cd "$PROJECT_ROOT" && rm -rf "$WORK_DIR"
-}
-
 show_finished_message() {
   echo
   echo "$PRJ_DISPLAY apps and extensions installation finished!"
@@ -121,6 +115,6 @@ show_finished_message() {
 setup
 install_apps
 install_extensions
-cleanup
 
 show_finished_message
+clean_work_dir
