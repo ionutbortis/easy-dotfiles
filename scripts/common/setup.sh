@@ -6,13 +6,14 @@ sources() {
   source "$script_folder/vars.sh"
   source "$script_folder/utils.sh"
 
-}; sources
+  source "$DEFAULTS_SCRIPT"
 
-source "$PRIVATE_FOLDER/scripts/defaults.sh"
+}; sources
 
 configure_hostname() {
   echo -e "\nEnter the desired computer name"
   read -p "[ default: $DEFAULT_HOST_NAME, press Enter to use default ]: " name
+
   sudo hostnamectl set-hostname "${name:-"$DEFAULT_HOST_NAME"}"
 }
 

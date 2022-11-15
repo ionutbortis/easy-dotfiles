@@ -6,7 +6,7 @@ sources() {
   source "$script_folder/common/vars.sh"
   source "$script_folder/common/utils.sh"
 
-  source "$PRIVATE_FOLDER/scripts/defaults.sh"
+  source "$DEFAULTS_SCRIPT"
 
 }; sources
 
