@@ -16,7 +16,7 @@ get_project_root() {
 check_working_dir() {
   [[ "$PROJECT_ROOT" && "$PWD" =~ "$PROJECT_ROOT" ]] && return
 
-  echo "[ ERROR ] $PRJ_DISPLAY script invocations should be done from inside the project folder!"
+  echo "[ ERROR ] $PRJ_DISPLAY scripts must be invoked from within the project folder!"
   exit 1
 }
 

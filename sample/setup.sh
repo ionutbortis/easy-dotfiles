@@ -21,7 +21,7 @@ display_git_info_message() {
   echo "- Your name               e.g. John Doe"
   echo "- Your email address      e.g. john.doe@gmail.com"
   echo
-  echo "Note: For email address you need to use the one from your github account."
+  echo "Note: For email address you need to use the one from your git provider account."
   echo
   echo "Please provide your defaults for these so they can be easily used later on."
   echo
@@ -36,10 +36,10 @@ configure_defaults() {
 
   display_git_info_message
 
-  read -p "Enter the your default git name for $PRJ_DISPLAY repos: " git_name
+  read -p "Enter your default git name for $PRJ_DISPLAY repos: " git_name
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_NAME" "DEFAULT_GIT_NAME=\"$git_name\""
 
-  read -p "Enter the your default git email for $PRJ_DISPLAY repos: " git_email
+  read -p "Enter your default git email for $PRJ_DISPLAY repos: " git_email
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_EMAIL" "DEFAULT_GIT_EMAIL=\"$git_email\""
 }
 

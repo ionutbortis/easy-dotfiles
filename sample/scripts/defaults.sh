@@ -5,7 +5,7 @@
 #
 # No spaces, dashes or other characters are allowed inside distro names except underscore!
 #
-# If you want to use multiple words, you can use the camel case style or an underscore:
+# If you need to use multiple words, you can use the camel case style or an underscore:
 # => camelCase: "popOS" "linuxMint" "openSUSE"
 # => underscore: "pop_OS" "linux_mint" "open_SUSE"
 # 
