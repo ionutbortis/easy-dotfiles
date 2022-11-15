@@ -24,7 +24,10 @@ display_new_repo_help() {
     You need to manually create a separate 'private' repository in your git provider account:
     $PROJECT_NAME-private
 
-    ❗Important: Make sure that the repo is private and not empty (check the 'Add a README file' option).
+    ❗Important: Make sure that the new repo is private and NOT EMPTY❗
+
+    On github you can check the 'Add a README file' option. Other git providers might offer similar features 
+    or you need to manually add a simple README.md file.
 
     Official guide on how to create repositories on github: 
     https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository
@@ -37,7 +40,7 @@ configure_additional_repo() {
   cd "$PROJECT_ROOT"
 
   local main_repo_url="$(git ls-remote --get-url)"
-  local expected_private_url="${main_repo_url%%/*}/$PROJECT_NAME-private"
+  local expected_private_url="${main_repo_url%%/*}/$PROJECT_NAME-private.git"
 
   echo "Please provide the repositoy URL for '$PROJECT_NAME-private'..."
   echo
@@ -116,7 +119,7 @@ display_profiles() {
   submodule_profile_check
 }
 
-display_new_profile_error() {
+profile_name_error() {
   local name="$1"
   echo
   echo "[ ERROR ] The provided name [ $name ] is invalid!"
@@ -134,7 +137,7 @@ create_new_profile() {
     read -p "Enter the new $PRJ_DISPLAY profile name: " name
 
     git check-ref-format --branch "$name" &>/dev/null \
-        && local valid_name="$name" || display_new_profile_error "$name"
+        && local valid_name="$name" || profile_name_error "$name"
   done
 
   create_branch "$valid_name"
