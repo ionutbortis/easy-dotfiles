@@ -142,7 +142,7 @@
       "ubuntu": "sudo apt-get install skypeforlinux -y"
     },
     "files": {
-      "include": ["~/.config/skypeforlinux/files.json"]
+      "include": ["~/.config/skypeforlinux/settings.json"]
     }
   }
 ]
