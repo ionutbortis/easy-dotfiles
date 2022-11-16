@@ -14,7 +14,7 @@
       "fedora": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive",
       "ubuntu": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive"
     },
-    "settings": {
+    "files": {
       "include": ["~/.var/app/io.github.shiftey.Desktop/data/recently-used.xbel", "~/.var/app/io.github.shiftey.Desktop/config"]
     }
   },
@@ -33,7 +33,7 @@
       "fedora": "sudo dnf install code -y",
       "ubuntu": "sudo apt-get install code -y"
     },
-    "settings": {
+    "files": {
       "include": ["~/.config/Code"],
       "exclude": ["~/.config/Code/Cache", "~/.config/Code/CachedData"]
     }
@@ -45,7 +45,7 @@
       "fedora": "../private/scripts/apps/jidea-install.sh",
       "ubuntu": "../private/scripts/apps/jidea-install.sh"
     },
-    "settings": {
+    "files": {
       "include": ["~/.config/JetBrains"]
     }
   },
@@ -56,7 +56,7 @@
       "fedora": "sudo dnf install atom -y",
       "ubuntu": "sudo apt-get install atom -y"
     },
-    "settings": {
+    "files": {
       "include": ["~/.atom"],
       "exclude": ["~/.atom/compile-cache"]
     }
@@ -68,7 +68,7 @@
       "fedora": "sudo dnf install doublecmd-gtk -y",
       "ubuntu": "sudo apt-get install doublecmd-gtk -y"
     },
-    "settings": {
+    "files": {
       "include": ["~/.config/doublecmd"],
       "exclude": ["~/.config/doublecmd/doublecmd.err", "~/.config/doublecmd/history.xml", "~/.config/doublecmd/pixmaps.cache"]
     }
@@ -117,11 +117,9 @@
     "install": {
       "ubuntu": "sudo apt-get install gnome-weather -y"
     },
-    "settings": {
-      "dconf": {
-        "schema_path": "/org/gnome/Weather/",
-        "file": "gnome-weather.conf"
-      }
+    "dconf": {
+      "schema_path": "/org/gnome/Weather/",
+      "file": "gnome-weather.conf"
     }
   },
   {
@@ -131,7 +129,7 @@
       "fedora": "sudo dnf install smplayer -y",
       "ubuntu": "sudo apt-get install smplayer -y"
     },
-    "settings": {
+    "files": {
       "include": ["~/.config/smplayer"],
       "exclude": ["~/.config/smplayer/smplayer_files.ini", "~/.config/smplayer/file_settings"]
     }
@@ -143,8 +141,8 @@
       "fedora": "sudo dnf install skypeforlinux -y",
       "ubuntu": "sudo apt-get install skypeforlinux -y"
     },
-    "settings": {
-      "include": ["~/.config/skypeforlinux/settings.json"]
+    "files": {
+      "include": ["~/.config/skypeforlinux/files.json"]
     }
   }
 ]
