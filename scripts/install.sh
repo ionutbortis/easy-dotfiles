@@ -5,7 +5,6 @@ sources() {
   
   source "$script_folder/common/vars.sh"
   source "$script_folder/common/utils.sh"
-
   source "$DEFAULTS_SCRIPT"
 
 }; sources
@@ -36,8 +35,8 @@ setup() {
       && echo -e "\n[ WARN ] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]" \
       && return
 
-  echo -e "\nRunning [ $DISTRO ] specific setup file [ $distro_setup_script ]..." \
-      && "$distro_setup_script"
+  echo -e "\nRunning [ $DISTRO ] specific setup file [ $distro_setup_script ]..."
+  "$distro_setup_script"
 }
 
 list_apps() {
@@ -55,9 +54,7 @@ install_apps() {
 
   local jq_filter=".[] | select(.install.$DISTRO | .!=null and .!=\"\") | (.name, .install.$DISTRO)"
 
-  while read -r name
-  do
-    read -r install_cmd 
+  while read -r name; read -r install_cmd; do
 
     echo -e "\nInstalling [ $name ] app with command: [ $install_cmd ]"
     $install_cmd
@@ -72,10 +69,8 @@ install_extensions() {
 
   local jq_filter=".[] | select(.url != null and .url != \"\") | (.url, .name)"
 
-  while read -r url
-  do
-    read -r name 
-    
+  while read -r url; read -r name; do
+
     echo -e "\nDownloading [ $name ] extension..."
 
     local ego_id="$(basename $(dirname "$url"))"
