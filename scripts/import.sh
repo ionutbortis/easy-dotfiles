@@ -94,17 +94,21 @@ import_files() {
 import_all_files() {
   echo -e "\nStarted importing files from $PRJ_DISPLAY..."
 
-  import_files "$APPS_FOLDER" ".[].files | select(. != null and .include != null) | .include"
-  import_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | .include"
+  local jq_filter=".[].files | select(. != null and .include != null) | .include"
+
+  import_files "$APPS_FOLDER" "$jq_filter"
+  import_files "$MISC_FOLDER" "$jq_filter"
 }
 
 import_all_dconfs() {
   echo -e "\nStarted importing dconfs from $PRJ_DISPLAY..."
 
-  import_dconfs "$APPS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file)"
-  import_dconfs "$EXTENSIONS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file)"
-  import_dconfs "$KEYBINDINGS_FOLDER" ".[] | (.schema_path, .file)"
-  import_dconfs "$TWEAKS_FOLDER" ".[] | (.schema_path, .file)"
+  local jq_filter=".[].dconf | select(. != null) | (.schema_path, .file)"
+
+  import_dconfs "$APPS_FOLDER" "$jq_filter"
+  import_dconfs "$EXTENSIONS_FOLDER" "$jq_filter"
+  import_dconfs "$KEYBINDINGS_FOLDER" "${jq_filter/.dconf/}"
+  import_dconfs "$TWEAKS_FOLDER" "${jq_filter/.dconf/}"
 }
 
 [[ "$schedule" ]] || \

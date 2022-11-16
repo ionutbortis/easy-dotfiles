@@ -160,17 +160,21 @@ export_files() {
 export_all_files() {
   echo -e "\nStarted exporting files to $PRJ_DISPLAY..."
 
-  export_files "$APPS_FOLDER" ".[].files | select(. != null and .include != null) | (.include, .exclude)"
-  export_files "$MISC_FOLDER" ".[].files | select(. != null and .include != null) | (.include, .exclude)"
+  local jq_filter=".[].files | select(. != null and .include != null) | (.include, .exclude)"
+
+  export_files "$APPS_FOLDER" "$jq_filter"
+  export_files "$MISC_FOLDER" "$jq_filter"
 }
 
 export_all_dconfs() {
   echo -e "\nStarted exporting dconfs to $PRJ_DISPLAY..."
 
-  export_dconfs "$APPS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file, .keys)"
-  export_dconfs "$EXTENSIONS_FOLDER" ".[].dconf | select(. != null) | (.schema_path, .file, .keys)"
-  export_dconfs "$KEYBINDINGS_FOLDER" ".[] | (.schema_path, .file, .keys)"
-  export_dconfs "$TWEAKS_FOLDER" ".[] | (.schema_path, .file, .keys)"
+  local jq_filter=".[].dconf | select(. != null) | (.schema_path, .file, .keys)"
+  
+  export_dconfs "$APPS_FOLDER" "$jq_filter"
+  export_dconfs "$EXTENSIONS_FOLDER" "$jq_filter" 
+  export_dconfs "$KEYBINDINGS_FOLDER" "${jq_filter/.dconf/}"
+  export_dconfs "$TWEAKS_FOLDER" "${jq_filter/.dconf/}"
 }
 
 [[ "$schedule" ]] || \
