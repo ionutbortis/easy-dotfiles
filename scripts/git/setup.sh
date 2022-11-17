@@ -27,7 +27,7 @@ display_new_repo_help() {
     ❗Important: Make sure that the new repo is private and NOT EMPTY❗
 
     On github you can check the 'Add a README file' option. Other git providers might offer similar features 
-    or you need to manually add a simple README.md file.
+    or you need to manually add a simple README.md file to the private repo root.
 
     Official guide on how to create repositories on github: 
     https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository
@@ -130,7 +130,7 @@ profile_name_error() {
 }
 
 create_new_profile() {
-  local message="Do you want to create and use a new profile for this $PRJ_DISPLAY installation?"
+  local message="Do you want to create and use a new profile for this installation?"
   echo; confirm_action "$message" || return 1
 
   while [[ ! "$valid_name" ]]; do
@@ -144,7 +144,7 @@ create_new_profile() {
 }
 
 switch_profile() {
-  local message="Do you want to switch to another profile for this $PRJ_DISPLAY installation?"
+  local message="Do you want to switch to another profile for this installation?"
   echo; confirm_action "$message" || return 1
 
   echo "Select the desired $PRJ_DISPLAY profile:"
