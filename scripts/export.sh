@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TODO explain args
-# Accepted args: --schedule=value --only-files --only-dconfs
+# Accepted args: --schedule=value
 
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
@@ -12,9 +12,9 @@ sources() {
 
 }; sources "$@"
 
-check_schedule_arg && check_restriction_args
+check_schedule_arg
 
-setup_log_file "${schedule:-"manual"}-export""${only_files+"-files"}${only_dconfs+"-dconfs"}"
+setup_log_file "${schedule:-"manual"}-export"
 
 remove_data_files() {
   local folder_names=(
@@ -179,9 +179,6 @@ export_all_dconfs() {
 
 [[ "$schedule" ]] || \
     prompt_user "[ WARN ] This will override the settings in $PRJ_DISPLAY with the ones from your system."
-
-[[ "$only_files" ]] && { export_all_files; exit; }
-[[ "$only_dconfs" ]] && { export_all_dconfs; exit; }
 
 remove_data_files
 export_all_files

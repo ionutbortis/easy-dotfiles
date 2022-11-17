@@ -144,5 +144,16 @@
     "files": {
       "include": ["~/.config/skypeforlinux/settings.json"]
     }
+  },
+  {
+    "name": "Timeshift",
+    "url": "https://github.com/teejee2008/timeshift",
+    "install": {
+      "fedora": "sudo dnf install timeshift -y",
+      "ubuntu": "sudo apt-get install timeshift -y"
+    },
+    "files": {
+      "include": ["/etc/timeshift/timeshift.json"]
+    }
   }
 ]

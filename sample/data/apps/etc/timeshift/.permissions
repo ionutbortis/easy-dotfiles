@@ -1,0 +1,13 @@
+# file: .
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::r-x
+
+# file: timeshift.json
+# owner: root
+# group: root
+user::rw-
+group::r--
+other::r--
