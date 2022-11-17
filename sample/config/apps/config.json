@@ -19,6 +19,18 @@
     }
   },
   {
+    "name": "Meld Merge",
+    "url": "https://meldmerge.org/",
+    "install": {
+      "fedora": "sudo dnf install meld -y",
+      "ubuntu": "sudo apt-get install meld -y"
+    },
+    "dconf": {
+      "schema_path": "/org/gnome/meld/",
+      "file": "meld.conf"
+    }
+  },
+  {
     "name": "Google Chrome",
     "url": "https://www.google.com/chrome/",
     "install": {
@@ -58,7 +70,7 @@
     },
     "files": {
       "include": ["~/.atom"],
-      "exclude": ["~/.atom/compile-cache"]
+      "exclude": ["~/.atom/*Cache", "~/.atom/.atom-socket-secret*"]
     }
   },
   {
