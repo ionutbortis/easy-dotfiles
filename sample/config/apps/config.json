@@ -34,8 +34,8 @@
       "ubuntu": "sudo apt-get install code -y"
     },
     "files": {
-      "include": ["~/.config/Code"],
-      "exclude": ["~/.config/Code/Cache", "~/.config/Code/CachedData"]
+      "include": ["~/.config/Code", "~/.config/Code/User/settings.json"],
+      "exclude": ["~/.config/Code/User", "~/.config/Code/*Cache*", "~/.config/Code/*Crash*", "~/.config/Code/*Service*", "~/.config/Code/logs"]
     }
   },
   {
