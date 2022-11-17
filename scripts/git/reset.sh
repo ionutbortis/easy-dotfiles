@@ -20,6 +20,7 @@ reset() {
   git reset --hard @{u}
   git clean -df
   git pull
+  git remote prune origin
 }
 
 prompt_user "[ WARN ] This will reset all the unpushed changes from your local copy of $PRJ_DISPLAY !"
