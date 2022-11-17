@@ -193,7 +193,7 @@
               <Entry Active="True">
                 <FileSource Type="FileSystem"/>
                 <Paths>
-                  <Path>/home/ionut/</Path>
+                  <Path>/home/ionut/easy-dotfiles/</Path>
                 </Paths>
               </Entry>
             </History>
@@ -217,7 +217,7 @@
               <Entry Active="True">
                 <FileSource Type="FileSystem"/>
                 <Paths>
-                  <Path>/home/ionut/</Path>
+                  <Path>/home/ionut/easy-dotfiles/private/config/apps/</Path>
                 </Paths>
               </Entry>
             </History>

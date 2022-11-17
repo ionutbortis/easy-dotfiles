@@ -1,4 +1,6 @@
 {
     "workbench.colorTheme": "Default Light+",
-    "git.confirmSync": false
+    "git.confirmSync": false,
+    "editor.renderWhitespace": "all",
+    "workbench.startupEditor": "none"
 }
