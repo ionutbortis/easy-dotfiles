@@ -31,7 +31,8 @@
     "file": "g-weather.conf"
   },
   {
-    "schema_path": "/org/gtk/settings/file-chooser/",
+    "schema_path": "/org/gtk/",
+    "keys": ["/settings/file-chooser/", "/gtk4/settings/file-chooser/"],
     "file": "file-chooser.conf"
   },
   {
