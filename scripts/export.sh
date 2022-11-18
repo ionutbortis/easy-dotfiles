@@ -121,7 +121,7 @@ export_file_path() {
   [[ -s "$includes_file" ]] \
       || { echo "[ WARN ] Missing file to export [ $path ]"; return; }
 
-  echo "$exclude_list" | grep "^$folder" | sed "s|"^$folder/"|./|g" > "$excludes_file"
+  echo "$exclude_list" | grep "^$path" | sed "s|"^$folder/"|./|g" > "$excludes_file"
 
   local target="$data_folder/$folder" && mkdir -p "$target"
 
