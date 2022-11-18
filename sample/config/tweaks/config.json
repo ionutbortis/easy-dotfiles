@@ -1,38 +1,38 @@
 [
   {
-    "schema_path": "/org/gnome/desktop/interface/",
-    "keys": ["text-scaling-factor", "clock-show-weekday"],
-    "file": "desktop.interface.conf"
-  },
-  {
-    "schema_path": "/org/gnome/desktop/datetime/",
-    "file": "desktop.datetime.conf"
-  },
-  {
-    "schema_path": "/org/gnome/desktop/background/",
-    "file": "desktop.background.conf"
-  },
-  {
-    "schema_path": "/org/gnome/desktop/wm/preferences/",
-    "file": "desktop.wm.preferences.conf"
-  },
-  {
-    "schema_path": "/org/gnome/desktop/a11y/",
-    "file": "desktop.accessibility.conf"
+    "schema_path": "/org/gnome/desktop/",
+    "keys": [
+      "/interface/ text-scaling-factor clock-show-weekday",
+      "/calendar/",
+      "/datetime/",
+      "/input-sources/",
+      "/background/",
+      "/wm/preferences/",
+      "/a11y/",
+      "/peripherals/keyboard/",
+      "/peripherals/mouse/",
+      "/peripherals/touchpad/",
+      "/sound/ allow-volume-above-100-percent event-sounds"
+    ],
+    "file": "gnome.desktop.conf"
   },
   {
     "schema_path": "/org/gnome/shell/",
-    "keys": ["favorite-apps"],
+    "keys": ["favorite-apps", "/weather/"],
     "file": "gnome.shell.conf"
   },
   {
-    "schema_path": "/org/gnome/shell/weather/",
-    "file": "gnome.weather.conf"
+    "schema_path": "/org/gnome/mutter/",
+    "file": "gnome.mutter.conf"
   },
   {
     "schema_path": "/org/gnome/GWeather4/",
     "keys": ["temperature-unit"],
-    "file": "gnome.weather.temperature.conf"
+    "file": "g-weather.conf"
+  },
+  {
+    "schema_path": "/org/gtk/settings/file-chooser/",
+    "file": "file-chooser.conf"
   },
   {
     "schema_path": "/org/gnome/settings-daemon/plugins/power/",
@@ -43,10 +43,6 @@
     "file": "night-light.conf"
   },
   {
-    "schema_path": "/org/gnome/mutter/",
-    "file": "gnome.mutter.conf"
-  },
-  {
     "schema_path": "/org/gnome/nautilus/",
     "file": "nautilus.conf"
   },
@@ -55,7 +51,19 @@
     "file": "text-editor.conf"
   },
   {
-    "schema_path": "/org/gtk/settings/file-chooser/",
-    "file": "file-chooser.conf"
+    "schema_path": "/org/gnome/calculator/",
+    "file": "calculator.conf"
+  },
+  {
+    "schema_path": "/org/gnome/calendar/",
+    "file": "calendar.conf"
+  },
+  {
+    "schema_path": "/org/gnome/gnome-system-monitor/",
+    "file": "system-monitor.conf"
+  },
+  {
+    "schema_path": "/org/gnome/rhythmbox/",
+    "file": "rhythmbox.conf"
   }
 ]
