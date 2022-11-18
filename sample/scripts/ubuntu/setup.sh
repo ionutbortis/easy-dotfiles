@@ -16,7 +16,7 @@ add_flatpak_support() {
 }
 
 add_software_repos() {
-  echo "Adding extra software repos (chrome, vscode, atom, skype, etc.)..."
+  echo "Adding extra software repos (chrome, vscode, skype, etc.)..."
 
   sudo apt-get install -y wget gpg apt-transport-https ca-certificates curl gnupg-agent software-properties-common
  
@@ -30,10 +30,6 @@ add_software_repos() {
   echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
       | sudo tee /etc/apt/sources.list.d/vscode.list
   rm -f packages.microsoft.gpg
-
-  # atom
-  wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
-  echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee /etc/apt/sources.list.d/atom.list
 
   # skype
   curl https://repo.skype.com/data/SKYPE-GPG-KEY | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/repo.skype.com.gpg >/dev/null

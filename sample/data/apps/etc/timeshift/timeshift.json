@@ -25,6 +25,5 @@
     "/home/ionut/.var/app/org.gnome.Boxes/data/gnome-boxes/images/***",
     "+ /home/ionut/.**"
   ],
-  "exclude-apps" : [
-  ]
+  "exclude-apps" : []
 }

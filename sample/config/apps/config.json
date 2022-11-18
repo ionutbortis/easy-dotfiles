@@ -49,9 +49,8 @@
       "ubuntu": "sudo apt-get install code -y"
     },
     "files": {
-      "include": ["~/.config/Code", "~/.config/Code/User/History", "~/.config/Code/User/settings.json"],
+      "include": ["~/.config/Code", "~/.config/Code/User"],
       "exclude": [
-        "~/.config/Code/User",
         "~/.config/Code/*Storage*",
         "~/.config/Code/*Cache*",
         "~/.config/Code/*Crash*",
@@ -69,18 +68,6 @@
     },
     "files": {
       "include": ["~/.config/JetBrains"]
-    }
-  },
-  {
-    "name": "Atom",
-    "url": "https://atom.io/",
-    "install": {
-      "fedora": "sudo dnf install atom -y",
-      "ubuntu": "sudo apt-get install atom -y"
-    },
-    "files": {
-      "include": ["~/.atom"],
-      "exclude": ["~/.atom/*Cache", "~/.atom/.atom-socket-secret*"]
     }
   },
   {
