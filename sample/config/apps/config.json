@@ -15,7 +15,10 @@
       "ubuntu": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive"
     },
     "files": {
-      "include": ["~/.var/app/io.github.shiftey.Desktop/data/recently-used.xbel", "~/.var/app/io.github.shiftey.Desktop/config"]
+      "include": [
+        "~/.var/app/io.github.shiftey.Desktop/data/recently-used.xbel",
+        "~/.var/app/io.github.shiftey.Desktop/config"
+      ]
     }
   },
   {
@@ -47,7 +50,14 @@
     },
     "files": {
       "include": ["~/.config/Code", "~/.config/Code/User/History", "~/.config/Code/User/settings.json"],
-      "exclude": ["~/.config/Code/User", "~/.config/Code/*Storage*", "~/.config/Code/*Cache*", "~/.config/Code/*Crash*", "~/.config/Code/*Service*", "~/.config/Code/logs"]
+      "exclude": [
+        "~/.config/Code/User",
+        "~/.config/Code/*Storage*",
+        "~/.config/Code/*Cache*",
+        "~/.config/Code/*Crash*",
+        "~/.config/Code/*Service*",
+        "~/.config/Code/logs"
+      ]
     }
   },
   {
@@ -82,7 +92,11 @@
     },
     "files": {
       "include": ["~/.config/doublecmd"],
-      "exclude": ["~/.config/doublecmd/doublecmd.err", "~/.config/doublecmd/history.xml", "~/.config/doublecmd/pixmaps.cache"]
+      "exclude": [
+        "~/.config/doublecmd/doublecmd.err",
+        "~/.config/doublecmd/history.xml",
+        "~/.config/doublecmd/pixmaps.cache"
+      ]
     }
   },
   {
