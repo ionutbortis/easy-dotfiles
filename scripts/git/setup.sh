@@ -56,8 +56,6 @@ configure_additional_repo() {
 }
 
 handle_additional_repo_data() {
-  local branches=( $(list_branches) ) && [[ "${#branches[@]}" -gt 1 ]] && return
-
   cd "$PRIVATE_FOLDER" && is_empty_folder config || return
 
   echo -e "\nIt seems that $PRJ_DISPLAY private configuration is empty."
