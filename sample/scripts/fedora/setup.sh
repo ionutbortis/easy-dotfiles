@@ -25,6 +25,12 @@ update_dnf_config() {
   rm "$temp_conf_file"
 }
 
+add_flatpak_support() {
+  echo "Adding flatpak/flathub support..."
+
+  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+}
+
 run_system_update() {
   echo "Running dnf update..."
 
@@ -39,12 +45,6 @@ enable_rpm_fusion() {
     https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
   sudo dnf groupupdate core -y
-}
-
-add_flatpak_support() {
-  echo "Adding flatpak/flathub support..."
-
-  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
 add_software_repos() {
@@ -72,9 +72,9 @@ install_xprop() {
 }
 
 update_dnf_config
+add_flatpak_support
 run_system_update
 enable_rpm_fusion
-add_flatpak_support
 add_software_repos
 install_media_codecs
 install_xprop
