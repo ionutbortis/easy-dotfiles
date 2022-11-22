@@ -73,20 +73,22 @@ list_branches() {
 }
 
 create_branch() {
-  local name="$1"
-  echo -e "\nCreating new branch [ $name ] for private repo..."
+  local name="$1"; cd "$PRIVATE_FOLDER" || return
 
+  echo -e "\nCreating new branch [ $name ] for private repo..."
   check_git_props
 
-  cd "$PRIVATE_FOLDER" && git switch --force-create "$name"
+  git switch --force-create "$name"
   git push --set-upstream origin "$name"
 }
 
 switch_branch() {
-  local name="$1";
-  echo -e "\nSwitching branch to [ $name ] for private repo..."
+  local name="$1"; cd "$PRIVATE_FOLDER" || return
 
-  cd "$PRIVATE_FOLDER" && git switch "$name"
+  echo -e "\nSwitching branch to [ $name ] for private repo..."
+  check_git_props
+
+  git switch "$name"
 }
 
 default_submodule_profile() {

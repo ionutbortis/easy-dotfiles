@@ -17,7 +17,8 @@ check_schedule_arg
 setup_log_file "${schedule:-"manual"}-push"
 
 push_submodule() {
-  cd "$PRIVATE_FOLDER" && git pull --quiet
+  cd "$PRIVATE_FOLDER" || return 
+  git pull --quiet
 
   local message="$PRJ_DISPLAY manual push"
   [[ "$schedule" ]] \
@@ -29,7 +30,8 @@ push_submodule() {
 }
 
 push_main() {
-  cd "$PROJECT_ROOT" && git pull --quiet
+  cd "$PROJECT_ROOT" || return
+  git pull --quiet
 
   local message="$PRJ_DISPLAY private repo revision update"
 

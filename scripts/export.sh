@@ -95,8 +95,9 @@ create_permissions_file() {
   local source="$1" target="$2"
   local all_permissions="$(sudo bash -c "cd \"$source\" && getfacl -R . ")"
 
-  cd "$target" && rm -f "$PERMISSIONS_FILE"
+  cd "$target" || return
 
+  rm -f "$PERMISSIONS_FILE"
   local exported_files="$(find . )"
 
   while read -r file; do
@@ -128,9 +129,10 @@ export_file_path() {
   $cmd_prefix bash -c "cd \"$source\" \
       && tar -c --no-unquote -X \"$excludes_file\" -T \"$includes_file\" | ( cd \"$target\" && tar xf - )"
 
-  [[ "$cmd_prefix" ]] \
-      && sudo chown "$USER":"$USER" -R "$target" \
-      && create_permissions_file "$source" "$target"
+  [[ "$cmd_prefix" ]] && {
+    sudo chown "$USER":"$USER" -R "$target"
+    create_permissions_file "$source" "$target"
+  }
 }
 
 export_files() {

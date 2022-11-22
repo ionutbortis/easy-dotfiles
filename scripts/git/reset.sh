@@ -11,16 +11,14 @@ sources() {
 setup_log_file "git-reset"
 
 reset() {
-  local folder="$1"
+  local folder="$1"; cd "$folder" || return
 
   echo -e "\nResetting changes in [ $folder ]..."
 
-  cd "$folder" && {
-    git reset --hard @{u}
-    git clean -df
-    git pull
-    git remote prune origin
-  }
+  git reset --hard @{u}
+  git clean -df
+  git pull
+  git remote prune origin
 }
 
 prompt_user "[ WARN ] This will reset all the unpushed changes from your local copy of $PRJ_DISPLAY !"

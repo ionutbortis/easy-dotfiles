@@ -13,7 +13,7 @@ setup_log_file "remove"
 remove_project_root() {
   echo "Removing [ $PROJECT_ROOT ] folder..."
 
-  cd ~ && rm -rf "$PROJECT_ROOT"
+  cd "$HOME" && rm -rf "$PROJECT_ROOT"
 }
 
 show_finished_message() {
