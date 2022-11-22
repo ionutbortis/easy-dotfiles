@@ -20,7 +20,7 @@ pull_data() {
   echo -e "Pulling changes from remote repositories...\n"
 
   for folder in "$PROJECT_ROOT" "$PRIVATE_FOLDER"; do
-    echo "Processing local repo folder [ "$folder" ]..."
+    echo "Processing local repo folder [ $folder ]..."
 
     cd "$folder" && git pull
   done

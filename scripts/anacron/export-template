@@ -7,7 +7,7 @@ fix_ownership() {
   chown -R USER_@REPLACE:USER_@REPLACE "PROJECT_ROOT_@REPLACE"
 }
 check_exit_status() {
-  [ $1 -eq 0 ] || { fix_ownership; exit 1; }
+  [ "$1" -eq 0 ] || { fix_ownership; exit 1; }
 }
 
 cd "PROJECT_ROOT_@REPLACE" && ./scripts/export.sh --schedule=schedule_@REPLACE

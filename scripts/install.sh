@@ -50,7 +50,7 @@ list_apps() {
 install_apps() {
   echo -e "\nStarting installation of the following apps: " && list_apps
 
-  cd "$WORK_DIR"
+  cd "$WORK_DIR" || return
 
   local jq_filter=".[] | select(.install.$DISTRO | .!=null and .!=\"\") | (.name, .install.$DISTRO)"
 
@@ -65,7 +65,7 @@ install_apps() {
 install_extensions() {
   echo -e "\nStarting installation of extensions..."
 
-  cd "$WORK_DIR"
+  cd "$WORK_DIR" || return
 
   local jq_filter=".[] | select(.url != null and .url != \"\") | (.url, .name)"
 
@@ -73,7 +73,7 @@ install_extensions() {
 
     echo -e "\nDownloading [ $name ] extension..."
 
-    local ego_id="$(basename $(dirname "$url"))"
+    local ego_id="$(basename "$(dirname "$url")")"
     local request_url="https://extensions.gnome.org/extension-info/?pk=$ego_id&shell_version=$GNOME_SHELL_VERSION"
     local http_response="$(curl -s -o /dev/null -I -w "%{http_code}" "$request_url")"
 
@@ -86,7 +86,7 @@ install_extensions() {
     local ext_uuid="$(echo "$ext_info" | jq -r '.uuid')"
     local ext_download_url="$(echo "$ext_info" | jq -r '.download_url')"
     
-    local ego_download_url="https://extensions.gnome.org$ext_download_url"
+    local ego_download_url="https://extensions.gnome.org""$ext_download_url"
     local package="$ext_uuid".zip
 
     wget -nv -t 5 "$ego_download_url" -O "$package"

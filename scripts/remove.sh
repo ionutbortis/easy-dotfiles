@@ -17,9 +17,11 @@ remove_project_root() {
 }
 
 show_finished_message() {
-  [[ $1 -eq 0 ]] \
-      && echo -e "\nProject $PRJ_DISPLAY was succesfully removed!" \
-      || echo -e "\n[ WARN ] Project $PRJ_DISPLAY wasn't removed properly!"
+  if [[ $1 -eq 0 ]]; then
+    echo -e "\nProject $PRJ_DISPLAY was succesfully removed!"
+  else
+    echo -e "\n[ WARN ] Project $PRJ_DISPLAY wasn't removed properly!"
+  fi
 }
 
 prompt_user "[ WARN ] This will remove the $PRJ_DISPLAY project from your system."

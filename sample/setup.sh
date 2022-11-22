@@ -31,15 +31,15 @@ configure_defaults() {
   echo -e "\nConfiguring the values from the [ "$DEFAULTS_SCRIPT" ] script."
   echo -e "These will be used later on when needed.\n"
 
-  read -p "Enter the default computer name: " hostname
+  read -rp "Enter the default computer name: " hostname
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_HOST_NAME" "DEFAULT_HOST_NAME=\"$hostname\""
 
   display_git_info_message
 
-  read -p "Enter your default git name for $PRJ_DISPLAY repos: " git_name
+  read -rp "Enter your default git name for $PRJ_DISPLAY repos: " git_name
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_NAME" "DEFAULT_GIT_NAME=\"$git_name\""
 
-  read -p "Enter your default git email for $PRJ_DISPLAY repos: " git_email
+  read -rp "Enter your default git email for $PRJ_DISPLAY repos: " git_email
   replace_line_in_file "$DEFAULTS_SCRIPT" "DEFAULT_GIT_EMAIL" "DEFAULT_GIT_EMAIL=\"$git_email\""
 }
 

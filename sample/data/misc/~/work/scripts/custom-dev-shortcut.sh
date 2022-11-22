@@ -24,4 +24,4 @@ exec > >(tee "$log_file") 2>&1
     && message="Yaay! Script ran successfully." \
     || message="NOOO! Script run had errors!\n\nCheck log file:\n$log_file"
 
-notify-send "$script_name" "$(echo -e $message)"
+notify-send "$script_name" "$(echo -e "$message")"

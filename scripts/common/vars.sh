@@ -7,8 +7,8 @@ check_required() {
 }; check_required
 
 get_project_root() {
-  local root="$(git rev-parse --show-superproject-working-tree 2>/dev/null)"
-  [[ "$root" ]] || root="$(git rev-parse --show-toplevel 2>/dev/null)"
+  local root="$(git rev-parse --show-superproject-working-tree 2> /dev/null)"
+  [[ "$root" ]] || root="$(git rev-parse --show-toplevel 2> /dev/null)"
 
   echo "$root"
 }
@@ -22,7 +22,7 @@ check_working_dir() {
 
 # BE CAREFUL if changing this since it's used in a lot of places [ file names, sed patterns, etc. ]
 PROJECT_NAME="easy-dotfiles" 
-PRJ_DISPLAY="<"$PROJECT_NAME">"
+PRJ_DISPLAY="<$PROJECT_NAME>"
 
 PROJECT_ROOT="$(get_project_root)" && check_working_dir
 

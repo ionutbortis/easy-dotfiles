@@ -1,15 +1,19 @@
 #!/bin/bash
 
 setup_log_file() {
-  local name="$1"
-  local history_folder="history"
+  local name="$1" history_folder="history"
 
-  mkdir -p "$LOGS_DIR/$history_folder" && cd "$LOGS_DIR"
+  mkdir -p "$LOGS_DIR/$history_folder"
+  
+  cd "$LOGS_DIR" && mv "$name"* "$history_folder" 2> /dev/null
 
-  mv "$name"* "$history_folder" 2>/dev/null && cd "$history_folder"
-  ls -tr "$name"* 2>/dev/null | head -n -3 | xargs --no-run-if-empty rm 
+  cd "$history_folder" && {
+    ls -tr "$name"* 2> /dev/null | head -n -3 | xargs --no-run-if-empty rm 
+  }
 
   local new_log_file="$LOGS_DIR"/"$name"_"$(date +'%Y-%m-%d_%H:%M:%S')".log
+
+  echo -e "*** Script output is saved to: [ $new_log_file ] ***\n"
   exec > >( tee "$new_log_file" ) 2>&1
 }
 
@@ -23,12 +27,12 @@ clean_work_dir() {
 
 create_temp_file() {
   local suffix="$1"
-  create_work_dir && echo "$(mktemp --tmpdir="$WORK_DIR" --suffix="$suffix")"
+  create_work_dir && mktemp --tmpdir="$WORK_DIR" --suffix="$suffix"
 }
 
 confirm_action() {
   while true; do
-    read -p "$1 [y/n]: " -n 1 answer
+    read -rp "$1 [y/n]: " -n 1 answer
 
     case "$answer" in
       y) echo; return 0;;
@@ -47,7 +51,7 @@ prompt_user() {
 is_empty_folder() {
   local folder="$1"
 
-  [[ "$(ls -A "$folder" 2>/dev/null)" ]] && return 1 || return 0
+  [[ "$(ls -A "$folder" 2> /dev/null)" ]] && return 1 || return 0
 }
 
 write_permission_check() {
@@ -58,24 +62,24 @@ write_permission_check() {
 }
 
 replace_template_var() {
-  local var_name="$1"; local var_value="$2" local file="$3"
+  local var_name="$1" var_value="$2" file="$3"
   local var_suffix="_@REPLACE"
 
   write_permission_check "$file" || local cmd_prefix="sudo"
 
-  $cmd_prefix sed -i "s|"$var_name$var_suffix"|"$var_value"|g" "$file"
+  $cmd_prefix sed -i "s|$var_name$var_suffix|$var_value|g" "$file"
 }
 
 replace_line_in_file() {
-  local file="$1"; local line_prefix="$2"; local replacement_line="$3"
+  local file="$1" line_prefix="$2" replacement_line="$3"
 
   sed -i "s/^$line_prefix.*$/$replacement_line/g" "$file"
 }
 
 replace_config_property() {
-  local config_file=$1; local property_name=$2; local property_value=$3
+  local config_file=$1 property_name=$2 property_value=$3
 
-  local value_separator="="; local comment_prefix="#"
+  local value_separator="=" comment_prefix="#"
 
   local section_prefix="$comment_prefix""$comment_prefix""$comment_prefix"
 
@@ -114,13 +118,14 @@ configure_git_props() {
 
   source "$DEFAULTS_SCRIPT"
 
-  read -p "Enter your git name [ default: $DEFAULT_GIT_NAME, press Enter to use default ]: " name
-  read -p "Enter your git email [ default: $DEFAULT_GIT_EMAIL, press Enter to use default ]: " email
+  read -rp "Enter your git name [ default: $DEFAULT_GIT_NAME, press Enter to use default ]: " name
+  read -rp "Enter your git email [ default: $DEFAULT_GIT_EMAIL, press Enter to use default ]: " email
 
   for folder in "$PROJECT_ROOT" "$PRIVATE_FOLDER"; do
-    cd "$folder"
-    git config user.name "${name:-"$DEFAULT_GIT_NAME"}"
-    git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
+    cd "$folder" && {
+      git config user.name "${name:-"$DEFAULT_GIT_NAME"}"
+      git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
+    }
   done
 }
 
@@ -128,10 +133,10 @@ check_git_props() {
   local missing="false"
 
   for folder in "$PROJECT_ROOT" "$PRIVATE_FOLDER"; do
-    cd "$folder"
-    local name="$(git config user.name)"
-    local email="$(git config user.email)"
-
+    cd "$folder" && {
+      local name="$(git config user.name)"
+      local email="$(git config user.email)"
+    }
     [[ "$name" && "$email" ]] || missing="true"
   done
 
@@ -141,7 +146,7 @@ check_git_props() {
 check_schedule_arg() {
   [[ "$schedule" ]] || return
 
-  [[ " ${SUPPORTED_SCHEDULES[@]} " =~ " $schedule " ]] && return
+  [[ " ${SUPPORTED_SCHEDULES[*]} " =~ " $schedule " ]] && return
 
   echo "[ ERROR ] Script argument '--schedule' has invalid value [ $schedule ]"
   echo "Valid values are:" && printf "%s\n" "${SUPPORTED_SCHEDULES[@]}"
@@ -161,7 +166,7 @@ remove_anacron_script() {
       local file="$folder/$ANACRON_SCRIPT_PREFFIX""$action"
       [[ -e "$file" ]] || continue
 
-      echo "Removing $PRJ_DISPLAY anacron script [ "$file" ]..."
+      echo "Removing $PRJ_DISPLAY anacron script [ $file ]..."
       sudo rm "$file"
     done
   done

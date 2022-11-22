@@ -13,11 +13,11 @@ check_required() {
 
   echo "[ ERROR ] One or more required commands are unavailable!"
   echo
-  echo "List of missing commands: ${missing[@]}"
+  echo "List of missing commands: ${missing[*]}"
   echo 
   echo "You can install the missing by using the following command:"
-  echo "[ fedora ] sudo dnf install ${missing[@]}"
-  echo "[ ubuntu ] sudo apt-get install ${missing[@]}"
+  echo "[ fedora ] sudo dnf install ${missing[*]}"
+  echo "[ ubuntu ] sudo apt-get install ${missing[*]}"
   exit 1
 }
 

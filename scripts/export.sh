@@ -29,8 +29,7 @@ remove_data_files() {
 declare -A FILTER_MAP
 
 create_filter_map() {
-  local keys="$1"
-  local root_path="[/]"
+  local keys="$1" root_path="[/]"
 
   readarray -t keys_array < <(echo "$keys" | jq -cr ".[]")
 
@@ -44,7 +43,7 @@ create_filter_map() {
 }
 
 filter_settings() {
-  local keys="$1"; local settings="$2"
+  local keys="$1" settings="$2"
   local dump_file="$3" && truncate -s 0 "$dump_file"
 
   create_filter_map "$keys"
@@ -56,15 +55,15 @@ filter_settings() {
 
     [[ "$line" =~ ^\[.*\]$ ]] && current_sub_path="$line"
 
-    [[ " ${!FILTER_MAP[@]} " =~ " $line " ]] \
+    [[ " ${!FILTER_MAP[*]} " =~ " $line " ]] \
         && echo -e "\n$line" >> "$dump_file" && continue
 
     local filter_keys=( ${FILTER_MAP["$current_sub_path"]} )
 
-    [[ "${#filter_keys[@]}" -gt 0 ]] && grep -q ${filter_keys[@]/#/-e } <<< "$line" \
+    [[ "${#filter_keys[@]}" -gt 0 ]] && grep -q ${filter_keys[*]/#/-e } <<< "$line" \
         && echo "$line" >> "$dump_file" && continue
 
-    [[ "${#filter_keys[@]}" -eq 0 && " ${!FILTER_MAP[@]} " =~ " $current_sub_path " ]] \
+    [[ "${#filter_keys[@]}" -eq 0 && " ${!FILTER_MAP[*]} " =~ " $current_sub_path " ]] \
         && echo "$line" >> "$dump_file" && continue
 
   done <<< "$settings"
@@ -79,7 +78,7 @@ export_dconfs() {
   local jq_filter="$2"
 
   echo "Exporting dconfs to [ $data_folder ]..."
-  cd "$data_folder"
+  cd "$data_folder" || return
 
   while read -r schema_path; read -r file; read -r keys
   do
@@ -92,8 +91,8 @@ export_dconfs() {
 }
 
 create_permissions_file() {
-  local source="$1"; local target="$2"
-  local all_permissions="$(sudo bash -c "cd \"$source\" && getfacl -R . ")\n"
+  local source="$1" target="$2"
+  local all_permissions="$(sudo bash -c "cd \"$source\" && getfacl -R . ")"
 
   cd "$target" && rm -f "$PERMISSIONS_FILE"
 
@@ -101,13 +100,13 @@ create_permissions_file() {
 
   while read -r file; do
     local section_start="^# file: ${file/#.\//}$"
-    printf "$all_permissions" | grep "$section_start" --after-context=6 >> "$PERMISSIONS_FILE"
+    printf "%s\n" "$all_permissions" | grep "$section_start" --after-context=6 >> "$PERMISSIONS_FILE"
 
   done <<< "$exported_files"
 }
 
 export_file_path() {
-  local path="$1"; local data_folder="$2"; local exclude_list="$3"; local cmd_prefix="$4"
+  local path="$1" data_folder="$2" exclude_list="$3" cmd_prefix="$4"
 
   local folder="$(dirname "$path")"
   local search="$(basename "$path")"
@@ -121,7 +120,7 @@ export_file_path() {
   [[ -s "$includes_file" ]] \
       || { echo "[ WARN ] Missing file to export [ $path ]"; return; }
 
-  echo "$exclude_list" | grep "^$path" | sed "s|"^$folder/"|./|g" > "$excludes_file"
+  echo "$exclude_list" | grep "^$path" | sed "s|^$folder/|./|g" > "$excludes_file"
 
   local target="$data_folder/$folder" && mkdir -p "$target"
 

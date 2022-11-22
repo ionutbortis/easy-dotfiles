@@ -15,12 +15,12 @@ reset() {
 
   echo -e "\nResetting changes in [ $folder ]..."
 
-  cd "$folder"
-
-  git reset --hard @{u}
-  git clean -df
-  git pull
-  git remote prune origin
+  cd "$folder" && {
+    git reset --hard @{u}
+    git clean -df
+    git pull
+    git remote prune origin
+  }
 }
 
 prompt_user "[ WARN ] This will reset all the unpushed changes from your local copy of $PRJ_DISPLAY !"

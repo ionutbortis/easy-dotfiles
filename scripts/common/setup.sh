@@ -11,7 +11,7 @@ sources() {
 
 configure_hostname() {
   echo -e "\nEnter the desired computer name"
-  read -p "[ default: $DEFAULT_HOST_NAME, press Enter to use default ]: " name
+  read -rp "[ default: $DEFAULT_HOST_NAME, press Enter to use default ]: " name
 
   sudo hostnamectl set-hostname "${name:-"$DEFAULT_HOST_NAME"}"
 }

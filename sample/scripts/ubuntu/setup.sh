@@ -32,7 +32,7 @@ add_software_repos() {
   rm -f packages.microsoft.gpg
 
   # skype
-  curl https://repo.skype.com/data/SKYPE-GPG-KEY | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/repo.skype.com.gpg >/dev/null
+  curl https://repo.skype.com/data/SKYPE-GPG-KEY | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/repo.skype.com.gpg > /dev/null
   echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee /etc/apt/sources.list.d/skypeforlinux.list
 
   # teamviewer
