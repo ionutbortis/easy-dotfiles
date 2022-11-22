@@ -33,13 +33,13 @@ install_package() {
 create_desktop_file() {
   local jidea_folder="$1"
 
-  if [[ -f "$desktop_file" ]]; then
+  [[ -f "$desktop_file" ]] && {
     local backup_file="$desktop_file.$(date +'%Y-%m-%d_%H:%M:%S')"
 
     echo "[ WARN ] jIDEA desktop file already exists! [ $desktop_file ]"
     echo "[ WARN ] Creating backup file to [ $backup_file ]"
     cp "$desktop_file" "$backup_file"
-  fi
+  }
 
   echo "Creating new desktop file [ $desktop_file ]..."
 

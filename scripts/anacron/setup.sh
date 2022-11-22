@@ -98,11 +98,9 @@ create_new_schedule() {
 configure_anacron() {
   local script="$(get_script_file)"
 
-  if [[ "$script" ]]; then 
-    handle_existing_schedule "$script"
-  else
-    create_new_schedule
-  fi
+  [[ "$script" ]] && { handle_existing_schedule "$script"; return; }
+
+  create_new_schedule
 }
 
 check_anacron_package
