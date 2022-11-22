@@ -27,5 +27,7 @@ pull_data() {
 }
 
 check_git_props
-pull_data || \
-    { echo -e "\n[ WARN ] Pull action had git errors, will exit script."; exit 1; }
+pull_data || { 
+  echo -e "\n[ WARN ] Pull action had git errors, will exit script."
+  exit 1
+}

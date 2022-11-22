@@ -19,9 +19,9 @@ setup_log_file "${schedule:-"manual"}-push"
 push_submodule() {
   cd "$PRIVATE_FOLDER" && git pull --quiet
 
+  local message="$PRJ_DISPLAY manual push"
   [[ "$schedule" ]] \
-      && local message="$PRJ_DISPLAY auto $schedule push" \
-      || local message="$PRJ_DISPLAY manual push"
+      && local message="$PRJ_DISPLAY auto $schedule push"
 
   echo "Pushing changes in [ private ] submodule..."
   git add . && git commit . -m "$message"

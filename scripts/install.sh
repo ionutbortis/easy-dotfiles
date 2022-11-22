@@ -31,9 +31,10 @@ setup() {
 
   local distro_setup_script="$PRIVATE_FOLDER/scripts/$DISTRO/setup.sh"
 
-  [[ ! -x "$distro_setup_script" ]] \
-      && echo -e "\n[ WARN ] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]" \
-      && return
+  [[ ! -x "$distro_setup_script" ]] && {
+    echo -e "\n[ WARN ] $DISTRO setup script cannot be executed! Skipping [ $distro_setup_script ]"
+    return
+  }
 
   echo -e "\nRunning [ $DISTRO ] specific setup file [ $distro_setup_script ]..."
   "$distro_setup_script"
@@ -44,7 +45,9 @@ list_apps() {
 
   readarray -t apps_array < <(jq -c "$jq_filter" "$APPS_CONFIG_JSON")
 
-  [[ ${#apps_array[@]} -gt 0 ]] && echo "${apps_array[@]}" || echo "No apps configured for [ $DISTRO ]"
+  [[ ${#apps_array[@]} -gt 0 ]] || { echo "No apps configured for [ $DISTRO ]"; return; }
+
+  echo "${apps_array[@]}"
 }
 
 install_apps() {
@@ -56,7 +59,7 @@ install_apps() {
 
   while read -r name; read -r install_cmd; do
 
-    echo -e "\nInstalling [ $name ] app with command: [ $install_cmd ]"
+    echo -e "\nInstalling [ $name ] app with command [ $install_cmd ]"
     $install_cmd
 
   done < <(jq -cr "$jq_filter" "$APPS_CONFIG_JSON")
@@ -77,10 +80,10 @@ install_extensions() {
     local request_url="https://extensions.gnome.org/extension-info/?pk=$ego_id&shell_version=$GNOME_SHELL_VERSION"
     local http_response="$(curl -s -o /dev/null -I -w "%{http_code}" "$request_url")"
 
-    if [[ "$http_response" == @("400"|"404") ]]; then
+    [[ "$http_response" == @("400"|"404") ]] && {
       echo "[ ERROR ] No extension exists matching the ID: $ego_id and GNOME Shell version $GNOME_SHELL_VERSION (Skipping this)."
       continue
-    fi
+    }
 
     local ext_info="$(curl -s "$request_url")"
     local ext_uuid="$(echo "$ext_info" | jq -r '.uuid')"

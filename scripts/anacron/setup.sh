@@ -27,7 +27,7 @@ get_script_file() {
 
       local file="$folder/$ANACRON_SCRIPT_PREFFIX""$action"
 
-      [[ -e "$file" ]] && echo "$file" && return 
+      [[ -e "$file" ]] && { echo "$file"; return; } 
     done
   done
 }

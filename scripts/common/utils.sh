@@ -13,7 +13,7 @@ setup_log_file() {
 
   local new_log_file="$LOGS_DIR"/"$name"_"$(date +'%Y-%m-%d_%H:%M:%S')".log
 
-  echo -e "*** Script output is saved to: [ $new_log_file ] ***\n"
+  echo -e "*** Script output is saved to [ $new_log_file ] ***\n"
   exec > >( tee "$new_log_file" ) 2>&1
 }
 
@@ -154,9 +154,10 @@ check_schedule_arg() {
 }
 
 check_restriction_args() {
-  [[ "$only_files" && "$only_dconfs" ]] \
-      && echo "[ ERROR ] Using both '--only-files' and '--only-dconfs' args is prohibited!" \
-      && exit 1
+  [[ "$only_files" && "$only_dconfs" ]] && {
+    echo "[ ERROR ] Using both '--only-files' and '--only-dconfs' args is prohibited!"
+    exit 1
+  }
 }
 
 remove_anacron_script() {

@@ -100,10 +100,10 @@ submodule_profile_check() {
 
   local profile="$(git branch --show-current)"
 
-  [[ "$profile" ]] \
-      && echo -e "\nCurrent profile for $PRJ_DISPLAY private data is: [ $profile ]" \
-      && return
-
+  [[ "$profile" ]] && {
+    echo -e "\nCurrent profile for $PRJ_DISPLAY private data is [ $profile ]"
+    return
+  }
   echo -e "\n[ WARN ] There's no profile set for the private repo. Will use default..."
   default_submodule_profile
 }

@@ -36,9 +36,9 @@ create_filter_map() {
   for key in "${keys_array[@]}"; do
     local sub_path="$(grep -o '/.*/' <<< "$key" | sed -e 's|[ \t]*||g' -e 's|^/|[|' -e 's|/$|]|')"
     
-    [[ "$sub_path" ]] \
-        && FILTER_MAP["$sub_path"]="$(sed 's|/.*/||' <<< "$key")" \
-        || FILTER_MAP["$root_path"]+=" ""$key"
+    [[ "$sub_path" ]] && FILTER_MAP["$sub_path"]="$(sed 's|/.*/||' <<< "$key")" && continue
+
+    FILTER_MAP["$root_path"]+=" ""$key"
   done
 }
 
@@ -84,8 +84,9 @@ export_dconfs() {
   do
     local full_dump="$(dconf dump "$schema_path")"
     
-    [[ "$keys" == "null" ]] && echo "$full_dump" > "$file" \
-        || filter_settings "$keys" "$full_dump" "$file"
+    [[ "$keys" == "null" ]] && echo "$full_dump" > "$file" && continue
+
+    filter_settings "$keys" "$full_dump" "$file"
 
   done < <(jq -cr "$jq_filter" "$config_json")
 }
