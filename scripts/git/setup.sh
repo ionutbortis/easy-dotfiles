@@ -170,8 +170,10 @@ push_git_changes() {
   cd "$PROJECT_ROOT" && ./scripts/git/push.sh
 }
 
-check_additional_repo \
-    || { display_new_repo_help; configure_additional_repo; }
+check_additional_repo || {
+  display_new_repo_help
+  configure_additional_repo
+}
 
 handle_additional_repo_data
 
