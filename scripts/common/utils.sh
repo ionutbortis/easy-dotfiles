@@ -99,14 +99,14 @@ replace_config_property() {
   local comment_line="$comment_prefix Commented out by $PRJ_DISPLAY"
   sed "$section_pattern/! s/$property_pattern/$comment_line\n$comment_prefix &/" -i "$config_file"
 
-  local auto_config_section="$(sed -n "$section_pattern/ p" "$config_file")"
-  [[ "$auto_config_section" ]] || {
+  local config_section="$(sed -n "$section_pattern/ p" "$config_file")"
+  [[ "$config_section" ]] || {
     echo -e "\n\n$section_start\n$property_line\n$section_end" >> "$config_file"
     return
   }
 
-  local property_auto_config="$(echo "$auto_config_section" | grep "$property_pattern")"
-  [[ "$property_auto_config" ]] && {
+  local section_property="$(echo "$config_section" | grep "$property_pattern")"
+  [[ "$section_property" ]] && {
     sed -e "$section_pattern/ s/$property_pattern.*/$property_line/" -i "$config_file"
     return
   }
