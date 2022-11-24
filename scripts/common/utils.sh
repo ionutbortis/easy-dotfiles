@@ -123,8 +123,8 @@ configure_git_props() {
 
   for folder in "$PROJECT_ROOT" "$PRIVATE_FOLDER"; do
     cd "$folder" && {
-      git config user.name "${name:-"$DEFAULT_GIT_NAME"}"
-      git config user.email "${email:-"$DEFAULT_GIT_EMAIL"}"
+      git config user.name "${name:-$DEFAULT_GIT_NAME}"
+      git config user.email "${email:-$DEFAULT_GIT_EMAIL}"
     }
   done
 }

@@ -20,7 +20,7 @@ remove_data_files() {
   local folder_names=(
     "$APPS_FOLDER" "$EXTENSIONS_FOLDER" "$KEYBINDINGS_FOLDER" "$MISC_FOLDER" "$TWEAKS_FOLDER"
   )
-  for folder in "${folder_names[@]/#/"$PARENT_DATA_FOLDER/"}"; do
+  for folder in "${folder_names[@]/#/$PARENT_DATA_FOLDER/}"; do
     echo "Removing all files from [ $folder ]..."
     rm -rf "$folder" && mkdir -p "$folder"
   done
@@ -116,7 +116,7 @@ export_file_path() {
   local includes_file="$(create_temp_file '_includes')"
   local excludes_file="$(create_temp_file '_excludes')"
 
-  local source="${folder/#~/"$HOME"}"
+  local source="${folder/#~/$HOME}"
 
   $cmd_prefix bash -c "cd \"$source\" && find . -maxdepth 1 -name \"$search\"" > "$includes_file"
   [[ -s "$includes_file" ]] \

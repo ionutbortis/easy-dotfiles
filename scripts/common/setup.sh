@@ -13,7 +13,7 @@ configure_hostname() {
   echo -e "\nEnter the desired computer name"
   read -rp "[ default: $DEFAULT_HOST_NAME, press Enter to use default ]: " name
 
-  sudo hostnamectl set-hostname "${name:-"$DEFAULT_HOST_NAME"}"
+  sudo hostnamectl set-hostname "${name:-$DEFAULT_HOST_NAME}"
 }
 
 run_private_common_setup_script() {

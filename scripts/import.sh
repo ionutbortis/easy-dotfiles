@@ -61,7 +61,7 @@ import_file_path() {
   cd "$source" && find . -maxdepth 1 -name "$search" > "$includes_file"
   [[ -s "$includes_file" ]] || { missing_file_message "$path"; return; }
 
-  local target="${folder/#~/"$HOME"}" && $cmd_prefix mkdir -p "$target"
+  local target="${folder/#~/$HOME}" && $cmd_prefix mkdir -p "$target"
 
   $cmd_prefix bash -c "cd \"$source\" \
       && tar -c --no-unquote -T \"$includes_file\" | ( cd \"$target\" && tar xf - )"
