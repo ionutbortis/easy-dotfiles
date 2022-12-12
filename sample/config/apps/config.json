@@ -3,16 +3,14 @@
     "name": "Extension Manager",
     "url": "https://flathub.org/apps/details/com.mattjakeman.ExtensionManager",
     "install": {
-      "fedora": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive",
-      "ubuntu": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive"
+      "fedora ubuntu": "sudo flatpak install flathub com.mattjakeman.ExtensionManager -y --noninteractive"
     }
   },
   {
     "name": "Github Desktop",
     "url": "https://github.com/shiftkey/desktop",
     "install": {
-      "fedora": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive",
-      "ubuntu": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive"
+      "fedora ubuntu": "sudo flatpak install flathub io.github.shiftey.Desktop -y --noninteractive"
     },
     "files": {
       "include": [
@@ -63,8 +61,7 @@
     "name": "IntelliJ IDEA Ultimate",
     "url": "https://www.jetbrains.com/idea/",
     "install": {
-      "fedora": "../private/scripts/apps/jidea-install.sh",
-      "ubuntu": "../private/scripts/apps/jidea-install.sh"
+      "fedora ubuntu": "../private/scripts/apps/jidea-install.sh"
     },
     "files": {
       "include": ["~/.config/JetBrains"]

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "This is the common setup script. Nothing yet to do here..."
+echo "This is the private common setup script. Nothing yet to do here..."

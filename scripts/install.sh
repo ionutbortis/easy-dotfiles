@@ -40,8 +40,17 @@ setup() {
   "$distro_setup_script"
 }
 
+get_apps_jq_filter() {
+  local only_names="$1"
+  local distro_filter=".install | to_entries[] | select(.key | contains(\"$DISTRO\"))"
+
+  [[ "$only_names" ]] && { echo ".[] | select($distro_filter) | .name"; return; }
+
+  echo ".[] | select($distro_filter) | (.name, ($distro_filter).value)"
+}
+
 list_apps() {
-  local jq_filter=".[] | select(.install.$DISTRO | .!=null and .!=\"\") | .name"
+  local jq_filter="$(get_apps_jq_filter only_names)"
 
   readarray -t apps_array < <(jq -c "$jq_filter" "$APPS_CONFIG_JSON")
 
@@ -55,7 +64,7 @@ install_apps() {
 
   cd "$WORK_DIR" || return
 
-  local jq_filter=".[] | select(.install.$DISTRO | .!=null and .!=\"\") | (.name, .install.$DISTRO)"
+  local jq_filter="$(get_apps_jq_filter)"
 
   while read -r name; read -r install_cmd; do
 
