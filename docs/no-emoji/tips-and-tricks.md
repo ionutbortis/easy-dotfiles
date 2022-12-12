@@ -38,7 +38,7 @@ sudo anacron -f -n
 
 That's good but you might want to know how to troubleshoot the scheduled action if it doesn't run and you cannot figure out the problem from the logs.
 
-When you run the [anacron setup][anacron setup script doc url] script, **`easy-dotfiles`** creates a `root` owned script inside a specific `/etc` folder, depending on your selected schedule. You are informed of the created script and its path at the end of the setup phase, or you cant obtain it from the corresponding anacron setup log file.
+When you run the [anacron setup][anacron setup script doc url] script, **`easy-dotfiles`** creates a `root` owned script inside a specific `/etc` folder, depending on your selected schedule. You are informed of the created script and its path at the end of the setup phase, or you can obtain it from the corresponding anacron setup log file.
 
 **You can simulate** what `anacron` is doing by **invoking directly that script** as `sudo`. This way you can check if there is some error during execution because that script run doesn't create a standard **`easy-dotfiles`** log file:
 
