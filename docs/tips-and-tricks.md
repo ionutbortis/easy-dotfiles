@@ -18,7 +18,7 @@
 
 # Tips & Tricks
 
-This section will outline some neat **tips & tricks** that I found during the development of the **`easy-dotfiles`** tool. If you find something cool and you want to let other people know about it, submit an issue [here](https://github.com/ionutbortis/easy-dotfiles/issues) and I'll make sure to include it :sunglasses:
+This section will outline some neat **tips & tricks** that I found during the development of the **`easy-dotfiles`** tool. If you find something cool and you want to let other people know about it, submit an issue [here](https://github.com/ionutbortis/easy-dotfiles/issues) and I'll make sure to have a look over it :sunglasses:
 
 ## Unattended `install` run (mostly)
 
@@ -76,7 +76,7 @@ You don't have your remote private repository up to date with all the dotfiles a
 
 **_What if_ you really don't like JSON but you love shell scripts?**
 
-I guess you could change **your private** [apps][apps config json] config JSON to have only one entry for all of your apps and the `dconf` part could manage the whole database:
+I guess you could change **your private** [apps][apps config json] config JSON to have only one entry for all of your dotfiles and the `dconf` part could manage the whole database:
 
 ```json
 [
@@ -86,18 +86,17 @@ I guess you could change **your private** [apps][apps config json] config JSON t
       "include": [
         "~/.config/app1_dotfiles",
         "~/.config/app2_dotfiles",
-        "~/.config/app3_dotfiles",
-        "~/.config/app4_dotfiles",
-        "~/.app5_dotfiles",
-        "~/.app6_dotfiles",
+        "~/.app3_dotfiles",
+        "~/.app4_dotfiles",
+        "~/.local/share/gnome-shell/extensions",
         "~/misc/files",
         "/etc/some/file"
       ],
       "exclude": [
         "~/.config/app1_dotfiles/exclude",
         "~/.config/app2_dotfiles/exclude",
-        "~/.config/app3_dotfiles/exclude",
-        "~/.app6_dotfiles/exclude"
+        "~/.app3_dotfiles/exclude",
+        "~/.app4_dotfiles/exclude"
       ]
     },
     "dconf": {
@@ -108,25 +107,35 @@ I guess you could change **your private** [apps][apps config json] config JSON t
 ]
 ```
 
-And you would use now the [distro specific setup][distro specific setup script doc url] script to install all of your apps, one long line for all the `flatpaks` and another one for `dnf`, `apt-get` or another package manager.
-
-Unfortunately you need the [extensions][extensions config json] config JSON, but you could leave there only the URLs:
+Or you could use an even more aggressive apps config, something like:
 
 ```json
 [
   {
-    "url": "https://extensions.gnome.org/extension/1982/extension-1/"
-  },
-  {
-    "url": "https://extensions.gnome.org/extension/2020/extension-2/"
-  },
-  {
-    "url": "https://extensions.gnome.org/extension/9999/extension-3/"
+    "name": "To Infinity and Beyond",
+    "files": {
+      "include": ["~/.*"],
+      "exclude": ["~/.cache", "~/.gnupg", "~/.ssh", "~/.local/share/Trash"]
+    },
+    "dconf": {
+      "schema_path": "/",
+      "file": "everything.conf"
+    }
   }
 ]
 ```
 
-You can now **empty** (not file deletion) the [keybindings][keybindings config json], [tweaks][tweaks config json] and [misc][misc config json] config JSON files because they're not needed anymore :sweat_smile:
+And now to install your apps, you would use the [distro specific setup][distro specific setup script doc url] scripts. You could put there one long line for all the `flatpaks` and another one for `dnf`, `apt-get` or the corresponding distro package manager.
+
+If you included the `~/.local/share/gnome-shell/extensions` folder in the previous mentioned app config, you can **empty** (not file deletion) the [extensions][extensions config json] config JSON because you'll store into your private repo also the user installed extensions.
+
+Gnome shell should push some updates for them if you `import` your data on a newer version of Gnome.
+
+You can also **empty** (not file deletion) the [keybindings][keybindings config json], [tweaks][tweaks config json] and [misc][misc config json] config JSON files because they're not needed anymore :sweat_smile:
+
+So now you're left with **only one** configuration JSON file :exploding_head:
+
+Configuration FLEXIBILITY at its finest! :100:
 
 :exclamation:**NOTE:** I didn't tested out these hacks, but in theory they should be possible. I don't recommend them, but hey, this is linux and you can use the FOSS tools as you see fit :sunglasses:
 
