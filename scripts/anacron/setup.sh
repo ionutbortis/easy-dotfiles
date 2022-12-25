@@ -43,7 +43,7 @@ create_script() {
   sudo cp "$PROJECT_ROOT/scripts/anacron/$action-template" "$script"
   sudo chmod +x "$script"
 
-  local var_names=( schedule PROJECT_ROOT USER HOME DBUS_SESSION_BUS_ADDRESS )
+  local var_names=( schedule PROJECT_ROOT USER HOME SSH_AUTH_SOCK DBUS_SESSION_BUS_ADDRESS )
 
   for var_name in "${var_names[@]}"; do
     replace_template_var "$var_name" "${!var_name}" "$script"

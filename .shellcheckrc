@@ -1,0 +1,3 @@
+# Disables some shellcheck warnings
+
+disable=SC2155,SC1090
