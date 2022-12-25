@@ -2,7 +2,7 @@
 
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
-  
+
   source "$script_folder/vars.sh"
   source "$script_folder/utils.sh"
   source "$DEFAULTS_SCRIPT"
