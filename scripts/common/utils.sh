@@ -76,43 +76,6 @@ replace_line_in_file() {
   sed -i "s/^$line_prefix.*$/$replacement_line/g" "$file"
 }
 
-replace_config_property() {
-  local config_file=$1 property_name=$2 property_value=$3
-
-  local value_separator="=" comment_prefix="#"
-
-  local section_prefix="$comment_prefix""$comment_prefix""$comment_prefix"
-
-  local section_start="$section_prefix Start $PRJ_DISPLAY changes"
-  local section_end="$section_prefix End $PRJ_DISPLAY changes"
-
-  local section_pattern="/^$section_start/,/^$section_end"
-  local property_pattern="^\s*$property_name$value_separator"
-
-  local property_line="$property_name""$value_separator""$property_value"
-
-  local existing_property_config="$(sed -n "$section_pattern/! p" "$config_file" | grep "$property_pattern")"
-  [[ "$existing_property_config" ]] && {
-    echo "[ WARN ] Property <$property_name> is already configured! Will be commented out [ file: $config_file ]"
-  }
-
-  local comment_line="$comment_prefix Commented out by $PRJ_DISPLAY"
-  sed "$section_pattern/! s/$property_pattern/$comment_line\n$comment_prefix &/" -i "$config_file"
-
-  local config_section="$(sed -n "$section_pattern/ p" "$config_file")"
-  [[ "$config_section" ]] || {
-    echo -e "\n\n$section_start\n$property_line\n$section_end" >> "$config_file"
-    return
-  }
-
-  local section_property="$(echo "$config_section" | grep "$property_pattern")"
-  [[ "$section_property" ]] && {
-    sed -e "$section_pattern/ s/$property_pattern.*/$property_line/" -i "$config_file"
-    return
-  }
-  sed -e "s/^$section_end/$property_line\n&/g" -i "$config_file"
-}
-
 configure_git_props() {
   echo -e "\n[ WARN ] Git needs additional info for the $PRJ_DISPLAY repos.\n"
 

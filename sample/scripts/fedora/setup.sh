@@ -1,28 +1,20 @@
 #!/bin/bash
 
-sources() {
-  local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
-
-  source "$script_folder/../../../scripts/common/vars.sh"
-  source "$script_folder/../../../scripts/common/utils.sh"
-
-}; sources
-
 update_dnf_config() {
-  echo "Updating dnf configuration..."
-
   local dnf_conf_file="/etc/dnf/dnf.conf"
-  local temp_conf_file="/tmp/dnf.conf"
 
-  cp "$dnf_conf_file" "$temp_conf_file"
+  local configs=(
+    "fastestmirror=True"
+    "max_parallel_downloads=5"
+    "defaultyes=True"
+    "keepcache=True"
+  )
 
-  replace_config_property "$temp_conf_file" fastestmirror True
-  replace_config_property "$temp_conf_file" max_parallel_downloads 5
-  replace_config_property "$temp_conf_file" defaultyes True
-  replace_config_property "$temp_conf_file" keepcache True
+  for config in "${configs[@]}"; do
+    local key="${config%%=*}"
 
-  sudo bash -c "cp $temp_conf_file $dnf_conf_file"
-  rm "$temp_conf_file"
+    sudo sed -i -e "/^$key/d" -e "$ a$config" "$dnf_conf_file"
+  done
 }
 
 add_flatpak_support() {

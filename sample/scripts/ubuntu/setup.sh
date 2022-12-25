@@ -1,13 +1,5 @@
 #!/bin/bash
 
-sources() {
-  local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
-
-  source "$script_folder/../../../scripts/common/vars.sh"
-  source "$script_folder/../../../scripts/common/utils.sh"
-
-}; sources
-
 add_flatpak_support() {
   echo "Adding flatpak/flathub support..."
 
