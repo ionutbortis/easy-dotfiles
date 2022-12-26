@@ -11,7 +11,6 @@
 - [Main desktop setup](#main-desktop-setup)
   - [Git setup](#git-setup)
     - [Adding new profiles](#adding-new-profiles)
-    - [SSH keys](#ssh-keys)
     - [Update your `easy-dotfiles` repo](#update-your-easy-dotfiles-repo)
       - [Github](#github)
       - [Other git providers](#other-git-providers)
@@ -73,10 +72,6 @@ Some folks like to name their git branches using forward slashes `/`, simulating
 Or you can just use underscores `_` and/or dashes `-`. You have the power of naming profiles in a way that fits your needs :muscle:
 
 If you don't want all your new profiles to be based on `main`, you need to manually change the `easy-dotfiles-private` repo's [default branch](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/changing-the-default-branch) in your git provider's interface or by terminal.
-
-### SSH keys
-
-TODO, needs investigation on the ssh keys passphrases
 
 ### Update your `easy-dotfiles` repo
 

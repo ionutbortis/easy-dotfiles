@@ -18,7 +18,6 @@ If this is your first time here, please **check out first** the [Quick demo][qui
 - [Main desktop setup](./main-desktop-setup.md#main-desktop-setup)
   - [Git setup](./main-desktop-setup.md#git-setup)
     - [Adding new profiles](./main-desktop-setup.md#adding-new-profiles)
-    - [SSH keys](./main-desktop-setup.md#ssh-keys)
     - [Update your `easy-dotfiles` repo](./main-desktop-setup.md#update-your-easy-dotfiles-repo)
       - [Github](./main-desktop-setup.md#github)
       - [Other git providers](./main-desktop-setup.md#other-git-providers)
@@ -50,6 +49,7 @@ If this is your first time here, please **check out first** the [Quick demo][qui
     - [`remove.sh`](./shell-scripts.md#removesh)
     - [`anacron` setup](./shell-scripts.md#anacron-setup)
 - [Scheduling automatic actions](./automatic-actions.md#scheduling-automatic-actions)
+  - [Git SSH keys](./automatic-actions.md#git-ssh-keys)
   - [Export](./automatic-actions.md#export)
   - [Import](./automatic-actions.md#import)
   - [Remove or reschedule](./automatic-actions.md#remove-or-reschedule)
@@ -57,6 +57,7 @@ If this is your first time here, please **check out first** the [Quick demo][qui
   - [Unattended `install` run (mostly)](./tips-and-tricks.md#unattended-install-run-mostly)
   - [Testing scheduled action](./tips-and-tricks.md#testing-scheduled-action)
   - [Partial import](./tips-and-tricks.md#partial-import)
+  - [Passworldless SSH keys](./tips-and-tricks.md#passworldless-ssh-keys)
   - [Hacking away](./tips-and-tricks.md#hacking-away)
 
 <!-- end TOC -->

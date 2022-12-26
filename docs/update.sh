@@ -89,6 +89,9 @@ create_no_emoji_docs() {
 
   echo "Fixing links URL path..."
   sed -e "s|\.\./|\.\./\.\./|g" -i ./*.md
+
+  echo "Fixing images URL path..."
+  sed -e "s|\.\/images|\.\./images|g" -i ./*.md
 }
 
 update_copyright_year() {

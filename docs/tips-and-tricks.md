@@ -12,6 +12,7 @@
   - [Unattended `install` run (mostly)](#unattended-install-run-mostly)
   - [Testing scheduled action](#testing-scheduled-action)
   - [Partial import](#partial-import)
+  - [Passworldless SSH keys](#passworldless-ssh-keys)
   - [Hacking away](#hacking-away)
 
 <!-- end TOC -->
@@ -71,6 +72,21 @@ cd ~/easy-dotfiles/ && ./scripts/import.sh --only-dconfs
 I could see a scenario where you have your `HOME` folder on a separate partition (as you should have it :sweat_smile:) and you freshly installed the OS.
 
 You don't have your remote private repository up to date with all the dotfiles and settings. Maybe you forgot to do an export and in order to minimize the damage, you want to import only the outdated dconf settings, because you already have your latest dotfiles in your home folder.
+
+## Passworldless SSH keys
+
+I guess you could use SSH keys that don't have a passphrase associated, if you _really really_ hate entering passwords (login, keyring unlock, etc.).
+
+You can make your `git` SSH key without a passphrase by using this:
+
+```sh
+ ssh-keygen -p
+```
+
+:exclamation:**NOTE:** I would **strongly advice against** passphrase-less
+SSH keys because if an attacker gets hold of your private SSH key then it will have access to all of your github account associated repositories, not only the **`easy-dotfiles`** repos.
+
+One way to mitigate this could be using dedicated SSH keys for the **`easy-dotfiles`** repos. Github offers the [deploy keys](https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys) feature which might be something to look into if you don't want passphrases.
 
 ## Hacking away
 

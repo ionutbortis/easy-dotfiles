@@ -35,7 +35,7 @@ If you don't have it installed, use your package manager to install it:
 - Fedora: `sudo dnf install git -y`
 - Ubuntu: `sudo apt-get install git -y`
 
-Now you need to setup your `git` authentication. I recommend using [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) because it's more reliable and all the upcoming examples will use that.
+Now you need to setup your `git` authentication. I recommend using [SSH authentication](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) because it's more reliable and all the upcoming examples will use that. It will be also useful later on when we talk about scheduling automatic actions.
 
 If `git` SSH setup was successfully done you will now locally clone your forked version of **`easy-dotfiles`**. For other git providers follow the guide from [here](#clone-the-github-repository).
 

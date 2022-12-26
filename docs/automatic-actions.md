@@ -9,6 +9,7 @@
 <!-- start TOC -->
 
 - [Scheduling automatic actions](#scheduling-automatic-actions)
+  - [Git SSH keys](#git-ssh-keys)
   - [Export](#export)
   - [Import](#import)
   - [Remove or reschedule](#remove-or-reschedule)
@@ -23,9 +24,37 @@ Don't worry, you don't have to learn anything about the `anacron` tool :sweat_sm
 
 :exclamation:**NOTE:** We **assume** that you **already** have your local installation of **`easy-dotfiles`** properly configured and you **already** succeeded in performing manual `export`, `import`, `push` and `pull` actions against your private repository.
 
+### Git SSH keys
+
+As it was recommended in the [Quick demo][quick demo doc url] section, you should have used [SSH authentication](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) for connecting to your `git` repositories. Because we want the `automatic actions` to be as non-interactive as possible, here are some tips on how we can achieve that by using SSH keys.
+
+If you haven't already set up `git` [SSH authentication](https://docs.github.com/en/authentication/connecting-to-github-with-ssh), please go there first and follow through the guide.
+
+You can use key passphrases and set a proper comment to the key when creating it, something like `Git SSH Key` or similar. The comment will help you identify for which private key you are prompted to unlock it.
+
+If the key is already created, you can modify its comment by using this:
+
+```sh
+ssh-keygen -c -f ~/.ssh/your_key_file
+```
+
+When you're doing a `git` operation that requires authentication, you will be prompted to unlock the private key, if it's not already unlocked:
+
+![Unlock private key](./images/unlock-private-key.jpg)
+
+:exclamation:**NOTE:** Make sure to check `Automatically unlock this key whenever I'm logged in` so you won't have to unlock it each time the key is used.
+
+This way, the git SSH key will be added to the `Login` keyring, as you can see after a re-login by using the [Passwords and Keys](https://wiki.gnome.org/Apps/Seahorse) app (package name is `seahorse`):
+
+![Unlock private key](./images/seahorse.jpg)
+
+If you **don't use** a Gnome Shell **login password** and your user is logged in automatically, the `Login` keyring will not be unlocked until there is the need to use the keys stored inside. On `Fedora` I believe that you are asked to unlock the keyring right after the passwordless login, but in `Ubuntu` you are asked only when needed.
+
+When **`easy-dotfiles`** automatic actions are scheduled to run, you will be prompted to unlock the private ssh key. If you have a meaningful comment attached to it, you'll know that it's probably the background job trying to access it and there's no need to panic :sweat_smile:
+
 ### Export
 
-So you installed and configured **`easy-dotfiles`** on your main desktop and you pushed your files and settings to the private repository and now what? :raised_eyebrow:
+You installed and configured **`easy-dotfiles`** on your main desktop, you pushed your files and settings to the private repository, but what's next? :raised_eyebrow:
 
 Well, you could repeat the [export][export script doc url] and [push][git scripts doc url] actions manually, from time to time, in order to keep your private repository up to date with the latest changes from your system.
 
@@ -36,8 +65,6 @@ cd ~/easy-dotfiles/ && ./scripts/anacron/setup.sh
 ```
 
 When running the above mentioned script you need to select the `export` action and your preferred frequency: `daily`, `weekly` or `monthly`.
-
-:exclamation:**NOTE:** You need to make sure that pushing data to your private git repository doesn't prompt you for passwords or other confirmations. Please [read here](TODO) on how you can configure passwordless git SSH pushes, if you don't have that already configured.
 
 In order to see that the scheduled `export` did actually happen you need to wait an hour or so. Afterwards, you can check the **`easy-dotfiles`** logs for log file names beginning with:
 
