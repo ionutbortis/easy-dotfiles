@@ -258,7 +258,7 @@ If you don't need such elaborate custom app install scripts, but maybe just a qu
   "url": "https://www.teamviewer.com/", 
   "install": {
     "fedora": "sudo dnf install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm -y", 
-    "ubuntu": "wget -q https://download.teamviewer.com/download/linux/teamviewer_amd64.deb && sudo apt-get install --fix-broken ./teamviewer_amd64.deb -y"
+    "ubuntu": "wget -nv https://download.teamviewer.com/download/linux/teamviewer_amd64.deb && sudo apt-get install --fix-broken ./teamviewer_amd64.deb -y"
   }, 
   "files": {
     "include": ["~/.config/teamviewer/client.conf"]
@@ -271,7 +271,7 @@ For `ubuntu` we use `wget -q` to get the `.deb` file and then run `sudo apt-get 
 
 Just make sure you keep the `install` command unattended so it won't ask for confirmations of passwords. No need to clean up the files afterwards, the install script will take care of that for you. Also, you can put whatever command you see fit there, as long as the config file remains a valid JSON file.
 
-**NOTE:** When doing custom install scripts or commands, please make sure that you don't have a command that's outputting some kind of download progress. For example, **always use** `wget -q` otherwise you'll pollute the **`easy-dotfiles`** logs with lots of unnecessary data.
+**NOTE:** When doing custom install scripts or commands, please make sure that you don't have a command that's outputting some kind of download progress. For example, **always use** `wget -nv` (`wget --no-verbose`) or `wget -q` (`wget --quiet`), otherwise you'll pollute the **`easy-dotfiles`** logs with lots of unnecessary data.
 
 #### My app is not found in the default package repositories?
 
