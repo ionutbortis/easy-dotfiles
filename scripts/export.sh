@@ -29,17 +29,41 @@ remove_data_files() {
 declare -A FILTER_MAP
 
 create_filter_map() {
-  local keys="$1" root_path="[/]"
+  local keys="$1" keys_array root_path="[/]"
 
   readarray -t keys_array < <(echo "$keys" | jq -cr ".[]")
 
   for key in "${keys_array[@]}"; do
     local sub_path="$(grep -o '/.*/' <<< "$key" | sed -e 's|[ \t]*||g' -e 's|^/|[|' -e 's|/$|]|')"
-    
+
     [[ "$sub_path" ]] && FILTER_MAP["$sub_path"]="$(sed 's|/.*/||' <<< "$key")" && continue
 
     FILTER_MAP["$root_path"]+=" ""$key"
   done
+}
+
+get_filter_map_key() {
+  local search="$1"
+
+  for key in "${!FILTER_MAP[@]}"; do
+    [[ "$key" == "$search" ]] && { echo "$key"; return; }
+
+    [[ "$key" =~ .*'*]'$ ]] && [[ "$search" == "${key/'*]'/}"* ]] && { echo "$key"; return; }
+  done
+}
+
+get_filter_map_value() {
+  local search="$1"
+  local key="$(get_filter_map_key "$search")"
+
+  [[ "$key" ]] && echo "${FILTER_MAP[$key]}"
+}
+
+in_filter_map() {
+  local search="$1"
+  local key="$(get_filter_map_key "$search")"
+
+  [[ "$key" ]] || return 1
 }
 
 filter_settings() {
@@ -47,7 +71,7 @@ filter_settings() {
   local dump_file="$3" && truncate -s 0 "$dump_file"
 
   create_filter_map "$keys"
-  
+
   local current_sub_path="none"
 
   while read -r line; do
@@ -55,15 +79,15 @@ filter_settings() {
 
     [[ "$line" =~ ^\[.*\]$ ]] && current_sub_path="$line"
 
-    [[ " ${!FILTER_MAP[*]} " =~ " $line " ]] \
-        && echo -e "\n$line" >> "$dump_file" && continue
+    in_filter_map "$line" && echo -e "\n$line" >> "$dump_file" && continue
 
-    local filter_keys=( ${FILTER_MAP["$current_sub_path"]} )
+    local filter_keys=()
+    read -ra filter_keys <<< "$(get_filter_map_value "$current_sub_path")"
 
     [[ "${#filter_keys[@]}" -gt 0 ]] && grep -q ${filter_keys[*]/#/-e } <<< "$line" \
         && echo "$line" >> "$dump_file" && continue
 
-    [[ "${#filter_keys[@]}" -eq 0 && " ${!FILTER_MAP[*]} " =~ " $current_sub_path " ]] \
+    [[ "${#filter_keys[@]}" -eq 0 ]] && in_filter_map "$current_sub_path" \
         && echo "$line" >> "$dump_file" && continue
 
   done <<< "$settings"

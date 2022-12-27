@@ -425,7 +425,7 @@ Beside core apps settings, Gnome stores some of its internal settings also into 
 
 ### How to filter for specific `dconf` keys or sub-path
 
-There might be some cases when you don't want to export all the settings from a specific `schema_path`. Maybe a distro will configure Gnome Shell in it's own way and you don't want to really import those settings on another distro that might configured it differently. Here comes the `keys` property to the rescue.
+There might be some cases when you don't want to export all the settings from a specific `schema_path`. Maybe a distro will configure Gnome Shell its own way and you don't want to really import those settings on another distro that might configured it slightly different. Here comes the `keys` property to the rescue.
 
 Let's have a look at this snippet from the [tweaks][tweaks config json] config file:
 
@@ -536,26 +536,29 @@ The above configuration **won't match all the settings** in `/a11y/` and `/perip
 
 If you check the `/org/gnome/desktop/a11y/` path in the `dconf editor` app, there are only two direct child settings of this path, but also another sub-paths, `applications`, `keyboard`, `magnifier` and `mouse`. Only the direct child settings will be managed if you use the above config json.
 
-If you want to manage all the subsequent child settings, you need to include all the sub-paths in the advanced `schema_path` config.
+If you want to manage all the subsequent child settings, you need to use asterisk `*` in the sub-path name: `/a11y*/`, `/peripherals*/`, `/other/sub/path*/`.
 
-**NOTE:** Only one sub-path permitted per `keys` array entry:
+**NOTE:** Only one sub-path permitted per `keys` array entry and asterisk `*` works only on the last part of the sub-path:
 
 ```json
 {
   "schema_path": "/org/gnome/desktop/", 
-  "keys": [
-    "/a11y/", 
-    "/a11y/applications/", 
-    "/a11y/keyboard/", 
-    "/a11y/magnifier/", 
-    "/a11y/mouse/", 
-    "/peripherals/keyboard/", 
-    "/peripherals/mouse/", 
-    "/peripherals/touchpad/"
-  ], 
+  "keys": ["/a11y*/", "/peripherals*/"], 
   "file": "gnome.desktop.conf"
 }
 ```
+
+The above will include all the child settings from all the sub-paths starting from `a11y` and `peripherals`. Even if you use the asterisk `*` character you can filter for child settings by doing this:
+
+```json
+{
+  "schema_path": "/org/gnome/desktop/", 
+  "keys": ["/a11y*/", "/peripherals*/ natural-scroll"], 
+  "file": "gnome.desktop.conf"
+}
+```
+
+The above will include all the child settings from the `a11y` sub-paths and only `natural-scroll` settings from the `peripherals` sub-paths.
 
 If you don't mind having multiple `.conf` files, you can always create two separate entries for the above config and don't use the `keys` property:
 
@@ -584,14 +587,8 @@ Advanced `schema_path` config can look a tad complicated but it's an interesting
     "/input-sources/", 
     "/background/", 
     "/wm/preferences/", 
-    "/a11y/", 
-    "/a11y/applications/", 
-    "/a11y/keyboard/", 
-    "/a11y/magnifier/", 
-    "/a11y/mouse/", 
-    "/peripherals/keyboard/", 
-    "/peripherals/mouse/", 
-    "/peripherals/touchpad/", 
+    "/a11y*/", 
+    "/peripherals*/", 
     "/sound/ allow-volume-above-100-percent event-sounds"
   ], 
   "file": "gnome.desktop.conf"

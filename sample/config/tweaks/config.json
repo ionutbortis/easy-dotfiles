@@ -8,14 +8,8 @@
       "/input-sources/",
       "/background/",
       "/wm/preferences/",
-      "/a11y/",
-      "/a11y/applications/",
-      "/a11y/keyboard/",
-      "/a11y/magnifier/",
-      "/a11y/mouse/",
-      "/peripherals/keyboard/",
-      "/peripherals/mouse/",
-      "/peripherals/touchpad/",
+      "/a11y*/",
+      "/peripherals*/",
       "/sound/ allow-volume-above-100-percent event-sounds"
     ],
     "file": "gnome.desktop.conf"

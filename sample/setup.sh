@@ -28,7 +28,7 @@ display_git_info_message() {
 }
 
 configure_defaults() {
-  echo -e "\nConfiguring the values from the [ "$DEFAULTS_SCRIPT" ] script."
+  echo -e "\nConfiguring the values from the [ $DEFAULTS_SCRIPT ] script."
   echo -e "These will be used later on when needed.\n"
 
   read -rp "Enter the default computer name: " hostname
