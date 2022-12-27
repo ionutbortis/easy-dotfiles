@@ -69,7 +69,7 @@ install_apps() {
   while read -r name; read -r install_cmd; do
 
     echo -e "\nInstalling [ $name ] app with command [ $install_cmd ]"
-    $install_cmd
+    eval "$install_cmd"
 
   done < <(jq -cr "$jq_filter" "$APPS_CONFIG_JSON")
 }

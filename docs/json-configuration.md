@@ -257,17 +257,19 @@ If you don't need such elaborate custom app install scripts, but maybe just a qu
   "name": "TeamViewer",
   "url": "https://www.teamviewer.com/",
   "install": {
-    "fedora": "wget -q https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && sudo dnf install teamviewer.x86_64.rpm -y",
-    "ubuntu": "sudo apt-get install teamviewer -y"
+    "fedora": "sudo dnf install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm -y",
+    "ubuntu": "wget -q https://download.teamviewer.com/download/linux/teamviewer_amd64.deb && sudo apt-get install --fix-broken ./teamviewer_amd64.deb -y"
   },
   "files": {
     "include": ["~/.config/teamviewer/client.conf"]
   }
-},
-
+}
 ```
 
-You can see in the above example that for `fedora` we download the `.rpm` file and install it with the `dnf` command. Just make sure you keep the `install` command unattended so it won't ask for confirmations of passwords. No need to clean up the files afterwards, the install script will take care of that for you. Also, you can put whatever command you see fit there, as long as the config file remains a valid JSON file.
+You can see in the above example that for `fedora` we can use `dnf install` directly with the `.rpm` URL. So no need for pre-downloading the package.
+For `ubuntu` we use `wget -q` to get the `.deb` file and then run `sudo apt-get install --fix-broken` with the previously downloaded package.
+
+Just make sure you keep the `install` command unattended so it won't ask for confirmations of passwords. No need to clean up the files afterwards, the install script will take care of that for you. Also, you can put whatever command you see fit there, as long as the config file remains a valid JSON file.
 
 :exclamation:**NOTE:** When doing custom install scripts or commands, please make sure that you don't have a command that's outputting some kind of download progress. For example, **always use** `wget -q` otherwise you'll pollute the **`easy-dotfiles`** logs with lots of unnecessary data.
 
