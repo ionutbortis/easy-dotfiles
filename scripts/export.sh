@@ -14,7 +14,7 @@ sources() {
 
 check_schedule_arg
 
-setup_log_file "${schedule:-"manual"}-export"
+setup_log_file "${SCHEDULE_ARG:-"manual"}-export"
 
 remove_data_files() {
   local folder_names=(
@@ -132,7 +132,9 @@ create_permissions_file() {
 }
 
 export_file_path() {
-  local path="$1" data_folder="$2" exclude_list="$3" cmd_prefix="$4"
+  local path="$1" data_folder="$2" exclude_list="$3" home_path cmd_prefix
+
+  is_user_home_path "$path" && home_path="true" || cmd_prefix="sudo"
 
   local folder="$(dirname "$path")"
   local search="$(basename "$path")"
@@ -153,8 +155,8 @@ export_file_path() {
   $cmd_prefix bash -c "cd \"$source\" \
       && tar -c --no-unquote -X \"$excludes_file\" -T \"$includes_file\" | ( cd \"$target\" && tar xf - )"
 
-  [[ "$cmd_prefix" ]] && {
-    sudo chown "$USER":"$USER" -R "$target"
+  [[ "$home_path" ]] || {
+    sudo chown -R "$USER":"$USER" "$target"
     create_permissions_file "$source" "$target"
   }
 }
@@ -166,18 +168,14 @@ export_files() {
 
   echo "Exporting files to [ $data_folder ]..."
 
-  while read -r include; read -r exclude
-  do
+  while read -r include; read -r exclude; do
     readarray -t include_array < <(echo "$include" | jq -cr "select(. != null) | .[]")
     readarray -t exclude_array < <(echo "$exclude" | jq -cr "select(. != null) | .[]")
 
     local exclude_list="$(printf '%s\n' "${exclude_array[@]}")"
 
     for path in "${include_array[@]}"; do
-      unset local cmd_prefix
-      [[ "$path" =~ ^~ || "$path" =~ ^"$HOME" ]] || local cmd_prefix="sudo"
-
-      export_file_path "$path" "$data_folder" "$exclude_list" "$cmd_prefix"
+      export_file_path "$path" "$data_folder" "$exclude_list"
     done
 
   done < <(jq -cr "$jq_filter" "$config_json")
@@ -203,10 +201,15 @@ export_all_dconfs() {
   export_dconfs "$TWEAKS_FOLDER" "${jq_filter/.dconf/}"
 }
 
-[[ "$schedule" ]] || \
+finalize() {
+  clean_work_dir
+  show_finished_message "Export"
+}
+
+[[ "$SCHEDULE_ARG" ]] || \
     prompt_user "[ WARN ] This will override the settings in $PRJ_DISPLAY with the ones from your system."
 
 remove_data_files
 export_all_files
 export_all_dconfs
-clean_work_dir
+finalize

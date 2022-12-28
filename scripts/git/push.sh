@@ -14,15 +14,15 @@ sources() {
 
 check_schedule_arg
 
-setup_log_file "${schedule:-"manual"}-push"
+setup_log_file "${SCHEDULE_ARG:-"manual"}-push"
 
 push_submodule() {
   cd "$PRIVATE_FOLDER" || return 
   git pull --quiet
 
   local message="$PRJ_DISPLAY manual push"
-  [[ "$schedule" ]] \
-      && local message="$PRJ_DISPLAY auto $schedule push"
+  [[ "$SCHEDULE_ARG" ]] \
+      && message="$PRJ_DISPLAY auto $SCHEDULE_ARG push"
 
   echo "Pushing changes in [ private ] submodule..."
   git add . && git commit . -m "$message"

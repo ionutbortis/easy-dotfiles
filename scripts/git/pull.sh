@@ -14,7 +14,7 @@ sources() {
 
 check_schedule_arg
 
-setup_log_file "${schedule:-"manual"}-pull"
+setup_log_file "${SCHEDULE_ARG:-"manual"}-pull"
 
 pull_data() {
   echo -e "Pulling changes from remote repositories...\n"

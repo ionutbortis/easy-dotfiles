@@ -1,26 +1,27 @@
 #!/bin/bash
 
 # Script arguments prefixed with -- are converted into script variables.
-# The -- prefix is stripped and dashes are replaced with underscores.
-# --some-arg=value => $some_arg=value
-# --no-value-arg => $no_value_arg=_
+# The -- prefix is stripped, dashes are replaced with underscores, 
+# letters are converted to UPPERCASE and the "_ARG" suffix is added.
+# --some-name=value => $SOME_NAME_ARG=value
+# --no-value => $NO_VALUE_ARG=_
 #
-# We set an underscore _ char as value to the $no_value_arg in order 
+# We set an underscore _ char as value to the $NO_VALUE_ARG in order 
 # to make conditional checks easier:
-# [[ "$no_value_arg" ]] && echo "arg present"
-# [[ "$no_value_arg" ]] || echo "arg missing"
+# [[ "$NO_VALUE_ARG" ]] && echo "arg present"
+# [[ "$NO_VALUE_ARG" ]] || echo "arg missing"
 #
 
 while [[ $# -gt 0 ]]; do
   [[ "$1" =~ ^[--] && "${1#--}" ]] || { shift; continue; }
 
-  argument_split=( ${1/=/ } )
+  read -ra argument_split <<< "${1/=/ }"
 
-  variable_name="$( echo "${argument_split[0]#--}" | tr '-' '_' )"
+  variable_name="$(echo "${argument_split[0]#--}" | tr '-' '_')"
   variable_value="${argument_split[1]:-"_"}"
 
   # Safe eval => http://mywiki.wooledge.org/BashFAQ/006#eval
-  eval "${variable_name}=\$variable_value"
+  eval "${variable_name^^}_ARG=\$variable_value"
 
   shift
 done

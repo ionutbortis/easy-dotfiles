@@ -13,7 +13,7 @@ setup_log_file() {
 
   local new_log_file="$LOGS_DIR"/"$name"_"$(date +'%Y-%m-%d_%H:%M:%S')".log
 
-  echo -e "*** Script output is saved to [ $new_log_file ] ***\n"
+  echo -e "\n*** Script output is saved to [ $new_log_file ] ***\n"
   exec > >( tee "$new_log_file" ) 2>&1
 }
 
@@ -27,6 +27,7 @@ clean_work_dir() {
 
 create_temp_file() {
   local suffix="$1"
+
   create_work_dir && mktemp --tmpdir="$WORK_DIR" --suffix="$suffix"
 }
 
@@ -44,14 +45,28 @@ confirm_action() {
 }
 
 prompt_user() {
-  echo "$1"
+  local message="$1"
+
+  echo "$message"
   confirm_action "Are you sure that you want to do this?" || exit 0
+}
+
+show_finished_message() {
+  local message_prefix="$1"
+
+  echo -e "\n$message_prefix finished! Please check if any errors or warnings occurred."
 }
 
 is_empty_folder() {
   local folder="$1"
 
   [[ "$(ls -A "$folder" 2> /dev/null)" ]] && return 1 || return 0
+}
+
+is_user_home_path() {
+  local path="$1"
+
+  [[ "$path" =~ ^~ || "$path" =~ ^"$HOME" ]]
 }
 
 write_permission_check() {
@@ -107,17 +122,17 @@ check_git_props() {
 }
 
 check_schedule_arg() {
-  [[ "$schedule" ]] || return
+  [[ "$SCHEDULE_ARG" ]] || return
 
-  [[ " ${SUPPORTED_SCHEDULES[*]} " =~ " $schedule " ]] && return
+  [[ " ${SUPPORTED_SCHEDULES[*]} " =~ " $SCHEDULE_ARG " ]] && return
 
-  echo "[ ERROR ] Script argument '--schedule' has invalid value [ $schedule ]"
+  echo "[ ERROR ] Script argument '--schedule' has invalid value [ $SCHEDULE_ARG ]"
   echo "Valid values are:" && printf "%s\n" "${SUPPORTED_SCHEDULES[@]}"
   exit 1
 }
 
 check_restriction_args() {
-  [[ "$only_files" && "$only_dconfs" ]] && {
+  [[ "$ONLY_FILES_ARG" && "$ONLY_DCONFS_ARG" ]] && {
     echo "[ ERROR ] Using both '--only-files' and '--only-dconfs' args is prohibited!"
     exit 1
   }
