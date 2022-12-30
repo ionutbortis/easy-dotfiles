@@ -62,7 +62,7 @@ handle_existing_schedule() {
   local schedule="$(sed -e 's|.*\.||' -e 's|/.*||' <<< "$script")"
   local action="${script##*-}"
 
-  echo "Automatic $PRJ_DISPLAY [ $action""s"" ] are configured with [ $schedule ] frequency."
+  echo "Automatic $PRJ_DISPLAY [ $action""s ] are configured with [ $schedule ] frequency."
 
   echo "Do you want to:"
   select option in reschedule remove; do 
@@ -99,7 +99,7 @@ create_new_schedule() {
   done
 
   create_script "$action" "$schedule" \
-      && echo -e "\nAutomatic [ $schedule $action""s"" ] were succcesfully configured!"
+      && echo -e "\nAutomatic [ $schedule $action""s ] were succcesfully configured!"
 }
 
 configure_anacron() {
