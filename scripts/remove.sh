@@ -8,8 +8,6 @@ sources() {
 
 }; sources
 
-setup_log_file "remove"
-
 remove_project_root() {
   echo "Removing [ $PROJECT_ROOT ] folder..."
 

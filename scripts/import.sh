@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# TODO explain args
-# Accepted args: --schedule=value --only-files --only-dconfs
+# Accepted args:
+# --schedule=value  Used when script is invoked from a scheduled action, will
+#                   change the log prefix and will skip the warning prompt.
+# --only-files      Will import only the configure dotfiles and misc files.
+# --only-dconfs     Will import only dconf configuration (apps, extensions, tweaks).
+# Both are used when script is invoked from a scheduled action because dconfs are 
+# imported by switching to specific user account, while files are imported as root.
 
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"

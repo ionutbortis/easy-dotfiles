@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# TODO explain args
-# Accepted args: --schedule=value
+# Accepted args:
+# --schedule=value  Used when script is invoked from a scheduled action.
+#                   It will change the log prefix.
 
 sources() {
   local script_folder="$( dirname "$(realpath -s "${BASH_SOURCE[0]}")" )"
