@@ -1,0 +1,28 @@
+# This workflow update the docs copyright year to latest
+
+name: Docs Update
+
+# Run this workflow at the beginning of each year
+on:
+  schedule:
+    - cron: '0 0 1 1 *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run docs update script
+        run: cd "$GITHUB_WORKSPACE/docs" && ./update.sh
+
+      - name: Push docs changes
+        run: |
+          git config user.name ionutbortis
+          git config user.email ionutbortis@gmail.com
+          git add .
+          git commit -m "Updated docs copyright year" && git push
