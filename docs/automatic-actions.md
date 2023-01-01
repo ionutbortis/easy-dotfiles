@@ -95,7 +95,7 @@ cd ~/easy-dotfiles/ && ./scripts/anacron/setup.sh
 
 When running the above mentioned script you need to select the `import` action and your preferred frequency: `daily`, `weekly` or `monthly`.
 
-In order to see that the scheduled `export` did actually happen you need to wait an hour or so (or force anacron to run immediately with `sudo anacron -f -n`). Afterwards, you can check the **`easy-dotfiles`** logs for log file names beginning with:
+In order to see that the scheduled `import` did actually happen you need to wait an hour or so (or force anacron to run immediately with `sudo anacron -f -n`). Afterwards, you can check the **`easy-dotfiles`** logs for log file names beginning with:
 
 - `daily-import`, `weekly-import` or `monthly-import`, depending on your configuration.
 - `daily-pull`, `weekly-pull` or `monthly-pull`, depending on your configuration.

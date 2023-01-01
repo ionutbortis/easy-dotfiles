@@ -36,7 +36,7 @@ In order to keep things nice and tidy, the configuration is split into multiple 
 
 ## Applications
 
-All of the **`easy-dotfiles`** cofig JSON files are starting with an json array `[]`. This root array contains entries specific to each configuration section.
+All of the **`easy-dotfiles`** config JSON files are starting with an json array `[]`. This root array contains entries specific to each configuration section.
 
 For [apps][apps config json] config we need the following information:
 
@@ -599,7 +599,7 @@ Advanced `schema_path` config can look a tad complicated but it's an interesting
 
 If you reached so far, I think some congratulations are in order.
 
-I hope you got familiar on how to configure the different JSON sections. You always have the [sample config][sample config folder] to bootstrap your **`easy-dotfiles`** configuration or to use it as a reference. I should be _set it once and forget it_ kind of thing.
+I hope you got familiar on how to configure the different JSON sections. You always have the [sample config][sample config folder] to bootstrap your **`easy-dotfiles`** configuration or to use it as a reference. It should be _set it once and forget it_ kind of thing.
 
 There are some other small configuration parts that you might want to have a look at by reading this [section][shell scripts doc url].
 

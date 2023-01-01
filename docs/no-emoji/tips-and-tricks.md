@@ -49,7 +49,7 @@ sudo /etc/cron.daily/ionut-easy-dotfiles-export
 
 The above is the script created by **`easy-dotfiles`** for a scheduled `daily export`.
 
-I's prefixed with your username, followed by the project name and the configured action. It's owned by `root`, it doesn't have an extension and it's not written in bash, but with the standard `/bin/sh` interpreter.
+It's prefixed with your username, followed by the project name and the configured action. The script is owned by `root`, it doesn't have an extension and it's not written in bash, but with the standard `/bin/sh` interpreter.
 
 Running it directly with `sudo` or as `root` might help you in troubleshooting some issues, if they arise, hopefully not.
 

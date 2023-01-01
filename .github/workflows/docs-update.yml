@@ -1,11 +1,11 @@
-# This workflow update the docs copyright year to latest
+# This workflow updates the docs copyright year to latest
 
 name: Docs Update
 
 # Run this workflow at the beginning of each year
 on:
   schedule:
-    - cron: '0 0 1 1 *'
+    - cron: "0 0 1 1 *"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
