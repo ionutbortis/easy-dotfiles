@@ -583,15 +583,16 @@ Advanced `schema_path` config can look a tad complicated but it's an interesting
 {
   "schema_path": "/org/gnome/desktop/", 
   "keys": [
-    "/interface/ text-scaling-factor clock-show-weekday", 
+    "/a11y*/", 
+    "/background/", 
     "/calendar/", 
     "/datetime/", 
     "/input-sources/", 
-    "/background/", 
-    "/wm/preferences/", 
-    "/a11y*/", 
+    "/interface/ text-scaling-factor clock-show-weekday", 
     "/peripherals*/", 
-    "/sound/ allow-volume-above-100-percent event-sounds"
+    "/privacy/", 
+    "/sound/ allow-volume-above-100-percent event-sounds", 
+    "/wm/preferences/"
   ], 
   "file": "gnome.desktop.conf"
 }
