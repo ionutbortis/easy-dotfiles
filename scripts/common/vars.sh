@@ -49,5 +49,5 @@ SCHEDULE_FOLDERS=( "/etc/cron.daily" "/etc/cron.weekly" "/etc/cron.monthly" )
 ANACRON_SCRIPT_PREFFIX="$USER-$PROJECT_NAME-"
 ANACRON_ACTIONS=( "export" "import" )
 
-# This method of determining the version only works for Gnome 40+
+# This method of computing the shell version only works for Gnome 40+
 GNOME_SHELL_VERSION="$(gnome-shell --version | awk -F '[ .]' '{ print $3 }')"

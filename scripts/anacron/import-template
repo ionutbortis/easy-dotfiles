@@ -5,6 +5,9 @@ export HOME="HOME_@REPLACE"
 export SSH_AUTH_SOCK="SSH_AUTH_SOCK_@REPLACE"
 export DBUS_SESSION_BUS_ADDRESS="DBUS_SESSION_BUS_ADDRESS_@REPLACE"
 
+git config --global --unset safe.directory "PROJECT_ROOT_@REPLACE"
+git config --global --add   safe.directory "PROJECT_ROOT_@REPLACE"
+
 fix_ownership() {
   chown -R USER_@REPLACE:USER_@REPLACE "PROJECT_ROOT_@REPLACE"
 }

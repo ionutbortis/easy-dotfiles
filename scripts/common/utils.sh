@@ -138,7 +138,13 @@ check_restriction_args() {
   }
 }
 
+remove_root_git_config() {
+  sudo git config --global --unset safe.directory "$PROJECT_ROOT"
+}
+
 remove_anacron_script() {
+  remove_root_git_config
+
   for folder in "${SCHEDULE_FOLDERS[@]}"; do
     for action in "${ANACRON_ACTIONS[@]}"; do
 

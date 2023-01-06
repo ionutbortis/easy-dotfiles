@@ -26,4 +26,5 @@ prompt_user "[ WARN ] This will remove the $PRJ_DISPLAY project from your system
 
 remove_anacron_script
 remove_project_root
+
 show_finished_message $?
