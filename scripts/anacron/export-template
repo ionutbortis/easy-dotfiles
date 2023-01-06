@@ -11,9 +11,9 @@ check_exit_status() {
   [ "$1" -eq 0 ] || { fix_ownership; exit 1; }
 }
 
-cd "PROJECT_ROOT_@REPLACE" && ./scripts/export.sh --schedule=schedule_@REPLACE
+cd "PROJECT_ROOT_@REPLACE"; ./scripts/export.sh --schedule=schedule_@REPLACE
 check_exit_status $?
 
 fix_ownership
 
-su USER_@REPLACE -c 'cd "PROJECT_ROOT_@REPLACE" && ./scripts/git/push.sh --schedule=schedule_@REPLACE'
+su USER_@REPLACE -c 'cd "PROJECT_ROOT_@REPLACE"; ./scripts/git/push.sh --schedule=schedule_@REPLACE'
