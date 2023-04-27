@@ -4,7 +4,7 @@ JIDEA_HOME="$HOME/java-IDEs/jidea" && mkdir -p "$JIDEA_HOME"
 
 desktop_file="$HOME/.local/share/applications/intellij-idea.desktop"
 
-package="ideaIU-2022.2.3.tar.gz"
+package="ideaIU-2023.1.tar.gz"
 
 check_already_installed() {
   local jidea_folder="$(cd "$JIDEA_HOME" && ls -d -- *idea* 2> /dev/null)"
