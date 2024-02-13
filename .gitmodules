@@ -1,3 +1,3 @@
 [submodule "private"]
 	path = private
-	url = git@github.com:ionutbortis/easy-dotfiles-private.git
+	url = git@github.com-easy-dotfiles-private:ionutbortis/easy-dotfiles-private.git
