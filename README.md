@@ -30,7 +30,7 @@ Do you want to know how you can also do this? If yes, please carry on reading th
 
 ---
 
-Copyright (C) 2022 - 2025 Ionut Florin Bortis (ionutbortis@gmail.com)
+Copyright (C) 2022 - 2026 Ionut Florin Bortis (ionutbortis@gmail.com)
 
 This program is **free** for **personal** and **commercial** use and comes with **absolutely no warranty**. You use this program entirely at your own risk. The authors will not be liable for any damages arising from the use of this program.
 
